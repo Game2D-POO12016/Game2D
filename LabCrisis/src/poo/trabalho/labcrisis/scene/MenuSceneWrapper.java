@@ -40,7 +40,7 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	public boolean onMenuItemClicked (MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
 	switch (pMenuItem.getID()) {
 	case 0 :
-	// show the game scene here
+	SceneManager.getInstance().showGameScene();
 	return true;
 	default :
 		return false;
