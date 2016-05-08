@@ -42,7 +42,7 @@ public class ResourceManager {
 	return INSTANCE;
 	}
 	
-	//create resorce manager
+	//create resource manager
 	public void create(GameActivity activity, Engine engine, Camera
 			camera, VertexBufferObjectManager vbom) {
 			this.activity = activity;
@@ -59,16 +59,15 @@ public class ResourceManager {
 	
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(),1024, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.
-		BILINEAR_PREMULTIPLYALPHA);
+		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(),1024, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		
 		paredeTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
-		gameTextureAtlas, activity.getAssets(), "parede.png", 4, 1);
+		gameTextureAtlas, activity.getAssets(), "Parede.png", 4, 1);
 		
 		globuloTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createFromAsset(
-		gameTextureAtlas, activity.getAssets(), "globulo.png");
+		gameTextureAtlas, activity.getAssets(), "Globulo.png");
 		
 		comidaTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createFromAsset(
@@ -83,7 +82,7 @@ public class ResourceManager {
 				} catch (final TextureAtlasBuilderException e) {
 				throw new RuntimeException("Error while loading game textures", e);
 				}
-				}
+	}
 	//sounds
 	public Sound soundGameover;
 	public Sound soundComer;
