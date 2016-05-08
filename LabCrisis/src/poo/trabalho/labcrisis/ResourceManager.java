@@ -31,6 +31,23 @@ public class ResourceManager {
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
 	
+	// splash graphics
+	public ITextureRegion splashTextureRegion;
+	private BitmapTextureAtlas splashTextureAtlas;
+	public void loadSplashGraphics() {
+	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+	splashTextureAtlas = new
+	BitmapTextureAtlas(activity.getTextureManager(), 256, 256,
+	BitmapTextureFormat.RGBA_8888,
+	TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.
+	createFromAsset(splashTextureAtlas, activity.getAssets(),
+	"badge.png", 0, 0);
+	splashTextureAtlas.load();
+	}
+	public void unloadSplashGraphics() {
+	splashTextureAtlas.unload();
+	}
 	
 	// single instance is created only
 	private static final ResourceManager INSTANCE = new
