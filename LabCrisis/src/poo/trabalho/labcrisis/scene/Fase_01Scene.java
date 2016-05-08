@@ -23,21 +23,24 @@ public class Fase_01Scene extends AbstractScene {
 	@Override
 	public void populate() {
 	createBackground();
-	//createParede();
+	createParede();
 	
 	//escrevendo textos
-	scoreText = new Text(16, 784, res.font, "SCORE XXX", new
+	scoreText = new Text(16, 784, res.font, "SCORE X", new
 			TextOptions(HorizontalAlign.LEFT), vbom);
 			scoreText.setAnchorCenter(0, 1);
 			attachChild(scoreText);
 	}
 	
+	@Override
+	public void onBackKeyPressed() {
+	SceneManager.getInstance().showMenuScene();
+	}
 	
-	
-	/*private void createParede() {
+	private void createParede() {
 		parede = ParedeFactory.getInstance().createParede(240, 400);
 		attachChild(parede);
-		}*/
+		}
 
 	
 	private void createBackground() {
@@ -55,6 +58,7 @@ public class Fase_01Scene extends AbstractScene {
 
 	public void onPause() {
 	}
+	
 	@Override
 	public void onResume() {
 	}
