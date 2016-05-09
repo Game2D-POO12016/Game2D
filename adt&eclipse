@@ -1,0 +1,53 @@
+----------------------------
+-- 	UBUNTU 		----
+----------------------------
+
+Procedimento para instalação do plugin android adt para eclipse no ubuntu:
+
+1_ Abra o terminal;
+2_ execute o comandos:
+
+	java -version
+
+3_ Se sua versão for igual ou maior que 1.8 pule para etapa 6(essa etapa é importante só irá funcionar desta versão pra cima);
+4_ Vá em software center, em edit->Software Sources, uma janela irá abrir, verifique se a opção multiverse esta abilitada(marcada com um check), se não estiver habilite;
+5_ Execute os comandos no terminal:
+
+	sudo add-apt-repository ppa:webupd8team/java 
+	sudo apt-get update 
+	sudo apt-get install oracle-java8-installer
+
+6_ Abra o eclipse, vá em help -> Installing Software, uma janela irá abrir, click em add, uma nova janela irá abrir com dois campos a serem preenchidos, no primeiro coloque "ADT Repository"(poderia ser qualquer nome), no segundo coloque exatamente "https://dl-ssl.google.com/android/eclipse/", sem aspas duplas. A janela irá fechar e voltará a primeira nesta click em Development Tools e prossiga com a instalação;
+
+7_ Reinicie o Eclipse;
+8_ Quando abrir o eclipse novamente este deve informar que não encontrou o SDK, Havendo duas opções "Cancel" e "Open Destination", click na segunda opção. Prossiga com a instalação;
+9_ Quando terminar ele deve pedir para instalar mais pacotes usando o SDK Manager, prossiga com a instalação.  
+
+----------------------------
+-- 	WINDOWS 	----
+----------------------------
+
+Procedimento para instalação do plugin android adt para eclipse no WINDOWS:
+
+1_ Abra o cmd;
+2_ execute o comandos:
+
+	java -version
+
+3_ Se sua versão for igual ou maior que 1.8 pule para etapa 7(essa etapa é importante só irá funcionar desta versão pra cima);
+4_ Vá em:
+	http://www.oracle.com/technetwork/pt/java/javase/downloads/index.html
+
+5_ Escolha a opção JDK e faça o download;
+
+6_ Instale o JDK que foi baixado;
+
+7_ Abra o eclipse, vá em help -> Installing Software, uma janela irá abrir, click em add, uma nova janela irá abrir com dois campos a serem preenchidos, no primeiro coloque "ADT Repository"(poderia ser qualquer nome), no segundo coloque exatamente "https://dl-ssl.google.com/android/eclipse/", sem aspas duplas. A janela irá fechar e voltará a primeira nesta click em Development Tools e prossiga com a instalação;
+
+8_ Reinicie o Eclipse;
+9_ Quando abrir o eclipse novamente este deve informar que não encontrou o SDK, Havendo duas opções "Cancel" e "Open Destination", click na segunda opção. Prossiga com a instalação;
+10_ Quando terminar ele deve pedir para instalar mais pacotes usando o SDK Manager, prossiga com a instalação.  
+
+
+	
+
