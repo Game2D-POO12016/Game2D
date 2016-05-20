@@ -3,7 +3,6 @@ package poo.trabalho.labcrisis.scene;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.decorator.*;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
-import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.sprite.Sprite;

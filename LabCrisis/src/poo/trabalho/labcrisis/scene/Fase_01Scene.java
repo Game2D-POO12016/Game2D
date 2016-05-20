@@ -8,13 +8,14 @@ import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.EntityBackground;
 import org.andengine.entity.shape.IShape;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 import org.andengine.entity.text.*;
 
+import poo.trabalho.labcrisis.MusicPlayer;
+import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Parede;
 import poo.trabalho.labcrisis.entity.Player;
 import poo.trabalho.labcrisis.factory.ParedeFactory;
@@ -54,6 +55,7 @@ public class Fase_01Scene extends AbstractScene {
 				player.registerEntityModifier(new MoveModifier(1,
 						player.getX(), player.getY(), pSceneTouchEvent.getX(),
 						pSceneTouchEvent.getY()));
+				ResourceManager.getInstance().soundComer.play();
 						return true;
 						}
 						return false;
@@ -69,19 +71,23 @@ public class Fase_01Scene extends AbstractScene {
 					public boolean onCollision(IShape pCheckShape, IShape
 					pTargetShape) {
 					parede.setColor(Color.RED);
+					ResourceManager.getInstance().soundGameover.play();
 					return false;
 					}
 					};
 					CollisionHandler myCollisionHandler = new
 					CollisionHandler(myCollisionCallback, parede, player);
 					registerUpdateHandler(myCollisionHandler);
-			
+					
+					
+					MusicPlayer.getInstance().play();
 			
 	}
 	
 	@Override
 	public void onBackKeyPressed() {
 	SceneManager.getInstance().showMenuScene();
+	MusicPlayer.getInstance().stop();
 	}
 	
 	private void createParede() {
@@ -92,9 +98,6 @@ public class Fase_01Scene extends AbstractScene {
 	
 	private void createBackground() {
 	Entity background = new Entity();
-	//Sprite comidaSprite = new Sprite(200, 300, res.comidaTextureRegion,
-	//vbom);
-	//background.attachChild(comidaSprite);
 	setBackground(new EntityBackground(0.82f, 0.96f, 0.97f,
 	background));
 	}
@@ -106,13 +109,15 @@ public class Fase_01Scene extends AbstractScene {
 		attachChild(player);
 		}
 	
-	
-	
 	@Override
 	public void onPause() {
+	MusicPlayer.getInstance().pause();
 	}
-	
 	@Override
 	public void onResume() {
+	MusicPlayer.getInstance().play();
 	}
+	
+	
+	
 	}
