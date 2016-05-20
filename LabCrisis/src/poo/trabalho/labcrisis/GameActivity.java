@@ -9,9 +9,8 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.debug.Debug;
 
+import android.content.SharedPreferences;
 import android.view.KeyEvent;
-import poo.trabalho.labcrisis.scene.AbstractScene;
-import poo.trabalho.labcrisis.scene.Fase_01Scene;
 import poo.trabalho.labcrisis.scene.SceneManager;
 
 
@@ -20,32 +19,49 @@ public class GameActivity extends BaseGameActivity {
 	public static final int CAMERA_WIDTH = 480;
 	public static final int CAMERA_HEIGHT = 800;
 	
+	
+	private final String KEY_SOUND = "Sound";
+	private final String KEY_HISCORE = "HiScore";
+	SharedPreferences settings;
+	
+	public void setSound(boolean sound) {
+	SharedPreferences.Editor settingsEditor = settings.edit();
+	settingsEditor.putBoolean(KEY_SOUND, sound);
+	settingsEditor.commit();
+	}
+	public boolean isSound() {
+	return settings.getBoolean(KEY_SOUND, true);
+	}
+	public void setHiScore(int score) {
+	SharedPreferences.Editor settingsEditor = settings.edit();
+	settingsEditor.putInt(KEY_HISCORE, score);
+	settingsEditor.commit();
+	}
+	public int getHiScore() {
+	return settings.getInt(KEY_HISCORE, 0);
+	}
+	
+	
+	
+	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 
 	Camera camera = new Camera(0, 0, CAMERA_WIDTH,CAMERA_HEIGHT);
 	IResolutionPolicy resolutionPolicy = new FillResolutionPolicy();
-	EngineOptions engineOptions = new EngineOptions(true,ScreenOrientation.PORTRAIT_FIXED, resolutionPolicy, camera);
+	EngineOptions engineOptions = new EngineOptions(true,ScreenOrientation.LANDSCAPE_FIXED, resolutionPolicy, camera);
 	engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 	engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 	engineOptions.getRenderOptions().setDithering(true);
 	engineOptions.getRenderOptions().setDithering(true);
 	Debug.i("Engine configured");
+	
+	settings = getSharedPreferences("andengine_game_prefs",
+			MODE_PRIVATE);
+	
 	return engineOptions;
 	}
-	
-	/*@Override
-	public void onCreateResources(
-	OnCreateResourcesCallback pOnCreateResourcesCallback)
-	throws IOException {
-	ResourceManager.getInstance().create(this, getEngine(),
-	getEngine().getCamera(), getVertexBufferObjectManager());
-	ResourceManager.getInstance().loadFont();
-	ResourceManager.getInstance().loadGameAudio();
-	ResourceManager.getInstance().loadGameGraphics();
-	pOnCreateResourcesCallback.onCreateResourcesFinished();
-	}*/
-	
+
 	@Override
 	public void onCreateResources(
 	OnCreateResourcesCallback pOnCreateResourcesCallback)
@@ -57,16 +73,6 @@ public class GameActivity extends BaseGameActivity {
 	}
 	
 	
-	
-	/*@Override
-	public void onCreateScene(OnCreateSceneCallback
-	pOnCreateSceneCallback)
-	throws IOException {
-	Scene scene = new Fase_01Scene();
-	pOnCreateSceneCallback.onCreateSceneFinished(scene);
-	}*/
-	
-	
 	@Override
 	public void onCreateScene(OnCreateSceneCallback
 	pOnCreateSceneCallback)
@@ -75,15 +81,6 @@ public class GameActivity extends BaseGameActivity {
 	pOnCreateSceneCallback.onCreateSceneFinished(null);
 	}
 	
-	
-	/*@Override
-	public void onPopulateScene(Scene pScene,
-	OnPopulateSceneCallback pOnPopulateSceneCallback)
-	throws IOException {
-	AbstractScene scene = (AbstractScene) pScene;
-	scene.populate();
-	pOnPopulateSceneCallback.onPopulateSceneFinished();
-	}*/
 	
 	@Override
 	public void onPopulateScene(Scene pScene, OnPopulateSceneCallback
@@ -104,4 +101,21 @@ public class GameActivity extends BaseGameActivity {
 	}
 	
 
+	
+	@Override
+	public synchronized void onResumeGame() {
+	super.onResumeGame();
+	SceneManager.getInstance().getCurrentScene().onResume();
+	}
+	@Override
+	public synchronized void onPauseGame() {
+	super.onPauseGame();
+	SceneManager.getInstance().getCurrentScene().onPause();
+	}
+	
+	
+	
+	
+	
 }
+
