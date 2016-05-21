@@ -62,7 +62,7 @@ public class ResourceManager {
 	public ITiledTextureRegion comidaTextureRegion;
 	public ITiledTextureRegion globuloTextureRegion;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
-	
+
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(),1024, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -79,6 +79,7 @@ public class ResourceManager {
 				createTiledFromAsset(
 		gameTextureAtlas, activity.getAssets(), "comida.png",1,1);
 		
+		
 		try {
 			gameTextureAtlas.build(new
 			BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource,
@@ -87,6 +88,8 @@ public class ResourceManager {
 		} catch (final TextureAtlasBuilderException e) {
 			throw new RuntimeException("Error while loading game textures", e);
 		}
+		
+
 	}
 	
 	
