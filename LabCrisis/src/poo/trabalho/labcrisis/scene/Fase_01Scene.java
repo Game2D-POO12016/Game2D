@@ -1,5 +1,6 @@
 package poo.trabalho.labcrisis.scene;
 
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.collision.CollisionHandler;
 import org.andengine.engine.handler.collision.ICollisionCallback;
 import org.andengine.entity.Entity;
@@ -44,13 +45,8 @@ public class Fase_01Scene extends AbstractScene {
 		createComida(300,300);
 		createComida(350,300);
 		createPlayer();
-	
-	//escrevendo textos
-		scoreText = new Text(16, 784, res.font, "SCORE X", new TextOptions(HorizontalAlign.LEFT), vbom);
-		scoreText.setAnchorCenter(0, 1);
-		attachChild(scoreText);
-			
-			
+		createHUD();
+
 	setOnSceneTouchListener(new IOnSceneTouchListener() {
 		@Override
 		public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
@@ -79,6 +75,7 @@ public class Fase_01Scene extends AbstractScene {
 	registerUpdateHandler(myCollisionHandler);
 					
 	MusicPlayer.getInstance().play();		
+	camera.setChaseEntity(player);
 	}
 	
 	@Override
@@ -156,6 +153,15 @@ public class Fase_01Scene extends AbstractScene {
 		player = PlayerFactory.getInstance().createPlayer(50, 600);
 		player.setScale((float) 0.2);
 		attachChild(player);
+	}
+	
+	private void createHUD() {
+		HUD hud = new HUD();
+		//escrevendo textos
+		scoreText = new Text(16, 784, res.font, "SCORE X", new TextOptions(HorizontalAlign.LEFT), vbom);
+		scoreText.setAnchorCenter(0, 1);						
+		hud.attachChild(scoreText);
+		camera.setHUD(hud);
 	}
 	
 	@Override
