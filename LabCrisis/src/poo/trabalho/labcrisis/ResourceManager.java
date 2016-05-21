@@ -59,7 +59,7 @@ public class ResourceManager {
 	
 	//game textures
 	public ITiledTextureRegion paredeTextureRegion;
-	public ITextureRegion comidaTextureRegion;
+	public ITiledTextureRegion comidaTextureRegion;
 	public ITiledTextureRegion globuloTextureRegion;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
 	
@@ -69,15 +69,15 @@ public class ResourceManager {
 		
 		paredeTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
-		gameTextureAtlas, activity.getAssets(), "Parede.png", 4, 1);
+		gameTextureAtlas, activity.getAssets(), "Parede.png", 5, 1);
 		
 		globuloTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
 		gameTextureAtlas, activity.getAssets(), "Globulo.png", 1, 1);
 		
 		comidaTextureRegion = BitmapTextureAtlasTextureRegionFactory.
-		createFromAsset(
-		gameTextureAtlas, activity.getAssets(), "comida.png");
+				createTiledFromAsset(
+		gameTextureAtlas, activity.getAssets(), "comida.png",1,1);
 		
 		try {
 			gameTextureAtlas.build(new
