@@ -59,26 +59,25 @@ public class ResourceManager {
 	
 	//game textures
 	public ITiledTextureRegion paredeTextureRegion;
-	public ITiledTextureRegion comidaTextureRegion;
+	public ITextureRegion comidaTextureRegion;
 	public ITiledTextureRegion globuloTextureRegion;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
-
+	
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(),1024, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		
 		paredeTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
-		gameTextureAtlas, activity.getAssets(), "Parede.png", 5, 1);
+		gameTextureAtlas, activity.getAssets(), "Parede.png", 4, 1);
 		
 		globuloTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
 		gameTextureAtlas, activity.getAssets(), "Globulo.png", 1, 1);
 		
 		comidaTextureRegion = BitmapTextureAtlasTextureRegionFactory.
-				createTiledFromAsset(
-		gameTextureAtlas, activity.getAssets(), "comida.png",1,1);
-		
+		createFromAsset(
+		gameTextureAtlas, activity.getAssets(), "comida.png");
 		
 		try {
 			gameTextureAtlas.build(new
@@ -88,8 +87,6 @@ public class ResourceManager {
 		} catch (final TextureAtlasBuilderException e) {
 			throw new RuntimeException("Error while loading game textures", e);
 		}
-		
-
 	}
 	
 	

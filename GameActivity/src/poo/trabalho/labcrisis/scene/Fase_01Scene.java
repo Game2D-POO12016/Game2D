@@ -1,6 +1,5 @@
 package poo.trabalho.labcrisis.scene;
 
-import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.collision.CollisionHandler;
 import org.andengine.engine.handler.collision.ICollisionCallback;
 import org.andengine.entity.Entity;
@@ -16,22 +15,18 @@ import org.andengine.util.adt.color.Color;
 import org.andengine.entity.text.*;
 import poo.trabalho.labcrisis.MusicPlayer;
 import poo.trabalho.labcrisis.ResourceManager;
-import poo.trabalho.labcrisis.entity.Comida;
 import poo.trabalho.labcrisis.entity.Parede;
 import poo.trabalho.labcrisis.entity.Player;
-import poo.trabalho.labcrisis.factory.ComidaFactory;
 import poo.trabalho.labcrisis.factory.ParedeFactory;
 import poo.trabalho.labcrisis.factory.PlayerFactory;
 
 public class Fase_01Scene extends AbstractScene {
 	private Parede parede;
-	private Comida comida;
 	private Text scoreText;
 	private Player player;
 	
 	public Fase_01Scene() {
 		ParedeFactory.getInstance().create(vbom);
-		ComidaFactory.getInstance().create(vbom);
 		PlayerFactory.getInstance().create(vbom);
 	}
 	
@@ -39,7 +34,6 @@ public class Fase_01Scene extends AbstractScene {
 	public void populate() {
 		createBackground();
 		createParede();
-<<<<<<< HEAD
 		createPlayer();
 	
 	//escrevendo textos
@@ -48,16 +42,6 @@ public class Fase_01Scene extends AbstractScene {
 		attachChild(scoreText);
 			
 			
-=======
-		createComida(150,300);
-		createComida(200,300);
-		createComida(250,300);
-		createComida(300,300);
-		createComida(350,300);
-		createPlayer();
-		createHUD();
-
->>>>>>> branch 'master' of https://github.com/Game2D-POO12016/Game2D
 	setOnSceneTouchListener(new IOnSceneTouchListener() {
 		@Override
 		public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
@@ -86,10 +70,6 @@ public class Fase_01Scene extends AbstractScene {
 	registerUpdateHandler(myCollisionHandler);
 					
 	MusicPlayer.getInstance().play();		
-<<<<<<< HEAD
-=======
-	camera.setChaseEntity(player);
->>>>>>> branch 'master' of https://github.com/Game2D-POO12016/Game2D
 	}
 	
 	@Override
@@ -99,72 +79,9 @@ public class Fase_01Scene extends AbstractScene {
 	}
 	
 	private void createParede() {
-<<<<<<< HEAD
 		parede = ParedeFactory.getInstance().createParede(240, 400);
 		attachChild(parede);
-=======
-		
-		//paredes superiores
-		for(int i = 100 ; i<= 440 ; i = i+ 20){
-			parede = ParedeFactory.getInstance().createParede(i, 400);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			attachChild(parede);
-		}
-		
-		
-		//paredes inferiores
-		for(int i = 10 ; i<= 340 ; i = i+ 20){
-			parede = ParedeFactory.getInstance().createParede(i, 200);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			attachChild(parede);
-		}
-		
-		
-		//lateral esquerda
-		for(int i = 800 ; i>= 200 ; i = i- 20){
-			parede = ParedeFactory.getInstance().createParede(10, i);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			attachChild(parede);
-		}
-		
-		//lateral direita
-		for(int i = 800 ; i>= 400 ; i = i- 20){
-			parede = ParedeFactory.getInstance().createParede(100, i);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			attachChild(parede);
-		}
-		
-		//segunda lateral direita
-		for(int i = 400 ; i>= 20 ; i = i- 20){
-			parede = ParedeFactory.getInstance().createParede(440, i);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			attachChild(parede);
-		}	
-				
-		//segunda lateral esquerda
-		for(int i = 200 ; i>= 20 ; i = i- 20){
-			parede = ParedeFactory.getInstance().createParede(340, i);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			attachChild(parede);
-		}
-				
->>>>>>> branch 'master' of https://github.com/Game2D-POO12016/Game2D
 	}
-<<<<<<< HEAD
-=======
-	
-	private void createComida(int x, int y) {
-		comida = ComidaFactory.getInstance().createComida(x, y);
-		comida.setScale((float) 0.5);
-		attachChild(comida);
-	}
->>>>>>> branch 'master' of https://github.com/Game2D-POO12016/Game2D
 
 	private void createBackground() {
 		Entity background = new Entity();
@@ -172,22 +89,10 @@ public class Fase_01Scene extends AbstractScene {
 	}
 	
 	private void createPlayer() {
-		player = PlayerFactory.getInstance().createPlayer(50, 600);
+		player = PlayerFactory.getInstance().createPlayer(240, 600);
 		player.setScale((float) 0.2);
 		attachChild(player);
 	}
-<<<<<<< HEAD
-=======
-	
-	private void createHUD() {
-		HUD hud = new HUD();
-		//escrevendo textos
-		scoreText = new Text(16, 784, res.font, "SCORE X", new TextOptions(HorizontalAlign.LEFT), vbom);
-		scoreText.setAnchorCenter(0, 1);						
-		hud.attachChild(scoreText);
-		camera.setHUD(hud);
-	}
->>>>>>> branch 'master' of https://github.com/Game2D-POO12016/Game2D
 	
 	@Override
 	public void onPause() {
