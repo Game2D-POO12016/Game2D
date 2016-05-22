@@ -10,6 +10,8 @@ import org.andengine.util.adt.color.Color;
 
 public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickListener {
 	private IMenuItem playMenuItem;
+	private IMenuItem loadMenuItem;
+	private IMenuItem optionMenuItem;
 	
 	@Override
 	public void populate() {
@@ -17,6 +19,10 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		menuScene.getBackground().setColor(0.82f, 0.96f, 0.97f);
 		playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0,res.font, "PLAY", vbom), Color.CYAN, Color.WHITE);
 		menuScene.addMenuItem(playMenuItem);
+		loadMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1,res.font, "LOAD", vbom), Color.CYAN, Color.WHITE);
+		menuScene.addMenuItem(loadMenuItem);
+		optionMenuItem = new ColorMenuItemDecorator(new TextMenuItem(2,res.font, "OPTION", vbom), Color.CYAN, Color.WHITE);
+		menuScene.addMenuItem(optionMenuItem);
 		menuScene.buildAnimations();
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
