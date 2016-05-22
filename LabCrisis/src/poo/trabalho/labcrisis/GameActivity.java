@@ -12,8 +12,8 @@ import android.view.KeyEvent;
 import poo.trabalho.labcrisis.scene.SceneManager;
 
 public class GameActivity extends BaseGameActivity {
-	public static final int CAMERA_WIDTH = 480;
-	public static final int CAMERA_HEIGHT = 800;	
+	public static final int CAMERA_WIDTH = 800;
+	public static final int CAMERA_HEIGHT = 480;	
 	private final String KEY_SOUND = "Sound";
 	private final String KEY_HISCORE = "HiScore";
 	SharedPreferences settings;
