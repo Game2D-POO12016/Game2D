@@ -20,46 +20,35 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.color.Color;
-
 import android.graphics.Typeface;
 
 public class ResourceManager {
-	
-	//common objects
 	public GameActivity activity;
 	public Engine engine;
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
-	
-	// splash graphics
 	public ITextureRegion splashTextureRegion;
 	private BitmapTextureAtlas splashTextureAtlas;
+	
 	public void loadSplashGraphics() {
-	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-	splashTextureAtlas = new
-	BitmapTextureAtlas(activity.getTextureManager(), 256, 256,
-	BitmapTextureFormat.RGBA_8888,
-	TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-	splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.
-	createFromAsset(splashTextureAtlas, activity.getAssets(),
-	"badge.png", 0, 0);
-	splashTextureAtlas.load();
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256,BitmapTextureFormat.RGBA_8888,TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, activity.getAssets(),"badge.png", 0, 0);
+		splashTextureAtlas.load();
 	}
+	
 	public void unloadSplashGraphics() {
-	splashTextureAtlas.unload();
+		splashTextureAtlas.unload();
 	}
 	
-	// single instance is created only
-	private static final ResourceManager INSTANCE = new
-	ResourceManager();
+	private static final ResourceManager INSTANCE = new ResourceManager();
 	
-	// constructor is private to ensure nobody can call it from outside
 	private ResourceManager() { }
-	public static ResourceManager getInstance() {
-	return INSTANCE;
+		public static ResourceManager getInstance() {
+			return INSTANCE;
 	}
 	
-	//create resource manager
+   //cria o resource manager
 	public void create(GameActivity activity, Engine engine, Camera
 			camera, VertexBufferObjectManager vbom) {
 			this.activity = activity;
@@ -70,69 +59,67 @@ public class ResourceManager {
 	
 	//game textures
 	public ITiledTextureRegion paredeTextureRegion;
-	public ITextureRegion comidaTextureRegion;
+	public ITiledTextureRegion comidaTextureRegion;
 	public ITiledTextureRegion globuloTextureRegion;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
-	
+
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(),1024, 512, BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		
 		paredeTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
-		gameTextureAtlas, activity.getAssets(), "Parede.png", 4, 1);
+		gameTextureAtlas, activity.getAssets(), "Parede.png", 5, 1);
 		
 		globuloTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
 		gameTextureAtlas, activity.getAssets(), "Globulo.png", 1, 1);
 		
 		comidaTextureRegion = BitmapTextureAtlasTextureRegionFactory.
-		createFromAsset(
-		gameTextureAtlas, activity.getAssets(), "comida.png");
+				createTiledFromAsset(
+		gameTextureAtlas, activity.getAssets(), "comida.png",1,1);
 		
 		
-				try {
-				gameTextureAtlas.build(new
-				BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource,
-				BitmapTextureAtlas>(2, 0, 2));
-				gameTextureAtlas.load();
-				} catch (final TextureAtlasBuilderException e) {
-				throw new RuntimeException("Error while loading game textures", e);
-				}
+		try {
+			gameTextureAtlas.build(new
+			BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource,
+			BitmapTextureAtlas>(2, 0, 2));
+			gameTextureAtlas.load();		
+		} catch (final TextureAtlasBuilderException e) {
+			throw new RuntimeException("Error while loading game textures", e);
+		}
+		
+
 	}
+	
+	
 	//sounds
 	public Sound soundGameover;
 	public Sound soundComer;
-	//music
+	
+	//musics
 	public Music music;
 	
 	public void loadGameAudio() {
 		try {
-		SoundFactory.setAssetBasePath("sfx/");
-		soundComer = SoundFactory.createSoundFromAsset
-		(activity.getSoundManager(), activity, "comer.wav");
-		soundGameover = SoundFactory.createSoundFromAsset
-		(activity.getSoundManager(), activity, "gameOver.wav");
-		MusicFactory.setAssetBasePath("mfx/");
-		music = MusicFactory.createMusicFromAsset
-		(activity.getMusicManager(), activity, "music.wav");
+			SoundFactory.setAssetBasePath("sfx/");
+			soundComer = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "comer.wav");
+			soundGameover = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "gameOver.wav");
+			MusicFactory.setAssetBasePath("mfx/");
+			music = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music.wav");
 		} catch (Exception e) {
 		throw new RuntimeException("Error while loading audio", e);
 		}
-		}
-	
-	//font
-	public Font font;
-	public void loadFont() {
-	font = FontFactory.createStroke(activity.getFontManager(),
-	activity.getTextureManager(), 256, 256,
-	Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 50,
-	true, Color.WHITE_ABGR_PACKED_INT, 2,
-	Color.BLACK_ABGR_PACKED_INT);
-	font.prepareLetters("01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?".toCharArray());
-	font.load();
 	}
 	
+	//fonte
+	public Font font;
 	
-
+	public void loadFont() {
+		font = FontFactory.createStroke(activity.getFontManager(),activity.getTextureManager(), 256, 256,
+		Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 50,true, Color.WHITE_ABGR_PACKED_INT, 2,Color.BLACK_ABGR_PACKED_INT);
+		font.prepareLetters("01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?".toCharArray());
+		font.load();
+	}
+		
 }
