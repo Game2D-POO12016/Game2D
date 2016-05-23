@@ -12,6 +12,7 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	private IMenuItem playMenuItem;
 	private IMenuItem loadMenuItem;
 	private MyTextMenuItemDecorator soundMenuItem;
+	private IMenuItem gameoverMenuItem;
 	
 	@Override
 	public void populate() {
@@ -23,6 +24,8 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		menuScene.addMenuItem(loadMenuItem);
 		soundMenuItem = new MyTextMenuItemDecorator(new TextMenuItem(2, res.font, getSoundLabel(), vbom), Color.CYAN, Color.WHITE);
 		menuScene.addMenuItem(soundMenuItem);
+		gameoverMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3,res.font, "GAME OVER", vbom), Color.CYAN, Color.WHITE);
+		menuScene.addMenuItem(gameoverMenuItem);
 		menuScene.buildAnimations();
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
@@ -54,6 +57,9 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 				soundState = !soundState;
 				activity.setSound(soundState);
 				soundMenuItem.setText(getSoundLabel());
+				return true;
+			case 3 :
+				SceneManager.getInstance().showGameOverScene();
 				return true;
 			default :
 				return false;

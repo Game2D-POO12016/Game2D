@@ -97,4 +97,24 @@ public class SceneManager {
 			}.execute();
 	}
 	
+	public void showGameOverScene() {
+		final AbstractScene previousScene = getCurrentScene();
+		setCurrentScene(loadingScene);
+			new AsyncTask<Void, Void, Void>() {
+				@Override
+				protected Void doInBackground(Void... params) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						Debug.e("Interrupted", e);
+					}
+					GameOverScene gameoverScene = new GameOverScene();
+					gameoverScene.populate();
+					previousScene.destroy();
+					setCurrentScene(gameoverScene);
+					return null;
+				}
+			}.execute();
+	}
+	
 }
