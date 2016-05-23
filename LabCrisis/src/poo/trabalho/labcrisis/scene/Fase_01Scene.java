@@ -82,6 +82,7 @@ public class Fase_01Scene extends AbstractScene {
 	public void onBackKeyPressed() {
 		SceneManager.getInstance().showMenuScene();
 		MusicPlayer.getInstance().stop();
+		camera.setHUD(null);
 	}
 	
 	private void createParede() {
