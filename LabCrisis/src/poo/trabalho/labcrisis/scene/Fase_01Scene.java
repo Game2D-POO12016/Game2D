@@ -2,27 +2,26 @@ package poo.trabalho.labcrisis.scene;
 
 import java.util.ArrayList;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
+import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
+import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.handler.collision.CollisionHandler;
 import org.andengine.engine.handler.collision.ICollisionCallback;
+import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.Entity;
 import org.andengine.entity.modifier.MoveModifier;
-import org.andengine.entity.scene.IOnSceneTouchListener;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.EntityBackground;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.text.Text;
-import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.entity.text.*;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
-
 import com.badlogic.gdx.math.Vector2;
-
 import android.hardware.SensorManager;
-
 import poo.trabalho.labcrisis.MusicPlayer;
-import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Comida;
 import poo.trabalho.labcrisis.entity.Parede;
 import poo.trabalho.labcrisis.entity.Player;
@@ -58,22 +57,32 @@ public class Fase_01Scene extends AbstractScene {
 		createPlayer();
 		createHUD();
 
-		setOnSceneTouchListener(new IOnSceneTouchListener() {
+		//criar fisica que na qual o player deve ser submetido devido a acoes no joystick	
+		final PhysicsHandler physicsHandler = new PhysicsHandler(player);
+		player.registerUpdateHandler(physicsHandler);
+	
+		final AnalogOnScreenControl analogOnScreenControl = new AnalogOnScreenControl(80, 80 , camera , res.mOnScreenControlBaseTextureRegion, res.mOnScreenControlKnobTextureRegion, 0.1f, 200, vbom, new IAnalogOnScreenControlListener() {	
+			//onConrolChange controla a mudanca de direcao do joystick enquanto onControlClick controla clicks no joystick
 			@Override
-			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-				if (pSceneTouchEvent.isActionDown()) {
-					player.clearEntityModifiers();
-					last_x = player.getX(); //bouncing effect
-					last_y = player.getY(); //bouncing effect
-					player.registerEntityModifier(new MoveModifier(movetime,player.getX(), player.getY(), pSceneTouchEvent.getX(),pSceneTouchEvent.getY()));
-					ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundComer);
-					return true;
-				}
-				return false;
+			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {		
+				physicsHandler.setVelocity(pValueX * 100, pValueY * 100);
+			}
+
+			@Override
+			public void onControlClick(final AnalogOnScreenControl pAnalogOnScreenControl) {
+				//essa funcao pode ser usada para clicks no joystick
 			}
 		});
-				
-		registerTouchArea(player);
+		
+		//customizacao da sprite do joystick
+		analogOnScreenControl.getControlBase().setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		analogOnScreenControl.getControlBase().setAlpha(0.5f);
+		analogOnScreenControl.getControlBase().setScale(1.25f);
+		analogOnScreenControl.getControlKnob().setScale(1.25f);
+		analogOnScreenControl.refreshControlKnobPosition();
+		
+		//mostra o joystick na tela
+		setChildScene(analogOnScreenControl);	
 		
 		//COLLISION CHECKER
 		ICollisionCallback myCollisionCallback = new ICollisionCallback() {		
@@ -93,6 +102,7 @@ public class Fase_01Scene extends AbstractScene {
 		//Toca musica de background da fase.
 		MusicPlayer.getInstance().play();
 		camera.setChaseEntity(player);
+	
 	}
 	
 	@Override
@@ -187,7 +197,7 @@ public class Fase_01Scene extends AbstractScene {
 		hud.attachChild(scoreText);
 		camera.setHUD(hud);
 	}
-	
+
 	@Override
 	public void onPause() {
 		MusicPlayer.getInstance().pause();
