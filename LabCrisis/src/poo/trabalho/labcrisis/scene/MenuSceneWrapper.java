@@ -11,7 +11,7 @@ import org.andengine.util.adt.color.Color;
 public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickListener {
 	private IMenuItem playMenuItem;
 	private IMenuItem loadMenuItem;
-	private IMenuItem optionMenuItem;
+	private MyTextMenuItemDecorator soundMenuItem;
 	
 	@Override
 	public void populate() {
@@ -21,8 +21,8 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		menuScene.addMenuItem(playMenuItem);
 		loadMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1,res.font, "LOAD", vbom), Color.CYAN, Color.WHITE);
 		menuScene.addMenuItem(loadMenuItem);
-		optionMenuItem = new ColorMenuItemDecorator(new TextMenuItem(2,res.font, "OPTION", vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(optionMenuItem);
+		soundMenuItem = new MyTextMenuItemDecorator(new TextMenuItem(2, res.font, getSoundLabel(), vbom), Color.CYAN, Color.WHITE);
+		menuScene.addMenuItem(soundMenuItem);
 		menuScene.buildAnimations();
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
@@ -38,11 +38,22 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	public void onResume() {
 	}
 	
+	private CharSequence getSoundLabel()
+	{
+		return activity.isSound() ? "SOUND ON" : "SOUND OFF";
+	}
+	
 	@Override
 	public boolean onMenuItemClicked (MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 			case 0 :
 				SceneManager.getInstance().showGameScene();
+				return true;
+			case 2 :
+				boolean soundState = activity.isSound();
+				soundState = !soundState;
+				activity.setSound(soundState);
+				soundMenuItem.setText(getSoundLabel());
 				return true;
 			default :
 				return false;

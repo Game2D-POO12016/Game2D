@@ -1,6 +1,8 @@
 package poo.trabalho.labcrisis;
 
 import java.io.IOException;
+
+import org.andengine.audio.sound.Sound;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.*;
 import org.andengine.engine.options.resolutionpolicy.*;
@@ -17,6 +19,14 @@ public class GameActivity extends BaseGameActivity {
 	private final String KEY_SOUND = "Sound";
 	private final String KEY_HISCORE = "HiScore";
 	SharedPreferences settings;
+	
+	public void playSound(Sound soundToPlay)
+	{
+		if(isSound())
+		{
+			soundToPlay.play();
+		}
+	}
 	
 	public void setSound(boolean sound) {
 		SharedPreferences.Editor settingsEditor = settings.edit();
