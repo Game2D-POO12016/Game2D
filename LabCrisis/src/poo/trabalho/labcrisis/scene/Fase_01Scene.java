@@ -14,7 +14,6 @@ import org.andengine.entity.shape.IShape;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.adt.align.HorizontalAlign;
-import org.andengine.util.adt.color.Color;
 import org.andengine.entity.text.*;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 
@@ -39,6 +38,7 @@ public class Fase_01Scene extends AbstractScene {
 	private PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, -SensorManager.GRAVITY_MOON), true);
 	final ArrayList<Parede> lista_paredes = new ArrayList<Parede>();
 	private final float movetime = (float) 1; 
+	private float last_x = 0, last_y = 0;
 	
 	public Fase_01Scene() {
 		ParedeFactory.getInstance().create(physicsWorld, vbom);
@@ -63,6 +63,8 @@ public class Fase_01Scene extends AbstractScene {
 			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 				if (pSceneTouchEvent.isActionDown()) {
 					player.clearEntityModifiers();
+					last_x = player.getX(); //bouncing effect
+					last_y = player.getY(); //bouncing effect
 					player.registerEntityModifier(new MoveModifier(movetime,player.getX(), player.getY(), pSceneTouchEvent.getX(),pSceneTouchEvent.getY()));
 					ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundComer);
 					return true;
@@ -78,7 +80,7 @@ public class Fase_01Scene extends AbstractScene {
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
 				player.clearEntityModifiers();
-				player.registerEntityModifier(new MoveModifier(movetime,player.getX(), player.getY(), player.getX(),player.getY()));
+				player.registerEntityModifier(new MoveModifier(movetime,player.getX(), player.getY(), last_x, last_y));
 				//ResourceManager.getInstance().soundComer.play();
 				//ResourceManager.getInstance().soundGameover.play();
 				return false;
@@ -88,7 +90,7 @@ public class Fase_01Scene extends AbstractScene {
 		CollisionHandler myCollisionHandler = new CollisionHandler(myCollisionCallback, player, lista_paredes);
 		registerUpdateHandler(myCollisionHandler);
 		
-		//Toca m�sica de background da fase.
+		//Toca musica de background da fase.
 		MusicPlayer.getInstance().play();
 		camera.setChaseEntity(player);
 	}
@@ -154,7 +156,7 @@ public class Fase_01Scene extends AbstractScene {
 			parede = ParedeFactory.getInstance().createParede(340, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
-			lista_paredes.add(parede); //ajustar o tamnho desta parede também
+			lista_paredes.add(parede); //ajustar o tamnho desta parede tambÃ©m
 			attachChild(parede);
 		}
 				
