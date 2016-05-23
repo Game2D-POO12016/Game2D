@@ -92,7 +92,6 @@ public class ResourceManager {
 
 	}
 	
-	
 	//sounds
 	public Sound soundGameover;
 	public Sound soundComer;

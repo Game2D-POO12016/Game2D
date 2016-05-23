@@ -87,8 +87,9 @@ public class Fase_01Scene extends AbstractScene {
 		
 		CollisionHandler myCollisionHandler = new CollisionHandler(myCollisionCallback, player, lista_paredes);
 		registerUpdateHandler(myCollisionHandler);
-						
-		MusicPlayer.getInstance().play();		
+		
+		//Toca música de background da fase.
+		MusicPlayer.getInstance().play();
 		camera.setChaseEntity(player);
 	}
 	

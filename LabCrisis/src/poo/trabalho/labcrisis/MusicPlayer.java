@@ -15,6 +15,7 @@ package poo.trabalho.labcrisis;
 		public void play() {
 			if (res.activity.isSound() && !res.music.isPlaying()) {
 				res.music.play();
+				res.music.setLooping(true);
 			}
 		}
 		
