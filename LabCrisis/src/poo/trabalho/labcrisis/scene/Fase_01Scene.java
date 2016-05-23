@@ -47,35 +47,35 @@ public class Fase_01Scene extends AbstractScene {
 		createPlayer();
 		createHUD();
 
-	setOnSceneTouchListener(new IOnSceneTouchListener() {
-		@Override
-		public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-			if (pSceneTouchEvent.isActionDown()) {
-				player.clearEntityModifiers();
-				player.registerEntityModifier(new MoveModifier(1,player.getX(), player.getY(), pSceneTouchEvent.getX(),pSceneTouchEvent.getY()));
-				ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundComer);
-				return true;
+		setOnSceneTouchListener(new IOnSceneTouchListener() {
+			@Override
+			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+				if (pSceneTouchEvent.isActionDown()) {
+					player.clearEntityModifiers();
+					player.registerEntityModifier(new MoveModifier(1,player.getX(), player.getY(), pSceneTouchEvent.getX(),pSceneTouchEvent.getY()));
+					ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundComer);
+					return true;
+				}
+				return false;
 			}
-			return false;
-		}
-	});
-			
-	registerTouchArea(player);
-	
-	ICollisionCallback myCollisionCallback = new ICollisionCallback() {
-		@Override
-		public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-			parede.setColor(Color.RED);
-			ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundGameover);
-			return false;
-		}
-	};
-	
-	CollisionHandler myCollisionHandler = new CollisionHandler(myCollisionCallback, parede, player);
-	registerUpdateHandler(myCollisionHandler);
-					
-	MusicPlayer.getInstance().play();		
-	camera.setChaseEntity(player);
+		});
+				
+		registerTouchArea(player);
+		
+		ICollisionCallback myCollisionCallback = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				parede.setColor(Color.RED);
+				ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundGameover);
+				return false;
+			}
+		};
+		
+		CollisionHandler myCollisionHandler = new CollisionHandler(myCollisionCallback, parede, player);
+		registerUpdateHandler(myCollisionHandler);
+						
+		MusicPlayer.getInstance().play();		
+		camera.setChaseEntity(player);
 	}
 	
 	@Override
