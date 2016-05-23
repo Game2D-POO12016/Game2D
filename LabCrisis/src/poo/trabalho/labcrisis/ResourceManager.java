@@ -32,7 +32,7 @@ public class ResourceManager {
 	
 	public void loadSplashGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256,BitmapTextureFormat.RGBA_8888,TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480,BitmapTextureFormat.RGBA_8888,TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, activity.getAssets(),"badge.png", 0, 0);
 		splashTextureAtlas.load();
 	}

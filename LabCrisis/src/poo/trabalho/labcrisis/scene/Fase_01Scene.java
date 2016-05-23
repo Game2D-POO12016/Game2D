@@ -158,7 +158,7 @@ public class Fase_01Scene extends AbstractScene {
 	private void createHUD() {
 		HUD hud = new HUD();
 		//escrevendo textos
-		scoreText = new Text(16, 784, res.font, "SCORE X", new TextOptions(HorizontalAlign.LEFT), vbom);
+		scoreText = new Text(16, 470, res.font, "SCORE 000", new TextOptions(HorizontalAlign.LEFT), vbom);
 		scoreText.setAnchorCenter(0, 1);						
 		hud.attachChild(scoreText);
 		camera.setHUD(hud);
