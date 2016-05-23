@@ -29,7 +29,7 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		menuScene.buildAnimations();
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
-		Sprite player = new Sprite(240, 640, res.globuloTextureRegion,vbom);
+		Sprite player = new Sprite(150, 350, res.globuloTextureRegion,vbom);
 		menuScene.attachChild(player);
 		setChildScene(menuScene);
 	}
