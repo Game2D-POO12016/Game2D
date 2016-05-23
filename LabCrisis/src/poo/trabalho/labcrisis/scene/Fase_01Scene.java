@@ -1,5 +1,7 @@
 package poo.trabalho.labcrisis.scene;
 
+import java.util.ArrayList;
+
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.collision.CollisionHandler;
 import org.andengine.engine.handler.collision.ICollisionCallback;
@@ -14,6 +16,12 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 import org.andengine.entity.text.*;
+import org.andengine.extension.physics.box2d.PhysicsWorld;
+
+import com.badlogic.gdx.math.Vector2;
+
+import android.hardware.SensorManager;
+
 import poo.trabalho.labcrisis.MusicPlayer;
 import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Comida;
@@ -28,11 +36,14 @@ public class Fase_01Scene extends AbstractScene {
 	private Comida comida;
 	private Text scoreText;
 	private Player player;
+	private PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, -SensorManager.GRAVITY_MOON), true);
+	final ArrayList<Parede> lista_paredes = new ArrayList<Parede>();
+	private final float movetime = (float) 1; 
 	
 	public Fase_01Scene() {
-		ParedeFactory.getInstance().create(vbom);
-		ComidaFactory.getInstance().create(vbom);
-		PlayerFactory.getInstance().create(vbom);
+		ParedeFactory.getInstance().create(physicsWorld, vbom);
+		ComidaFactory.getInstance().create(physicsWorld, vbom);
+		PlayerFactory.getInstance().create(physicsWorld, vbom);
 	}
 	
 	@Override
@@ -52,7 +63,7 @@ public class Fase_01Scene extends AbstractScene {
 			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 				if (pSceneTouchEvent.isActionDown()) {
 					player.clearEntityModifiers();
-					player.registerEntityModifier(new MoveModifier(1,player.getX(), player.getY(), pSceneTouchEvent.getX(),pSceneTouchEvent.getY()));
+					player.registerEntityModifier(new MoveModifier(movetime,player.getX(), player.getY(), pSceneTouchEvent.getX(),pSceneTouchEvent.getY()));
 					ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundComer);
 					return true;
 				}
@@ -62,16 +73,19 @@ public class Fase_01Scene extends AbstractScene {
 				
 		registerTouchArea(player);
 		
-		ICollisionCallback myCollisionCallback = new ICollisionCallback() {
+		//COLLISION CHECKER
+		ICollisionCallback myCollisionCallback = new ICollisionCallback() {		
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				parede.setColor(Color.RED);
-				ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundGameover);
+				player.clearEntityModifiers();
+				player.registerEntityModifier(new MoveModifier(movetime,player.getX(), player.getY(), player.getX(),player.getY()));
+				//ResourceManager.getInstance().soundComer.play();
+				//ResourceManager.getInstance().soundGameover.play();
 				return false;
 			}
 		};
 		
-		CollisionHandler myCollisionHandler = new CollisionHandler(myCollisionCallback, parede, player);
+		CollisionHandler myCollisionHandler = new CollisionHandler(myCollisionCallback, player, lista_paredes);
 		registerUpdateHandler(myCollisionHandler);
 						
 		MusicPlayer.getInstance().play();		
@@ -92,6 +106,7 @@ public class Fase_01Scene extends AbstractScene {
 			parede = ParedeFactory.getInstance().createParede(i, 400);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
+			lista_paredes.add(parede);
 			attachChild(parede);
 		}
 		
@@ -101,6 +116,7 @@ public class Fase_01Scene extends AbstractScene {
 			parede = ParedeFactory.getInstance().createParede(i, 200);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
+			lista_paredes.add(parede);
 			attachChild(parede);
 		}
 		
@@ -110,6 +126,7 @@ public class Fase_01Scene extends AbstractScene {
 			parede = ParedeFactory.getInstance().createParede(10, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
+			//lista_paredes.add(parede); ajustar o tamanho entre as paredes
 			attachChild(parede);
 		}
 		
@@ -118,6 +135,7 @@ public class Fase_01Scene extends AbstractScene {
 			parede = ParedeFactory.getInstance().createParede(100, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
+			lista_paredes.add(parede);
 			attachChild(parede);
 		}
 		
@@ -126,6 +144,7 @@ public class Fase_01Scene extends AbstractScene {
 			parede = ParedeFactory.getInstance().createParede(440, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
+			lista_paredes.add(parede);
 			attachChild(parede);
 		}	
 				
@@ -134,6 +153,7 @@ public class Fase_01Scene extends AbstractScene {
 			parede = ParedeFactory.getInstance().createParede(340, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
+			lista_paredes.add(parede); //ajustar o tamnho desta parede também
 			attachChild(parede);
 		}
 				
