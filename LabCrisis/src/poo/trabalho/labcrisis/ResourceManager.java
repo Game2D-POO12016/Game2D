@@ -18,6 +18,7 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.color.Color;
 import android.graphics.Typeface;
@@ -62,6 +63,9 @@ public class ResourceManager {
 	public ITiledTextureRegion comidaTextureRegion;
 	public ITiledTextureRegion globuloTextureRegion;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
+	//recursos para o joystick
+	public TextureRegion mOnScreenControlBaseTextureRegion;
+	public TextureRegion mOnScreenControlKnobTextureRegion;
 
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -79,6 +83,14 @@ public class ResourceManager {
 				createTiledFromAsset(
 		gameTextureAtlas, activity.getAssets(), "comida.png",1,1);
 		
+		mOnScreenControlBaseTextureRegion = BitmapTextureAtlasTextureRegionFactory.
+				createFromAsset(
+		gameTextureAtlas, activity.getAssets(), "onscreen_control_base.png");
+
+		mOnScreenControlKnobTextureRegion = BitmapTextureAtlasTextureRegionFactory.
+				createFromAsset(
+		gameTextureAtlas, activity.getAssets(), "onscreen_control_knob.png");
+	
 		
 		try {
 			gameTextureAtlas.build(new
@@ -91,6 +103,7 @@ public class ResourceManager {
 		
 
 	}
+	
 	
 	//sounds
 	public Sound soundGameover;
