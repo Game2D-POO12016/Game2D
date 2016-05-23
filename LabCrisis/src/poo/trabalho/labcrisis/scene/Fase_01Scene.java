@@ -53,7 +53,7 @@ public class Fase_01Scene extends AbstractScene {
 			if (pSceneTouchEvent.isActionDown()) {
 				player.clearEntityModifiers();
 				player.registerEntityModifier(new MoveModifier(1,player.getX(), player.getY(), pSceneTouchEvent.getX(),pSceneTouchEvent.getY()));
-				ResourceManager.getInstance().soundComer.play();
+				ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundComer);
 				return true;
 			}
 			return false;
@@ -66,7 +66,7 @@ public class Fase_01Scene extends AbstractScene {
 		@Override
 		public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
 			parede.setColor(Color.RED);
-			ResourceManager.getInstance().soundGameover.play();
+			ResourceManager.getInstance().activity.playSound(ResourceManager.getInstance().soundGameover);
 			return false;
 		}
 	};
