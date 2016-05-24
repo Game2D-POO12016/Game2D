@@ -12,7 +12,6 @@ import org.andengine.engine.handler.collision.CollisionHandler;
 import org.andengine.engine.handler.collision.ICollisionCallback;
 import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.Entity;
-import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.background.EntityBackground;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.text.Text;
@@ -36,7 +35,6 @@ public class Fase_01Scene extends AbstractScene {
 	private Player player;
 	private PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, -SensorManager.GRAVITY_MOON), true);
 	final ArrayList<Parede> lista_paredes = new ArrayList<Parede>();
-	private final float movetime = (float) 1; 
 	private float last_x = 0, last_y = 0;
 	
 	public Fase_01Scene() {
@@ -84,12 +82,13 @@ public class Fase_01Scene extends AbstractScene {
 		//mostra o joystick na tela
 		setChildScene(analogOnScreenControl);	
 		
-		//COLLISION CHECKER
+		//COLLISION HANDLER
 		ICollisionCallback myCollisionCallback = new ICollisionCallback() {		
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				player.clearEntityModifiers();
-				player.registerEntityModifier(new MoveModifier(movetime,player.getX(), player.getY(), last_x, last_y));
+				last_x = -physicsHandler.getVelocityX();
+				last_y = -(physicsHandler.getVelocityY());
+				physicsHandler.setVelocity(last_x,last_y);
 				//ResourceManager.getInstance().soundComer.play();
 				//ResourceManager.getInstance().soundGameover.play();
 				return false;
