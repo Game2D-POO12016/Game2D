@@ -21,6 +21,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import com.badlogic.gdx.math.Vector2;
 import android.hardware.SensorManager;
 import poo.trabalho.labcrisis.MusicPlayer;
+import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Comida;
 import poo.trabalho.labcrisis.entity.Parede;
 import poo.trabalho.labcrisis.entity.Player;
@@ -35,6 +36,7 @@ public class Fase_01Scene extends AbstractScene {
 	private Player player;
 	private PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, -SensorManager.GRAVITY_MOON), true);
 	final ArrayList<Parede> lista_paredes = new ArrayList<Parede>();
+	final ArrayList<Comida> lista_comidas = new ArrayList<Comida>();
 	private float last_x = 0, last_y = 0;
 	
 	public Fase_01Scene() {
@@ -47,11 +49,11 @@ public class Fase_01Scene extends AbstractScene {
 	public void populate() {
 		createBackground();
 		createParede();
-		createComida(150,300);
-		createComida(200,300);
-		createComida(250,300);
-		createComida(300,300);
-		createComida(350,300);
+		createComida(150,300,lista_comidas);
+		createComida(200,300,lista_comidas);
+		createComida(250,300,lista_comidas);
+		createComida(300,300,lista_comidas);
+		createComida(350,300,lista_comidas);
 		createPlayer();
 		createHUD();
 
@@ -82,7 +84,7 @@ public class Fase_01Scene extends AbstractScene {
 		//mostra o joystick na tela
 		setChildScene(analogOnScreenControl);	
 		
-		//COLLISION HANDLER
+		//COLLISION HANDLER para paredes
 		ICollisionCallback myCollisionCallback = new ICollisionCallback() {		
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
@@ -98,6 +100,24 @@ public class Fase_01Scene extends AbstractScene {
 		CollisionHandler myCollisionHandler = new CollisionHandler(myCollisionCallback, player, lista_paredes);
 		registerUpdateHandler(myCollisionHandler);
 		
+		
+		//COLLISION HANDLER para comidas
+			ICollisionCallback myCollisionCallback2 = new ICollisionCallback() {		
+				@Override
+				public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+					//last_x = -physicsHandler.getVelocityX();	
+					//detachChild(comida);
+					//last_y = -(physicsHandler.getVelocityY());
+					//physicsHandler.setVelocity(last_x,last_y);
+					//ResourceManager.getInstance().soundComer.play();
+					//ResourceManager.getInstance().soundGameover.play();
+					return false;
+				}	
+			};
+				
+			CollisionHandler myCollisionHandler2 = new CollisionHandler(myCollisionCallback2, player, lista_comidas);
+			registerUpdateHandler(myCollisionHandler2);
+				
 		//Toca musica de background da fase.
 		MusicPlayer.getInstance().play();
 		camera.setChaseEntity(player);
@@ -171,9 +191,10 @@ public class Fase_01Scene extends AbstractScene {
 				
 	}
 	
-	private void createComida(int x, int y) {
+	private void createComida(int x, int y, final ArrayList<Comida> lista_comida) {
 		comida = ComidaFactory.getInstance().createComida(x, y);
 		comida.setScale((float) 0.5);
+		lista_comidas.add(comida);
 		attachChild(comida);
 	}
 
