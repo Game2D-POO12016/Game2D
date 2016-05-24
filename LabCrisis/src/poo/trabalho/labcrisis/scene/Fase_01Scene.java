@@ -63,7 +63,7 @@ public class Fase_01Scene extends AbstractScene {
 			//onConrolChange controla a mudanca de direcao do joystick enquanto onControlClick controla clicks no joystick
 			@Override
 			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {		
-				physicsHandler.setVelocity(pValueX * 100, pValueY * 100);
+				physicsHandler.setVelocity(pValueX * 300, pValueY * 300);
 			}
 
 			@Override
@@ -165,7 +165,7 @@ public class Fase_01Scene extends AbstractScene {
 			parede = ParedeFactory.getInstance().createParede(340, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
-			lista_paredes.add(parede); //ajustar o tamnho desta parede tambÃ©m
+			lista_paredes.add(parede); //ajustar o tamnho desta parede também
 			attachChild(parede);
 		}
 				
