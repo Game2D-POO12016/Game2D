@@ -138,9 +138,9 @@ public class Fase_01Scene extends AbstractScene {
 			attachChild(parede);
 		}
 		
-		parede = ParedeFactory.getInstance().createParede(480, 0);
+		parede = ParedeFactory.getInstance().createParede(465, 0);
 		parede.setCurrentTileIndex(2);
-		parede.setRotation(-90f);
+		parede.setRotation(0f);
 		parede.setScale(0.2f);
 		lista_paredes.add(parede);
 		attachChild(parede);
