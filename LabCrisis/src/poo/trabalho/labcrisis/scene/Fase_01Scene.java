@@ -59,7 +59,7 @@ public class Fase_01Scene extends AbstractScene {
 		final PhysicsHandler physicsHandler = new PhysicsHandler(player);
 		player.registerUpdateHandler(physicsHandler);
 	
-		final AnalogOnScreenControl analogOnScreenControl = new AnalogOnScreenControl(80, 80 , camera , res.mOnScreenControlBaseTextureRegion, res.mOnScreenControlKnobTextureRegion, 0.1f, 200, vbom, new IAnalogOnScreenControlListener() {	
+		final AnalogOnScreenControl analogOnScreenControl = new AnalogOnScreenControl(140, 140 , camera , res.mOnScreenControlBaseTextureRegion, res.mOnScreenControlKnobTextureRegion, 0.1f, 200, vbom, new IAnalogOnScreenControlListener() {	
 			//onConrolChange controla a mudanca de direcao do joystick enquanto onControlClick controla clicks no joystick
 			@Override
 			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {		
@@ -113,40 +113,8 @@ public class Fase_01Scene extends AbstractScene {
 	
 	private void createParede() {
 		
-		//paredes teste
-		for(int i = 0; i < 480; i = i + 30){
-			parede = ParedeFactory.getInstance().createParede(i, 500);
-			parede.setCurrentTileIndex(4);
-			parede.setRotation(90f);
-			parede.setScale(0.2f);
-			lista_paredes.add(parede);
-			attachChild(parede);
-		}
-		
-		parede = ParedeFactory.getInstance().createParede(480, 500);
-		parede.setCurrentTileIndex(2);
-		parede.setRotation(90f);
-		parede.setScale(0.2f);
-		lista_paredes.add(parede);
-		attachChild(parede);
-		
-		for(int i = 485; i > 0; i = i - 30){
-			parede = ParedeFactory.getInstance().createParede(465, i);
-			parede.setCurrentTileIndex(4);
-			parede.setScale(0.2f);
-			lista_paredes.add(parede);
-			attachChild(parede);
-		}
-		
-		parede = ParedeFactory.getInstance().createParede(465, 0);
-		parede.setCurrentTileIndex(2);
-		parede.setRotation(0f);
-		parede.setScale(0.2f);
-		lista_paredes.add(parede);
-		attachChild(parede);
-		
 		//paredes superiores
-		/*for(int i = 100 ; i<= 440 ; i = i + 30){
+		for(int i = 100 ; i<= 440 ; i = i+ 20){
 			parede = ParedeFactory.getInstance().createParede(i, 400);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
@@ -156,7 +124,7 @@ public class Fase_01Scene extends AbstractScene {
 		
 		
 		//paredes inferiores
-		for(int i = 10 ; i<= 340 ; i = i + 30){
+		for(int i = 10 ; i<= 340 ; i = i+ 20){
 			parede = ParedeFactory.getInstance().createParede(i, 200);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
@@ -166,7 +134,7 @@ public class Fase_01Scene extends AbstractScene {
 		
 		
 		//lateral esquerda
-		for(int i = 800 ; i>= 200 ; i = i - 30){
+		for(int i = 800 ; i>= 200 ; i = i- 20){
 			parede = ParedeFactory.getInstance().createParede(10, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
@@ -175,7 +143,7 @@ public class Fase_01Scene extends AbstractScene {
 		}
 		
 		//lateral direita
-		for(int i = 800 ; i>= 400 ; i = i - 30){
+		for(int i = 800 ; i>= 400 ; i = i- 20){
 			parede = ParedeFactory.getInstance().createParede(100, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
@@ -184,7 +152,7 @@ public class Fase_01Scene extends AbstractScene {
 		}
 		
 		//segunda lateral direita
-		for(int i = 400 ; i>= 20 ; i = i - 30){
+		for(int i = 400 ; i>= 20 ; i = i- 20){
 			parede = ParedeFactory.getInstance().createParede(440, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
@@ -193,13 +161,13 @@ public class Fase_01Scene extends AbstractScene {
 		}	
 				
 		//segunda lateral esquerda
-		for(int i = 200 ; i>= 20 ; i = i - 30){
+		for(int i = 200 ; i>= 20 ; i = i- 20){
 			parede = ParedeFactory.getInstance().createParede(340, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
 			lista_paredes.add(parede); //ajustar o tamnho desta parede também
 			attachChild(parede);
-		}*/
+		}
 				
 	}
 	
