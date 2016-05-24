@@ -50,13 +50,12 @@ public class ResourceManager {
 	}
 	
    //cria o resource manager
-	public void create(GameActivity activity, Engine engine, Camera
-			camera, VertexBufferObjectManager vbom) {
-			this.activity = activity;
-			this.engine = engine;
-			this.camera = camera;
-			this.vbom = vbom;
-			}
+	public void create(GameActivity activity, Engine engine, Camera camera, VertexBufferObjectManager vbom) {
+		this.activity = activity;
+		this.engine = engine;
+		this.camera = camera;
+		this.vbom = vbom;
+	}
 	
 	//game textures
 	public ITiledTextureRegion paredeTextureRegion;

@@ -6,6 +6,7 @@ package poo.trabalho.labcrisis;
 
 		private MusicPlayer() {
 			res = ResourceManager.getInstance();
+			res.music.setLooping(true);
 		}
 		
 		public static MusicPlayer getInstance() {
@@ -15,7 +16,6 @@ package poo.trabalho.labcrisis;
 		public void play() {
 			if (res.activity.isSound() && !res.music.isPlaying()) {
 				res.music.play();
-				res.music.setLooping(true);
 			}
 		}
 		
