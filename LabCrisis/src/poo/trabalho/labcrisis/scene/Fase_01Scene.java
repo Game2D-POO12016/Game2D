@@ -36,8 +36,10 @@ public class Fase_01Scene extends AbstractScene {
 	private Player player;
 	private PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, -SensorManager.GRAVITY_MOON), true);
 	final ArrayList<Parede> lista_paredes = new ArrayList<Parede>();
-	final ArrayList<Comida> lista_comidas = new ArrayList<Comida>();
+	ArrayList<Comida> lista_comidas = new ArrayList<Comida>();
 	private float last_x = 0, last_y = 0;
+	private float cresce1 = (float)0.75;
+	private int index_comida;
 	
 	public Fase_01Scene() {
 		ParedeFactory.getInstance().create(physicsWorld, vbom);
@@ -49,11 +51,12 @@ public class Fase_01Scene extends AbstractScene {
 	public void populate() {
 		createBackground();
 		createParede();
+		//createComida(300,300,lista_comidas);
 		createComida(150,300,lista_comidas);
-		createComida(200,300,lista_comidas);
-		createComida(250,300,lista_comidas);
-		createComida(300,300,lista_comidas);
-		createComida(350,300,lista_comidas);
+		//createComida(200,300,lista_comidas);
+		//createComida(250,300,lista_comidas);
+
+		//createComida(350,300,lista_comidas);
 		createPlayer();
 		createHUD();
 
@@ -84,7 +87,7 @@ public class Fase_01Scene extends AbstractScene {
 		//mostra o joystick na tela
 		setChildScene(analogOnScreenControl);	
 		
-		//COLLISION HANDLER para paredes
+		//COLLISION HANDLER DE PAREDE
 		ICollisionCallback myCollisionCallback = new ICollisionCallback() {		
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
@@ -101,14 +104,20 @@ public class Fase_01Scene extends AbstractScene {
 		registerUpdateHandler(myCollisionHandler);
 		
 		
-		//COLLISION HANDLER para comidas
+		//COLLISION HANDLER DE COMIDA
 			ICollisionCallback myCollisionCallback2 = new ICollisionCallback() {		
 				@Override
 				public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-					//last_x = -physicsHandler.getVelocityX();	
-					//detachChild(comida);
-					//last_y = -(physicsHandler.getVelocityY());
-					//physicsHandler.setVelocity(last_x,last_y);
+					//ArrayList<Comida> lista_temp = new ArrayList<Comida>();
+					//lista_temp = lista_comidas;
+										
+					player.setScale(player.getScaleCenterX()*cresce1);
+					index_comida = lista_comidas.indexOf(comida);
+					detachChild(lista_comidas.get(index_comida));
+					//lista_temp.remove(index_comida);
+					//lista_comidas.removeAll(lista_comidas);
+					//lista_comidas.addAll(lista_temp);
+
 					//ResourceManager.getInstance().soundComer.play();
 					//ResourceManager.getInstance().soundGameover.play();
 					return false;
@@ -134,7 +143,7 @@ public class Fase_01Scene extends AbstractScene {
 	private void createParede() {
 		
 		//paredes superiores
-		for(int i = 100 ; i<= 440 ; i = i+ 20){
+		for(int i = 150 ; i<= 440 ; i = i+ 20){
 			parede = ParedeFactory.getInstance().createParede(i, 400);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
@@ -158,13 +167,13 @@ public class Fase_01Scene extends AbstractScene {
 			parede = ParedeFactory.getInstance().createParede(10, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
-			//lista_paredes.add(parede); ajustar o tamanho entre as paredes
+			lista_paredes.add(parede); 
 			attachChild(parede);
 		}
 		
 		//lateral direita
 		for(int i = 800 ; i>= 400 ; i = i- 20){
-			parede = ParedeFactory.getInstance().createParede(100, i);
+			parede = ParedeFactory.getInstance().createParede(150, i);
 			parede.setCurrentTileIndex(4);
 			parede.setScale((float) 0.2);
 			lista_paredes.add(parede);
