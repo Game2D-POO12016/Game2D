@@ -76,7 +76,7 @@ public class ResourceManager {
 		
 		globuloTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
-		gameTextureAtlas, activity.getAssets(), "Globulo.png", 1, 1);
+		gameTextureAtlas, activity.getAssets(), "gosminho_azul.png", 1, 1);
 		
 		comidaTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 				createTiledFromAsset(

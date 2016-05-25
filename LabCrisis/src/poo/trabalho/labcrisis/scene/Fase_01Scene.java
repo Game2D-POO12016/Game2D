@@ -213,7 +213,7 @@ public class Fase_01Scene extends AbstractScene {
 	}
 	
 	private void createPlayer() {
-		player = PlayerFactory.getInstance().createPlayer(50, 600);
+		player = PlayerFactory.getInstance().createPlayer(70, 600);
 		player.setScale((float) 0.2);
 		attachChild(player);
 	}

@@ -56,7 +56,7 @@ public class GameActivity extends BaseGameActivity {
 		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 		engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 		engineOptions.getRenderOptions().setDithering(true);
-		engineOptions.getRenderOptions().setDithering(true);
+		//engineOptions.getRenderOptions().setDithering(true);
 		Debug.i("Engine configured");
 		settings = getSharedPreferences("andengine_game_prefs",	MODE_PRIVATE);
 		return engineOptions;
