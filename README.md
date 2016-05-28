@@ -17,4 +17,5 @@ Membros do grupo:
   
 # Dúvidas sobre Git?
   [Playlist sobre Git por Rodrigo Branas.](https://www.youtube.com/playlist?list=PLQCmSnNFVYnRdgxOC_ufH58NxlmM6VYd1)
+  
   ["A Sucessful Git Branching Model"](http://nvie.com/posts/a-successful-git-branching-model/)
