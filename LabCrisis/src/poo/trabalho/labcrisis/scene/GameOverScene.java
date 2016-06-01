@@ -7,6 +7,15 @@ import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ColorMenuItemDecorator;
 import org.andengine.util.adt.color.Color;
 
+/**
+ * Classe identica a MenuSceneWrapper. Organiza a cena de game over.
+ * Possui apenas duas opcoes: continue e menu.
+ * A opcao continue retorna a fase que perdeu como nova tentativa de vence-la.
+ * A opcao menu direciona o usuario para a cena do menu principal.
+ * @author ALEXANDRE CORREIA
+ *
+ */
+
 public class GameOverScene extends AbstractScene implements IOnMenuItemClickListener{
 	private IMenuItem continueMenuItem;
 	private IMenuItem menuMenuItem;
@@ -38,12 +47,19 @@ public class GameOverScene extends AbstractScene implements IOnMenuItemClickList
 			float pMenuItemLocalY) {
 
 		switch (pMenuItem.getID()) {
+			/**
+			 * Retorna a fase que perdeu.
+			 */
 			case 0 :
 				SceneManager.getInstance().showGameScene();
 				return true;
+			/**
+			 * Retorna ao menu do jogo.
+			 */
 			case 1 :
 				SceneManager.getInstance().showMenuScene();
 				return true;
+				
 			default :
 				return false;
 		}
