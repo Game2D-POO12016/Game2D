@@ -157,6 +157,30 @@ public class SceneManager {
 	}
 	
 	/**
+	 * Migra para a cena de tutorial do jogo.
+	 */
+	
+	public void showHowToPlayScene() {
+		final AbstractScene previousScene = getCurrentScene();
+		setCurrentScene(loadingScene);
+			new AsyncTask<Void, Void, Void>() {
+				@Override
+				protected Void doInBackground(Void... params) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						Debug.e("Interrupted", e);
+					}
+					HowToPlayScene howtoplayScene = new HowToPlayScene();
+					howtoplayScene.populate();
+					previousScene.destroy();
+					setCurrentScene(howtoplayScene);
+					return null;
+				}
+			}.execute();
+	}
+	
+	/**
 	 * Migra para a cena de game over.
 	 */
 	

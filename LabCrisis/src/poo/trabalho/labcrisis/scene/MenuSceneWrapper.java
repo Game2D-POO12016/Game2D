@@ -24,6 +24,7 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	private IMenuItem loadMenuItem;
 	private MyTextMenuItemDecorator soundMenuItem;
 	private IMenuItem gameoverMenuItem;
+	private IMenuItem howtoplayMenuItem;
 	
 	
 	/**
@@ -34,14 +35,18 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	public void populate() {
 		MenuScene menuScene = new MenuScene(camera);
 		menuScene.getBackground().setColor(0.82f, 0.96f, 0.97f);
-		playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0,res.font, "PLAY", vbom), Color.CYAN, Color.WHITE);
+		
+		playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, res.font, "PLAY", vbom), Color.CYAN, Color.WHITE);
 		menuScene.addMenuItem(playMenuItem);
-		loadMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1,res.font, "LOAD", vbom), Color.CYAN, Color.WHITE);
+		loadMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1, res.font, "LOAD", vbom), Color.CYAN, Color.WHITE);
 		menuScene.addMenuItem(loadMenuItem);
-		soundMenuItem = new MyTextMenuItemDecorator(new TextMenuItem(2, res.font, getSoundLabel(), vbom), Color.CYAN, Color.WHITE);
+		howtoplayMenuItem = new ColorMenuItemDecorator(new TextMenuItem(2, res.font, "HOW TO PLAY", vbom), Color.CYAN, Color.WHITE);
+		menuScene.addMenuItem(howtoplayMenuItem);
+		soundMenuItem = new MyTextMenuItemDecorator(new TextMenuItem(3, res.font, getSoundLabel(), vbom), Color.CYAN, Color.WHITE);
 		menuScene.addMenuItem(soundMenuItem);
-		gameoverMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3,res.font, "GAME OVER", vbom), Color.CYAN, Color.WHITE);
+		gameoverMenuItem = new ColorMenuItemDecorator(new TextMenuItem(4,res.font, "GAME OVER", vbom), Color.CYAN, Color.WHITE);
 		menuScene.addMenuItem(gameoverMenuItem);
+		
 		menuScene.buildAnimations();
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
@@ -81,11 +86,17 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 			 */
 			case 0 :
 				SceneManager.getInstance().showGameScene();
+				return true;	
+			/**
+			 * Vai para a cena de tutorial do jogo.
+			 */
+			case 2 :
+				SceneManager.getInstance().showHowToPlayScene();
 				return true;
 			/**
 			 * Ativa ou desativa o som do jogo.
 			 */
-			case 2 :
+			case 3 :
 				boolean soundState = activity.isSound();
 				soundState = !soundState;
 				activity.setSound(soundState);
@@ -96,7 +107,7 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 			 * TODO Retirar essa opcao do MenuScene e ativa-la quando
 			 * o personagem morre. Esta aqui apenas para testes.
 			 */
-			case 3 :
+			case 4 :
 				SceneManager.getInstance().showGameOverScene();
 				return true;
 				
