@@ -19,10 +19,16 @@ import org.andengine.util.adt.color.Color;
 public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickListener{
 
 	private Text textText;
-	private IMenuItem voltarMenuItem;
+	private IMenuItem nextMenuItem;
+	private IMenuItem backMenuItem;
 	
-	private CharSequence text = "TESTANDO\n"
-								+ "123";
+	private CharSequence text = "ENREDO DO JOGO\n"
+								+ "\nO CORPO DO FULANO FOI ATACADO POR INVASORES.\n"
+								+ "BOB, UM GLOBULO BRANCO, FOI CONVOCADO AO\n"
+								+ "SISTEMA SANGUINEO PARA COMBATER CONTRA ESSES\n"
+								+ "TERRIVEIS INVASORES. POREM, O CAMINHO ESTA\n"
+								+ "DIFICIL E PERIGOSO.\n"
+								+ "\nBOB, TOME CUIDADO E O FULANO PRECISA DE VOCE!";
 	
 	/**
 	 * Construtor do tutorial. 
@@ -35,11 +41,16 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 		
 		textText = new Text(16, 470, res.font, text, new TextOptions(HorizontalAlign.CENTER), vbom);
 		textText.setAnchorCenter(0, 1);
+		textText.setScale(0.6f);
 		menuScene.attachChild(textText);
-		voltarMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0,res.font, "BACK", vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(voltarMenuItem);
+		nextMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0,res.font, "NEXT", vbom), Color.CYAN, Color.WHITE);
+		menuScene.addMenuItem(nextMenuItem);
+		backMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1,res.font, "BACK", vbom), Color.CYAN, Color.WHITE);
+		menuScene.addMenuItem(backMenuItem);
 		
 		menuScene.buildAnimations();
+		nextMenuItem.setPosition(650, 100);
+		backMenuItem.setPosition(150, 100);
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
@@ -62,13 +73,19 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX,
 			float pMenuItemLocalY) {
 		
-		if(pMenuItem.getID() == 0)
+		switch(pMenuItem.getID()) 
 		{
-			SceneManager.getInstance().showMenuScene();
-			return true;
+			case 0 :
+				return true;
+				
+			case 1 :
+				SceneManager.getInstance().showMenuScene();
+				return true;
+			
+			default :
+				return false;
+		
 		}
-		else
-			return false;
 	}
 
 }

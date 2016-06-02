@@ -46,12 +46,12 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		menuScene.addMenuItem(soundMenuItem);
 		gameoverMenuItem = new ColorMenuItemDecorator(new TextMenuItem(4,res.font, "GAME OVER", vbom), Color.CYAN, Color.WHITE);
 		menuScene.addMenuItem(gameoverMenuItem);
+		Sprite player = new Sprite(150, 350, res.globuloTextureRegion,vbom);
+		menuScene.attachChild(player);
 		
 		menuScene.buildAnimations();
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
-		Sprite player = new Sprite(150, 350, res.globuloTextureRegion,vbom);
-		menuScene.attachChild(player);
 		setChildScene(menuScene);
 	}
 	
