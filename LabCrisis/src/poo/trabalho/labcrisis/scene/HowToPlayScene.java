@@ -19,8 +19,10 @@ import org.andengine.util.adt.color.Color;
 public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickListener{
 
 	private Text textText;
+	private Text rulesText;
 	private IMenuItem nextMenuItem;
 	private IMenuItem backMenuItem;
+	private IMenuItem menuMenuItem;
 	
 	private CharSequence text = "ENREDO DO JOGO\n"
 								+ "\nO CORPO DO FULANO FOI ATACADO POR INVASORES.\n"
@@ -29,6 +31,15 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 								+ "TERRIVEIS INVASORES. POREM, O CAMINHO ESTA\n"
 								+ "DIFICIL E PERIGOSO.\n"
 								+ "\nBOB, TOME CUIDADO E O FULANO PRECISA DE VOCE!";
+	
+	private CharSequence rules = "REGRAS DO JOGO\n"
+								+ "\nUSE O BOTAO DIRECIONAL PARA MOVIMENTAR O BOB\n"
+								+ "E PARA FAGOCITAR OS INVASORES. QUANDO BOB\n"
+								+ "DEVORA OS INVASORES, ELE FICA CADA VEZ MAIOR \n"
+								+ "E GANHA PONTOS. POREM, HA PASSAGENS QUE SAO\n"
+								+ "MUITO PEQUENAS PARA O BOB PASSAR E, POR ISSO,\n"
+								+ "ELE PRECISA SE DIVIDIR. BOB MORRE QUANDO FICAR\n"
+								+ "MAIOR QUE A ESPESSURA DA PAREDE SANGUINEA.";
 	
 	/**
 	 * Construtor do tutorial. 
@@ -39,18 +50,24 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 		MenuScene menuScene = new MenuScene(camera);
 		menuScene.getBackground().setColor(0.82f, 0.96f, 0.97f);
 		
-		textText = new Text(16, 470, res.font, text, new TextOptions(HorizontalAlign.CENTER), vbom);
+		textText = new Text(16, 470, res.font, text, new TextOptions(HorizontalAlign.LEFT), vbom);
 		textText.setAnchorCenter(0, 1);
 		textText.setScale(0.6f);
-		menuScene.attachChild(textText);
+		rulesText = new Text(16, 470, res.font, rules, new TextOptions(HorizontalAlign.LEFT), vbom);
+		rulesText.setAnchorCenter(0, 1);
+		rulesText.setScale(0.6f);
 		nextMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0,res.font, "NEXT", vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(nextMenuItem);
 		backMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1,res.font, "BACK", vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(backMenuItem);
+		menuMenuItem = new ColorMenuItemDecorator(new TextMenuItem(2,res.font, "MENU", vbom), Color.CYAN, Color.WHITE);
+		
+		menuScene.attachChild(textText);
+		menuScene.addMenuItem(nextMenuItem);
+		menuScene.addMenuItem(menuMenuItem);
 		
 		menuScene.buildAnimations();
 		nextMenuItem.setPosition(650, 100);
 		backMenuItem.setPosition(150, 100);
+		menuMenuItem.setPosition(150, 100);
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
@@ -76,9 +93,21 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 		switch(pMenuItem.getID()) 
 		{
 			case 0 :
+				pMenuScene.detachChild(textText);
+				pMenuScene.attachChild(rulesText);
+				pMenuScene.clearMenuItems();
+				pMenuScene.addMenuItem(backMenuItem);
 				return true;
 				
 			case 1 :
+				pMenuScene.detachChild(rulesText);
+				pMenuScene.attachChild(textText);
+				pMenuScene.clearMenuItems();
+				pMenuScene.addMenuItem(nextMenuItem);
+				pMenuScene.addMenuItem(menuMenuItem);
+				return true;
+				
+			case 2 :
 				SceneManager.getInstance().showMenuScene();
 				return true;
 			
