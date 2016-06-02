@@ -30,15 +30,19 @@ public class GameOverScene extends AbstractScene implements IOnMenuItemClickList
 		MenuScene menuScene = new MenuScene(camera);
 		menuScene.getBackground().setColor(0.82f, 0.96f, 0.97f);
 		
-		gameoverText = new Text(250, 370, res.font, "GAME OVER", new TextOptions(HorizontalAlign.CENTER), vbom);
+		gameoverText = new Text(150, 350, res.font, "GAME OVER", new TextOptions(HorizontalAlign.CENTER), vbom);
 		gameoverText.setAnchorCenter(0, 1);
-		menuScene.attachChild(gameoverText);
+		gameoverText.setScale(2.0f);
 		continueMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0,res.font, "CONTINUE", vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(continueMenuItem);
 		menuMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1,res.font, "MENU", vbom), Color.CYAN, Color.WHITE);
+		
+		menuScene.attachChild(gameoverText);
+		menuScene.addMenuItem(continueMenuItem);
 		menuScene.addMenuItem(menuMenuItem);
 		
 		menuScene.buildAnimations();
+		continueMenuItem.setPosition(150, 100);
+		menuMenuItem.setPosition(650, 100);
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);

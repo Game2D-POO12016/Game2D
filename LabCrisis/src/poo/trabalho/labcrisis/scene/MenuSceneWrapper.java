@@ -6,6 +6,9 @@ import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
+import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 
 /**
@@ -26,6 +29,8 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	private IMenuItem gameoverMenuItem;
 	private IMenuItem howtoplayMenuItem;
 	
+	private Text gamenameText;
+	
 	
 	/**
 	 * Construtor do MenuScene.
@@ -36,20 +41,26 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		MenuScene menuScene = new MenuScene(camera);
 		menuScene.getBackground().setColor(0.82f, 0.96f, 0.97f);
 		
-		playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, res.font, "PLAY", vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(playMenuItem);
-		loadMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1, res.font, "LOAD", vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(loadMenuItem);
-		howtoplayMenuItem = new ColorMenuItemDecorator(new TextMenuItem(2, res.font, "HOW TO PLAY", vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(howtoplayMenuItem);
-		soundMenuItem = new MyTextMenuItemDecorator(new TextMenuItem(3, res.font, getSoundLabel(), vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(soundMenuItem);
-		gameoverMenuItem = new ColorMenuItemDecorator(new TextMenuItem(4,res.font, "GAME OVER", vbom), Color.CYAN, Color.WHITE);
-		menuScene.addMenuItem(gameoverMenuItem);
+		playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, res.font, "PLAY", vbom), Color.CYAN, Color.WHITE);	
+		howtoplayMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1, res.font, "HOW TO PLAY", vbom), Color.CYAN, Color.WHITE);
+		soundMenuItem = new MyTextMenuItemDecorator(new TextMenuItem(2, res.font, getSoundLabel(), vbom), Color.CYAN, Color.WHITE);
+		gameoverMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3,res.font, "GAME OVER", vbom), Color.CYAN, Color.WHITE);
 		Sprite player = new Sprite(150, 350, res.globuloTextureRegion,vbom);
+		gamenameText = new Text(500, 350, res.font, "LAB\nCRISIS", new TextOptions(HorizontalAlign.CENTER), vbom);
+		gamenameText.setScale(2.0f);
+		
 		menuScene.attachChild(player);
+		menuScene.attachChild(gamenameText);
+		menuScene.addMenuItem(playMenuItem);
+		menuScene.addMenuItem(howtoplayMenuItem);
+		menuScene.addMenuItem(soundMenuItem);
+		menuScene.addMenuItem(gameoverMenuItem);
 		
 		menuScene.buildAnimations();
+		playMenuItem.setPosition(200, 150);
+		howtoplayMenuItem.setPosition(200, 100);
+		soundMenuItem.setPosition(650, 150);
+		gameoverMenuItem.setPosition(650, 100);
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
@@ -90,13 +101,13 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 			/**
 			 * Vai para a cena de tutorial do jogo.
 			 */
-			case 2 :
+			case 1 :
 				SceneManager.getInstance().showHowToPlayScene();
 				return true;
 			/**
 			 * Ativa ou desativa o som do jogo.
 			 */
-			case 3 :
+			case 2 :
 				boolean soundState = activity.isSound();
 				soundState = !soundState;
 				activity.setSound(soundState);
@@ -107,7 +118,7 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 			 * TODO Retirar essa opcao do MenuScene e ativa-la quando
 			 * o personagem morre. Esta aqui apenas para testes.
 			 */
-			case 4 :
+			case 3 :
 				SceneManager.getInstance().showGameOverScene();
 				return true;
 				
