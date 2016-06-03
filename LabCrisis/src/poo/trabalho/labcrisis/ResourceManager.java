@@ -72,7 +72,7 @@ public class ResourceManager {
 		
 		paredeTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
-		gameTextureAtlas, activity.getAssets(), "Parede.png", 5, 1);
+		gameTextureAtlas, activity.getAssets(), "Parede.png", 6, 1);
 		
 		globuloTextureRegion = BitmapTextureAtlasTextureRegionFactory.
 		createTiledFromAsset(
