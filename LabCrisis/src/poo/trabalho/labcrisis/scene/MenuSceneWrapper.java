@@ -58,9 +58,9 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		
 		menuScene.buildAnimations();
 		playMenuItem.setPosition(200, 150);
-		howtoplayMenuItem.setPosition(200, 100);
+		howtoplayMenuItem.setPosition(200, 50);
 		soundMenuItem.setPosition(650, 150);
-		gameoverMenuItem.setPosition(650, 100);
+		gameoverMenuItem.setPosition(650, 50);
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
