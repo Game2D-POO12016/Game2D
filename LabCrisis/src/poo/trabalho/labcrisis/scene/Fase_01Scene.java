@@ -76,6 +76,7 @@ public class Fase_01Scene extends AbstractScene {
 				//essa funcao pode ser usada para clicks no joystick
 				player.die();
 				SceneManager.getInstance().showGameOverScene();
+				camera.setHUD(null);
 			}
 		});
 		
