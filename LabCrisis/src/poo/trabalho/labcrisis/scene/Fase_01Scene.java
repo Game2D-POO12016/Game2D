@@ -135,8 +135,8 @@ public class Fase_01Scene extends AbstractScene {
 	
 	@Override
 	public void onBackKeyPressed() {
-		SceneManager.getInstance().showMenuScene();
 		MusicPlayer.getInstance().stop();
+		SceneManager.getInstance().showMenuScene();
 		camera.setHUD(null);
 	}
 	

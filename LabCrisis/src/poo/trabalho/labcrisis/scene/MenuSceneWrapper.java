@@ -11,6 +11,8 @@ import org.andengine.entity.text.TextOptions;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 
+import poo.trabalho.labcrisis.MusicPlayer;
+
 /**
  * Classe que organiza a cena de menu do jogo.
  * @author ALEXANDRE CORREIA
@@ -64,13 +66,17 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
+		
+		MusicPlayer.getInstance().playMenu();
 	}
 	
 	@Override
 	public void onPause() {
+		MusicPlayer.getInstance().pauseMenu();
 	}
 	@Override
 	public void onResume() {
+		MusicPlayer.getInstance().playMenu();
 	}
 	
 	/**
@@ -96,6 +102,8 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 			 * Vai para a fase do jogo.
 			 */
 			case 0 :
+				MusicPlayer.getInstance().pauseMenu();
+				MusicPlayer.getInstance().restartMenu();
 				SceneManager.getInstance().showGameScene();
 				return true;	
 			/**

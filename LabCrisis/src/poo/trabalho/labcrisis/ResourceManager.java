@@ -108,8 +108,9 @@ public class ResourceManager {
 	public Sound soundGameover;
 	public Sound soundComer;
 	
-	//musics
+	//music
 	public Music music;
+	public Music menuMusic;
 	
 	public void loadGameAudio() {
 		try {
@@ -117,9 +118,10 @@ public class ResourceManager {
 			soundComer = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "comer.wav");
 			soundGameover = SoundFactory.createSoundFromAsset(activity.getSoundManager(), activity, "gameOver.wav");
 			MusicFactory.setAssetBasePath("mfx/");
-			music = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "music.wav");
+			music = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "345838__shadydave__abstract-ambient-loop.mp3");
+			menuMusic = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "324252__rhodesmas__rings-of-saturn-music-loop.wav");
 		} catch (Exception e) {
-		throw new RuntimeException("Error while loading audio", e);
+			throw new RuntimeException("Error while loading audio", e);
 		}
 	}
 	

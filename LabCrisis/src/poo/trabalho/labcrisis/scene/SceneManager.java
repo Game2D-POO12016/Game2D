@@ -130,8 +130,8 @@ public class SceneManager {
 				 */
 				Fase_01Scene gameScene = new Fase_01Scene();
 				gameScene.populate();
-				previousScene.destroy();
 				setCurrentScene(gameScene);
+				previousScene.destroy();
 				return null;
 			}
 		}.execute();

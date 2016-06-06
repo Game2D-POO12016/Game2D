@@ -65,8 +65,7 @@ public class GameActivity extends BaseGameActivity {
 	@Override
 	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback)
 			throws IOException {
-			ResourceManager.getInstance().create(this, getEngine(),
-			getEngine().getCamera(), getVertexBufferObjectManager());
+			ResourceManager.getInstance().create(this, getEngine(), getEngine().getCamera(), getVertexBufferObjectManager());
 			ResourceManager.getInstance().loadFont();
 			ResourceManager.getInstance().loadGameAudio();
 			ResourceManager.getInstance().loadGameGraphics();
