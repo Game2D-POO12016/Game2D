@@ -74,6 +74,8 @@ public class Fase_01Scene extends AbstractScene {
 			@Override
 			public void onControlClick(final AnalogOnScreenControl pAnalogOnScreenControl) {
 				//essa funcao pode ser usada para clicks no joystick
+				player.die();
+				SceneManager.getInstance().showGameOverScene();
 			}
 		});
 		
@@ -236,5 +238,12 @@ public class Fase_01Scene extends AbstractScene {
 	public void onResume() {
 		MusicPlayer.getInstance().play();
 	}
+	
+	/*@Override
+	protected void onManagedUpdate(float pSecondsElapsed)
+	{
+		super.onManagedUpdate(pSecondsElapsed);
+		
+	}*/
 	
 }
