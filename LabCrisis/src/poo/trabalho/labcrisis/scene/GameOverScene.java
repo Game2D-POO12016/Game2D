@@ -23,7 +23,6 @@ public class GameOverScene extends AbstractScene implements IOnMenuItemClickList
 	
 	private Text gameoverText;
 	private IMenuItem continueMenuItem;
-	private IMenuItem menuMenuItem;
 
 	@Override
 	public void populate() {
@@ -34,15 +33,13 @@ public class GameOverScene extends AbstractScene implements IOnMenuItemClickList
 		gameoverText.setAnchorCenter(0, 1);
 		gameoverText.setScale(2.0f);
 		continueMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0,res.font, "CONTINUE", vbom), Color.CYAN, Color.WHITE);
-		menuMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1,res.font, "MENU", vbom), Color.CYAN, Color.WHITE);
+		
 		
 		menuScene.attachChild(gameoverText);
 		menuScene.addMenuItem(continueMenuItem);
-		menuScene.addMenuItem(menuMenuItem);
 		
 		menuScene.buildAnimations();
-		continueMenuItem.setPosition(150, 100);
-		menuMenuItem.setPosition(650, 100);
+		continueMenuItem.setPosition(400, 100);
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
@@ -67,21 +64,19 @@ public class GameOverScene extends AbstractScene implements IOnMenuItemClickList
 			case 0 :
 				SceneManager.getInstance().showGameScene();
 				return true;
-			/**
-			 * Retorna ao menu do jogo.
-			 */
-			case 1 :
-				SceneManager.getInstance().showMenuScene();
-				return true;
 				
 			default :
 				return false;
 		}
 	}
 	
+	/**
+	 * Retorna ao menu do jogo.
+	 */
+	
 	@Override
 	public void onBackKeyPressed() {
-		activity.finish();
+		SceneManager.getInstance().showMenuScene();
 	}
 
 }
