@@ -3,6 +3,7 @@ package poo.trabalho.labcrisis.scene;
 import org.andengine.util.debug.Debug;
 import android.os.AsyncTask;
 import poo.trabalho.labcrisis.ResourceManager;
+import poo.trabalho.labcrisis.GameManager;
 
 /**
  * Classe que gerencia as cenas do jogo bem como as migracoes de uma cena para outra.
@@ -185,6 +186,7 @@ public class SceneManager {
 	 */
 	
 	public void showGameOverScene() {
+		GameManager.getInstance().reset();
 		final AbstractScene previousScene = getCurrentScene();
 		setCurrentScene(loadingScene);
 			new AsyncTask<Void, Void, Void>() {

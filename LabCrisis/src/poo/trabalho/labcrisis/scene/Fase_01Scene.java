@@ -120,13 +120,13 @@ public class Fase_01Scene extends AbstractScene {
 					//lista_temp.remove(index_comida);
 					//lista_comidas.removeAll(lista_comidas);
 					//lista_comidas.addAll(lista_temp);
-
+					createHUD();
 					//ResourceManager.getInstance().soundComer.play();
 					//ResourceManager.getInstance().soundGameover.play();
 					return false;
 				}	
 			};
-				
+			GameManager.getInstance().incrementScore(1);	
 			CollisionHandler myCollisionHandler2 = new CollisionHandler(myCollisionCallback2, player, lista_comidas);
 			registerUpdateHandler(myCollisionHandler2);
 				
