@@ -20,6 +20,7 @@ import org.andengine.entity.text.*;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import com.badlogic.gdx.math.Vector2;
 import android.hardware.SensorManager;
+import poo.trabalho.labcrisis.GameManager;
 import poo.trabalho.labcrisis.MusicPlayer;
 import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Comida;

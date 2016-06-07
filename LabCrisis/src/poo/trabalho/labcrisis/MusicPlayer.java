@@ -26,6 +26,7 @@ package poo.trabalho.labcrisis;
 		public void playMenu() {
 			if (res.activity.isSound() && !res.menuMusic.isPlaying()) {
 				res.menuMusic.play();
+				res.menuMusic.setVolume(0.5f, 0.5f);
 			}
 		}
 		
@@ -36,14 +37,9 @@ package poo.trabalho.labcrisis;
 		}
 		
 		public void pauseMenu() {
-			if (res.activity.isSound() && !res.menuMusic.isPlaying()) {
+			if (res.menuMusic.isPlaying()) {
 				res.menuMusic.pause();
-				res.menuMusic.setVolume(0.5f, 0.5f);
 			}
-		}
-		
-		public void restartMenu() {
-			res.menuMusic.seekTo(0);
 		}
 		
 		/*	TODO: seekTo não funciona corretamente!

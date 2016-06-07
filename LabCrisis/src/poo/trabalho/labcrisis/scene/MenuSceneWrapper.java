@@ -102,8 +102,7 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 			 * Vai para a fase do jogo.
 			 */
 			case 0 :
-				MusicPlayer.getInstance().pauseMenu();
-				MusicPlayer.getInstance().restartMenu();
+				MusicPlayer.getInstance().stopMenu();
 				SceneManager.getInstance().showGameScene();
 				return true;	
 			/**

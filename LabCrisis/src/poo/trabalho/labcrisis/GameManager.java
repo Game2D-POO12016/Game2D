@@ -1,7 +1,9 @@
 package poo.trabalho.labcrisis;
-/**Game Manager eh a classe responsavel pelo score, vidas(se houver) e outras variaveis do dominio
- *essa classe foi construida seguindo o padrao sigleton
- *@ author Matheus Crestani */
+
+/**	Game Manager eh a classe responsavel pelo score, vidas(se houver) e outras variaveis do dominio
+ *	essa classe foi construida seguindo o padrao sigleton
+ *	@author Matheus Crestani 
+ **/
 public class GameManager {
 	private int mCurrentScore = 0;
 	private static GameManager INSTANCE;
