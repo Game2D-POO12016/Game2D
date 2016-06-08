@@ -66,8 +66,8 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
-		
 		MusicPlayer.getInstance().playMenu();
+		GameManager.getInstance().reset();
 	}
 	
 	@Override
