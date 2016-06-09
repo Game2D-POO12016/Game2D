@@ -33,6 +33,7 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	private IMenuItem howtoplayMenuItem;
 	
 	private Text gamenameText;
+	private Text highscoreText;
 	
 	
 	/**
@@ -51,9 +52,11 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		Sprite player = new Sprite(150, 350, res.globuloTextureRegion,vbom);
 		gamenameText = new Text(500, 350, res.font, "LAB\nCRISIS", new TextOptions(HorizontalAlign.CENTER), vbom);
 		gamenameText.setScale(2.0f);
+		highscoreText = new Text(500, 200, res.font, "HIGH SCORE: " + activity.getHiScore(), new TextOptions(HorizontalAlign.CENTER), vbom);
 		
 		menuScene.attachChild(player);
 		menuScene.attachChild(gamenameText);
+		menuScene.attachChild(highscoreText);
 		menuScene.addMenuItem(playMenuItem);
 		menuScene.addMenuItem(howtoplayMenuItem);
 		menuScene.addMenuItem(soundMenuItem);

@@ -207,7 +207,6 @@ public class SceneManager {
 	}
 	
 	public void showEndScene() {
-		GameManager.getInstance().reset();
 		final AbstractScene previousScene = getCurrentScene();
 		setCurrentScene(loadingScene);
 			new AsyncTask<Void, Void, Void>() {
