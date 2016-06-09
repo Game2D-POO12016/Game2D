@@ -206,4 +206,25 @@ public class SceneManager {
 			}.execute();
 	}
 	
+	public void showEndScene() {
+		GameManager.getInstance().reset();
+		final AbstractScene previousScene = getCurrentScene();
+		setCurrentScene(loadingScene);
+			new AsyncTask<Void, Void, Void>() {
+				@Override
+				protected Void doInBackground(Void... params) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						Debug.e("Interrupted", e);
+					}
+					EndScene endScene = new EndScene();
+					endScene.populate();
+					previousScene.destroy();
+					setCurrentScene(endScene);
+					return null;
+				}
+			}.execute();
+	}
+	
 }
