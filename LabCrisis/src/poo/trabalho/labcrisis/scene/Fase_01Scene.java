@@ -146,61 +146,97 @@ public class Fase_01Scene extends AbstractScene {
 	
 	private void createParede() {
 		
-		//paredes superiores
-		for(int i = 150 ; i<= 440 ; i = i+ 20){
-			parede = ParedeFactory.getInstance().createParede(i, 400);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			lista_paredes.add(parede);
-			attachChild(parede);
-		}
+		parede = ParedeFactory.getInstance().createParede(50, 50);
+		parede.setCurrentTileIndex(0);
+		parede.setScale(0.2f);
+		lista_paredes.add(parede);
+		attachChild(parede);
 		
+		parede = ParedeFactory.getInstance().createParede(50, 100);
+		parede.setCurrentTileIndex(1);
+		parede.setScale(0.2f);
+		lista_paredes.add(parede);
+		attachChild(parede);
 		
-		//paredes inferiores
-		for(int i = 10 ; i<= 340 ; i = i+ 20){
-			parede = ParedeFactory.getInstance().createParede(i, 200);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			lista_paredes.add(parede);
-			attachChild(parede);
-		}
+		parede = ParedeFactory.getInstance().createParede(50, 150);
+		parede.setCurrentTileIndex(2);
+		parede.setScale(0.2f);
+		lista_paredes.add(parede);
+		attachChild(parede);
 		
+		parede = ParedeFactory.getInstance().createParede(50, 200);
+		parede.setCurrentTileIndex(3);
+		parede.setScale(0.2f);
+		lista_paredes.add(parede);
+		attachChild(parede);
 		
-		//lateral esquerda
-		for(int i = 800 ; i>= 200 ; i = i- 20){
-			parede = ParedeFactory.getInstance().createParede(10, i);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			lista_paredes.add(parede); 
-			attachChild(parede);
-		}
+		parede = ParedeFactory.getInstance().createParede(50, 250);
+		parede.setCurrentTileIndex(4);
+		parede.setScale(0.2f);
+		lista_paredes.add(parede);
+		attachChild(parede);
 		
-		//lateral direita
-		for(int i = 800 ; i>= 400 ; i = i- 20){
-			parede = ParedeFactory.getInstance().createParede(150, i);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			lista_paredes.add(parede);
-			attachChild(parede);
-		}
+		parede = ParedeFactory.getInstance().createParede(50, 300);
+		parede.setCurrentTileIndex(5);
+		parede.setScale(0.2f);
+		lista_paredes.add(parede);
+		attachChild(parede);
 		
-		//segunda lateral direita
-		for(int i = 400 ; i>= 20 ; i = i- 20){
-			parede = ParedeFactory.getInstance().createParede(440, i);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			lista_paredes.add(parede);
-			attachChild(parede);
-		}	
-				
-		//segunda lateral esquerda
-		for(int i = 200 ; i>= 20 ; i = i- 20){
-			parede = ParedeFactory.getInstance().createParede(340, i);
-			parede.setCurrentTileIndex(4);
-			parede.setScale((float) 0.2);
-			lista_paredes.add(parede); //ajustar o tamnho desta parede também
-			attachChild(parede);
-		}
+//		//paredes superiores
+//		for(int i = 150 ; i<= 440 ; i = i+ 20){
+//			parede = ParedeFactory.getInstance().createParede(i, 400);
+//			parede.setCurrentTileIndex(4);
+//			parede.setScale((float) 0.2);
+//			lista_paredes.add(parede);
+//			attachChild(parede);
+//		}
+//		
+//		
+//		//paredes inferiores
+//		for(int i = 10 ; i<= 340 ; i = i+ 20){
+//			parede = ParedeFactory.getInstance().createParede(i, 200);
+//			parede.setCurrentTileIndex(4);
+//			parede.setScale((float) 0.2);
+//			lista_paredes.add(parede);
+//			attachChild(parede);
+//		}
+//		
+//		
+//		//lateral esquerda
+//		for(int i = 800 ; i>= 200 ; i = i- 20){
+//			parede = ParedeFactory.getInstance().createParede(10, i);
+//			parede.setCurrentTileIndex(4);
+//			parede.setScale((float) 0.2);
+//			lista_paredes.add(parede); 
+//			attachChild(parede);
+//		}
+//		
+//		//lateral direita
+//		for(int i = 800 ; i>= 400 ; i = i- 20){
+//			parede = ParedeFactory.getInstance().createParede(150, i);
+//			parede.setCurrentTileIndex(4);
+//			parede.setScale((float) 0.2);
+//			lista_paredes.add(parede);
+//			attachChild(parede);
+//		}
+//		
+//		//segunda lateral direita
+//		for(int i = 400 ; i>= 20 ; i = i- 20){
+//			parede = ParedeFactory.getInstance().createParede(440, i);
+//			parede.setCurrentTileIndex(4);
+//			parede.setScale((float) 0.2);
+//			lista_paredes.add(parede);
+//			attachChild(parede);
+//		}	
+//				
+//		//segunda lateral esquerda
+//		for(int i = 200 ; i>= 20 ; i = i- 20){
+//			parede = ParedeFactory.getInstance().createParede(340, i);
+//			parede.setCurrentTileIndex(4);
+//			parede.setScale((float) 0.2);
+//			lista_paredes.add(parede); //ajustar o tamnho desta parede também
+//			attachChild(parede);
+//		}
 				
 	}
 	
