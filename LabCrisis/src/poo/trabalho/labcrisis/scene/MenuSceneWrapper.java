@@ -11,6 +11,7 @@ import org.andengine.entity.text.TextOptions;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 
+import poo.trabalho.labcrisis.GameManager;
 import poo.trabalho.labcrisis.MusicPlayer;
 
 /**

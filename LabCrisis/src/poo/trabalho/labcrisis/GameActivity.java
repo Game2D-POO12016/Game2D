@@ -52,7 +52,7 @@ public class GameActivity extends BaseGameActivity {
 	public EngineOptions onCreateEngineOptions() {
 		Camera camera = new Camera(0, 0, CAMERA_WIDTH,CAMERA_HEIGHT);
 		IResolutionPolicy resolutionPolicy = new FillResolutionPolicy();
-		EngineOptions engineOptions = new EngineOptions(true,ScreenOrientation.LANDSCAPE_FIXED, resolutionPolicy, camera);
+		EngineOptions engineOptions = new EngineOptions(true,ScreenOrientation.LANDSCAPE_SENSOR, resolutionPolicy, camera);
 		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 		engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 		engineOptions.getRenderOptions().setDithering(true);
