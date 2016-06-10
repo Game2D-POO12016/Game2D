@@ -3,7 +3,6 @@ package poo.trabalho.labcrisis.scene;
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
-
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
@@ -22,7 +21,6 @@ import com.badlogic.gdx.math.Vector2;
 import android.hardware.SensorManager;
 import poo.trabalho.labcrisis.GameManager;
 import poo.trabalho.labcrisis.MusicPlayer;
-import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Comida;
 import poo.trabalho.labcrisis.entity.Parede;
 import poo.trabalho.labcrisis.entity.Player;
@@ -39,8 +37,62 @@ public class Fase_01Scene extends AbstractScene {
 	final ArrayList<Parede> lista_paredes = new ArrayList<Parede>();
 	ArrayList<Comida> lista_comidas = new ArrayList<Comida>();
 	private float last_x = 0, last_y = 0;
-	private float cresce1 = (float)0.75;
+	private float cresce1 = (float)0.45;
 	private int index_comida;
+	
+	/* matriz que representa a fase 1, ela pode ser editada, copiada e colada(para criacao de novas fases) , etc
+	*cada numero representa um elemento na fase:
+	*
+	* 0 - representa elemento vazio
+	* 1 - representa parede tile 1
+	* 2 - representa parede tile 2
+	* 3 - representa parede tile 3
+	* 4 - representa parede tile 4
+	* 5 - representa parede tile 5
+	* 6 - representa parede tile 6
+	* 7 - representa bacteria 1
+	* 8 - representa bacteria 2
+	* 9 - representa bacteria 3
+	*10 - representa virus 1
+	*11 - representa virus 2
+	*
+	*
+	* mudando o numero nesse mapa, voce muda o elemento que aparece na tela.
+	* 
+	* importante : !!!!! ainda nao temos todos os sprites implementados (bacterias e virus)
+	**/
+	int[][] Fase01 = {
+			{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 7, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+			{1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1}
+			};
 	
 	public Fase_01Scene() {
 		ParedeFactory.getInstance().create(physicsWorld, vbom);
@@ -51,13 +103,8 @@ public class Fase_01Scene extends AbstractScene {
 	@Override
 	public void populate() {
 		createBackground();
-		createParede();
-		//createComida(300,300,lista_comidas);
-		createComida(150,300,lista_comidas);
-		//createComida(200,300,lista_comidas);
-		//createComida(250,300,lista_comidas);
-
-		//createComida(350,300,lista_comidas);
+		createMAPA(Fase01);
+//		createComida(100,100,lista_comidas);
 		createPlayer();
 		createHUD();
 
@@ -144,101 +191,112 @@ public class Fase_01Scene extends AbstractScene {
 		camera.setHUD(null);
 	}
 	
-	private void createParede() {
+	
+	/*
+	 * Parser do mapa
+	 * 
+	 * recebe uma matriz de mapa e designa os respectivos
+	 * elementos para cada posicao da matriz
+	 * 
+	 * */
+	
+	private void createMAPA(int[][] Mapa){
+		int pos_x,pos_y;
 		
-		parede = ParedeFactory.getInstance().createParede(50, 50);
-		parede.setCurrentTileIndex(0);
-		parede.setScale(0.2f);
-		lista_paredes.add(parede);
-		attachChild(parede);
-		
-		parede = ParedeFactory.getInstance().createParede(50, 100);
-		parede.setCurrentTileIndex(1);
-		parede.setScale(0.2f);
-		lista_paredes.add(parede);
-		attachChild(parede);
-		
-		parede = ParedeFactory.getInstance().createParede(50, 150);
-		parede.setCurrentTileIndex(2);
-		parede.setScale(0.2f);
-		lista_paredes.add(parede);
-		attachChild(parede);
-		
-		parede = ParedeFactory.getInstance().createParede(50, 200);
-		parede.setCurrentTileIndex(3);
-		parede.setScale(0.2f);
-		lista_paredes.add(parede);
-		attachChild(parede);
-		
-		parede = ParedeFactory.getInstance().createParede(50, 250);
-		parede.setCurrentTileIndex(4);
-		parede.setScale(0.2f);
-		lista_paredes.add(parede);
-		attachChild(parede);
-		
-		parede = ParedeFactory.getInstance().createParede(50, 300);
-		parede.setCurrentTileIndex(5);
-		parede.setScale(0.2f);
-		lista_paredes.add(parede);
-		attachChild(parede);
-		
-//		//paredes superiores
-//		for(int i = 150 ; i<= 440 ; i = i+ 20){
-//			parede = ParedeFactory.getInstance().createParede(i, 400);
-//			parede.setCurrentTileIndex(4);
-//			parede.setScale((float) 0.2);
-//			lista_paredes.add(parede);
-//			attachChild(parede);
-//		}
-//		
-//		
-//		//paredes inferiores
-//		for(int i = 10 ; i<= 340 ; i = i+ 20){
-//			parede = ParedeFactory.getInstance().createParede(i, 200);
-//			parede.setCurrentTileIndex(4);
-//			parede.setScale((float) 0.2);
-//			lista_paredes.add(parede);
-//			attachChild(parede);
-//		}
-//		
-//		
-//		//lateral esquerda
-//		for(int i = 800 ; i>= 200 ; i = i- 20){
-//			parede = ParedeFactory.getInstance().createParede(10, i);
-//			parede.setCurrentTileIndex(4);
-//			parede.setScale((float) 0.2);
-//			lista_paredes.add(parede); 
-//			attachChild(parede);
-//		}
-//		
-//		//lateral direita
-//		for(int i = 800 ; i>= 400 ; i = i- 20){
-//			parede = ParedeFactory.getInstance().createParede(150, i);
-//			parede.setCurrentTileIndex(4);
-//			parede.setScale((float) 0.2);
-//			lista_paredes.add(parede);
-//			attachChild(parede);
-//		}
-//		
-//		//segunda lateral direita
-//		for(int i = 400 ; i>= 20 ; i = i- 20){
-//			parede = ParedeFactory.getInstance().createParede(440, i);
-//			parede.setCurrentTileIndex(4);
-//			parede.setScale((float) 0.2);
-//			lista_paredes.add(parede);
-//			attachChild(parede);
-//		}	
-//				
-//		//segunda lateral esquerda
-//		for(int i = 200 ; i>= 20 ; i = i- 20){
-//			parede = ParedeFactory.getInstance().createParede(340, i);
-//			parede.setCurrentTileIndex(4);
-//			parede.setScale((float) 0.2);
-//			lista_paredes.add(parede); //ajustar o tamnho desta parede também
-//			attachChild(parede);
-//		}
-				
+			for(int x_matriz = 0; x_matriz < 30 ; x_matriz++){       //linha da matriz
+		   	    for(int y_matriz = 0; y_matriz < 30; y_matriz++){    // coluna da matriz			 	
+	   	    		pos_x = (y_matriz * 50); 
+		  		    pos_y = 1600 -(x_matriz * 50);
+		   	    	
+		  		    switch(Mapa[x_matriz][y_matriz]){
+		   	    		
+		   	    	//cases de 1 a 6 irao processar as posicoes onde as paredes do labirinto irao ser colocadas no mapa
+		   	    	case 1: 	
+						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
+						parede.setCurrentTileIndex(1);
+						parede.setScale((float) 0.35);
+						lista_paredes.add(parede);
+						attachChild(parede);
+		   	    		
+						break;
+						
+		   	    	case 2:
+						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
+						parede.setCurrentTileIndex(2);
+						parede.setScale((float) 0.35);
+						lista_paredes.add(parede);
+						attachChild(parede);
+		   	    	
+						break;
+						
+		   	    	case 3:
+						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
+						parede.setCurrentTileIndex(3);
+						parede.setScale((float) 0.35);
+						lista_paredes.add(parede);
+						attachChild(parede);
+		   	    	
+						break;
+						
+		   	    	case 4:
+						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
+						parede.setCurrentTileIndex(4);
+						parede.setScale((float) 0.35);
+						lista_paredes.add(parede);
+						attachChild(parede);
+		   	    	
+						break;
+						
+		   	    	case 5:
+						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
+						parede.setCurrentTileIndex(5);
+						parede.setScale((float) 0.35);
+						lista_paredes.add(parede);
+						attachChild(parede);
+		   	    	
+						break;
+		   	    	
+		   	    	case 6:
+						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
+						parede.setCurrentTileIndex(6);
+						parede.setScale((float) 0.35);
+						lista_paredes.add(parede);
+						attachChild(parede);
+		   	    	
+						break;
+						
+		   	    	//cases de 7 a 9 irao processar a posicao onde as bacterias sao criadas mapa
+		   	    	case 7:
+		   	    		comida = ComidaFactory.getInstance().createComida(pos_x, pos_y);
+		   	    		comida.setScale((float) 0.3);
+		   	    		lista_comidas.add(comida);
+		   	    		attachChild(comida);
+		   	    		
+		   	    		break;
+		   	    		
+		   	    	case 8:
+		   	    		
+		   	    		break;
+		   	    	
+		   	    	case 9:
+		   	    		
+		   	    		break;
+		   	    	//cases de 10 a 11 irao processar a posicao onde os virus sao criados no mapa
+		   	    	case 10:
+		   	    		
+		   	    		break;
+		   	    		
+		   	    	case 11:
+		   	    		
+		   	    		break;
+		   	    		
+		   	    	}
+		   	    }
+			}
 	}
+	
+	
+	
 	
 	private void createComida(int x, int y, final ArrayList<Comida> lista_comida) {
 		comida = ComidaFactory.getInstance().createComida(x, y);
@@ -253,7 +311,7 @@ public class Fase_01Scene extends AbstractScene {
 	}
 	
 	private void createPlayer() {
-		player = PlayerFactory.getInstance().createPlayer(70, 600);
+		player = PlayerFactory.getInstance().createPlayer(100, 1600);
 		player.setScale((float) 0.2);
 		attachChild(player);
 	}
