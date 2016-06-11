@@ -32,6 +32,8 @@ public class Fase_01Scene extends AbstractScene {
 	private Parede parede;
 	private Comida comida;
 	private Text scoreText;
+	private Text inicioText;
+	private Text saidaText;
 	private Player player;
 	private PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, -SensorManager.GRAVITY_MOON), true);
 	final ArrayList<Parede> lista_paredes = new ArrayList<Parede>();
@@ -177,7 +179,17 @@ public class Fase_01Scene extends AbstractScene {
 			GameManager.getInstance().incrementScore(1);	
 			CollisionHandler myCollisionHandler2 = new CollisionHandler(myCollisionCallback2, player, lista_comidas);
 			registerUpdateHandler(myCollisionHandler2);
-				
+			
+				//textos de guia de onde ficam entrada e saida do labirinto
+			inicioText = new Text(100, 3300, res.font, "INICIO", new TextOptions(HorizontalAlign.LEFT), vbom);
+			inicioText.setAnchorCenter(0, 1);					
+			attachChild(inicioText);
+			
+			saidaText = new Text(2600, 300, res.font, "SAIDA", new TextOptions(HorizontalAlign.LEFT), vbom);
+			saidaText.setAnchorCenter(0, 1);					
+			attachChild(saidaText);
+			
+			
 		//Toca musica de background da fase.
 		MusicPlayer.getInstance().play();
 		camera.setChaseEntity(player);
@@ -205,8 +217,8 @@ public class Fase_01Scene extends AbstractScene {
 		
 			for(int x_matriz = 0; x_matriz < 30 ; x_matriz++){       //linha da matriz
 		   	    for(int y_matriz = 0; y_matriz < 30; y_matriz++){    // coluna da matriz			 	
-	   	    		pos_x = (y_matriz * 50); 
-		  		    pos_y = 1600 -(x_matriz * 50);
+	   	    		pos_x = (y_matriz * 100); 
+		  		    pos_y = 3200 -(x_matriz * 100);
 		   	    	
 		  		    switch(Mapa[x_matriz][y_matriz]){
 		   	    		
@@ -214,7 +226,7 @@ public class Fase_01Scene extends AbstractScene {
 		   	    	case 1: 	
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(1);
-						parede.setScale((float) 0.35);
+						parede.setScale((float) 0.7);
 						lista_paredes.add(parede);
 						attachChild(parede);
 		   	    		
@@ -223,7 +235,7 @@ public class Fase_01Scene extends AbstractScene {
 		   	    	case 2:
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(2);
-						parede.setScale((float) 0.35);
+						parede.setScale((float) 0.7);
 						lista_paredes.add(parede);
 						attachChild(parede);
 		   	    	
@@ -232,7 +244,7 @@ public class Fase_01Scene extends AbstractScene {
 		   	    	case 3:
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(3);
-						parede.setScale((float) 0.35);
+						parede.setScale((float) 0.7);
 						lista_paredes.add(parede);
 						attachChild(parede);
 		   	    	
@@ -241,7 +253,7 @@ public class Fase_01Scene extends AbstractScene {
 		   	    	case 4:
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(4);
-						parede.setScale((float) 0.35);
+						parede.setScale((float) 0.7);
 						lista_paredes.add(parede);
 						attachChild(parede);
 		   	    	
@@ -250,7 +262,7 @@ public class Fase_01Scene extends AbstractScene {
 		   	    	case 5:
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(5);
-						parede.setScale((float) 0.35);
+						parede.setScale((float) 0.7);
 						lista_paredes.add(parede);
 						attachChild(parede);
 		   	    	
@@ -259,7 +271,7 @@ public class Fase_01Scene extends AbstractScene {
 		   	    	case 6:
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(6);
-						parede.setScale((float) 0.35);
+						parede.setScale((float) 0.7);
 						lista_paredes.add(parede);
 						attachChild(parede);
 		   	    	
@@ -268,7 +280,7 @@ public class Fase_01Scene extends AbstractScene {
 		   	    	//cases de 7 a 9 irao processar a posicao onde as bacterias sao criadas mapa
 		   	    	case 7:
 		   	    		comida = ComidaFactory.getInstance().createComida(pos_x, pos_y);
-		   	    		comida.setScale((float) 0.3);
+		   	    		comida.setScale((float) 0.5);
 		   	    		lista_comidas.add(comida);
 		   	    		attachChild(comida);
 		   	    		
@@ -295,15 +307,6 @@ public class Fase_01Scene extends AbstractScene {
 			}
 	}
 	
-	
-	
-	
-	private void createComida(int x, int y, final ArrayList<Comida> lista_comida) {
-		comida = ComidaFactory.getInstance().createComida(x, y);
-		comida.setScale((float) 0.5);
-		lista_comidas.add(comida);
-		attachChild(comida);
-	}
 
 	private void createBackground() {
 		Entity background = new Entity();
@@ -311,7 +314,7 @@ public class Fase_01Scene extends AbstractScene {
 	}
 	
 	private void createPlayer() {
-		player = PlayerFactory.getInstance().createPlayer(100, 1600);
+		player = PlayerFactory.getInstance().createPlayer(100, 3200);
 		player.setScale((float) 0.2);
 		attachChild(player);
 	}
