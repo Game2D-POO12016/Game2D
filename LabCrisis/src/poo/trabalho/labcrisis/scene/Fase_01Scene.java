@@ -217,8 +217,8 @@ public class Fase_01Scene extends AbstractScene {
 		
 			for(int x_matriz = 0; x_matriz < 30 ; x_matriz++){       //linha da matriz
 		   	    for(int y_matriz = 0; y_matriz < 30; y_matriz++){    // coluna da matriz			 	
-	   	    		pos_x = (y_matriz * 100); 
-		  		    pos_y = 3200 -(x_matriz * 100);
+	   	    		pos_x = (y_matriz * 100); // posicao x comeca em 0 ->  0 + (y_matiz+100), e  é incrementada com o incremento da coluna da matriz
+		  		    pos_y = 3200 -(x_matriz * 100); // posicao y começa na posicao maxima em pixels e decrementa com o decremento  das linhas da matriz
 		   	    	
 		  		    switch(Mapa[x_matriz][y_matriz]){
 		   	    		
