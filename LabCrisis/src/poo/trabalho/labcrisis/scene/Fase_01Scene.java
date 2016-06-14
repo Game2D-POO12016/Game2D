@@ -124,9 +124,17 @@ public class Fase_01Scene extends AbstractScene {
 			@Override
 			public void onControlClick(final AnalogOnScreenControl pAnalogOnScreenControl) {
 				//essa funcao pode ser usada para clicks no joystick
-				//player.die();
-				//SceneManager.getInstance().showGameOverScene();
-				//camera.setHUD(null);
+				
+				player.die();
+				if(player.isDead())
+				{
+					if(GameManager.getInstance().getCurrentScore() > activity.getHiScore())
+					{
+						activity.setHiScore(GameManager.getInstance().getCurrentScore());
+					}
+					SceneManager.getInstance().showGameOverScene();
+					camera.setHUD(null);
+				}
 			}
 		});
 		
