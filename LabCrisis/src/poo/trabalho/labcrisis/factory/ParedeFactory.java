@@ -14,7 +14,7 @@ import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Parede;
 
 public class ParedeFactory {
-	public static final FixtureDef PAREDE_FIXTURE = PhysicsFactory.createFixtureDef(0.0f, 0.0f, 0.0f);
+	public static final FixtureDef PAREDE_FIXTURE = PhysicsFactory.createFixtureDef(1f, 0.0f, 1f);
 	private static ParedeFactory INSTANCE = new ParedeFactory();
 	private PhysicsWorld physicsWorld;
 	private VertexBufferObjectManager vbom;

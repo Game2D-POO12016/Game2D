@@ -36,7 +36,9 @@ public class Fase_01Scene extends AbstractScene {
 	private Text saidaText;
 	private Player player;
 	private PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, -SensorManager.GRAVITY_MOON), true);
-	final ArrayList<Parede> lista_paredes = new ArrayList<Parede>();
+	final ArrayList<Parede> lista_paredes_v = new ArrayList<Parede>();
+	final ArrayList<Parede> lista_paredes_h = new ArrayList<Parede>();
+	final ArrayList<Parede> lista_paredes_q = new ArrayList<Parede>();
 	ArrayList<Comida> lista_comidas = new ArrayList<Comida>();
 	private float last_x = 0, last_y = 0;
 	private float cresce1 = (float)0.45;
@@ -64,36 +66,36 @@ public class Fase_01Scene extends AbstractScene {
 	* importante : !!!!! ainda nao temos todos os sprites implementados (bacterias e virus)
 	**/
 	int[][] Fase01 = {
-			{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{1, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
 			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 7, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+			{1, 7, 0, 0, 1, 0, 0, 0, 3, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 3, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
 			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
 			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-			{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 3, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3, 2, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 3, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 3, 2, 2, 3, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-			{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 1},
+			{1, 0, 0, 0, 3, 2, 2, 2, 2, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-			{1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 3, 0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+			{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 3, 0, 0, 1},
+			{1, 0, 0, 0, 3, 2, 2, 2, 2, 2, 3, 0, 0, 0, 1, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1}
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 1}
 			};
 	
 	public Fase_01Scene() {
@@ -118,7 +120,9 @@ public class Fase_01Scene extends AbstractScene {
 			//onConrolChange controla a mudanca de direcao do joystick enquanto onControlClick controla clicks no joystick
 			@Override
 			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {		
-				physicsHandler.setVelocity(pValueX * 300, pValueY * 300);
+				//physicsHandler.setVelocity(pValueX * 300, pValueY * 300);
+				physicsHandler.setAccelerationX(pValueX*200);
+				physicsHandler.setAccelerationY(pValueY*200);
 			}
 
 			@Override
@@ -148,21 +152,64 @@ public class Fase_01Scene extends AbstractScene {
 		//mostra o joystick na tela
 		setChildScene(analogOnScreenControl);	
 		
-		//COLLISION HANDLER DE PAREDE
+		//COLLISION HANDLER DE PAREDE horizontal
 		ICollisionCallback myCollisionCallback = new ICollisionCallback() {		
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				last_x = -physicsHandler.getVelocityX();
-				last_y = -(physicsHandler.getVelocityY());
-				physicsHandler.setVelocity(last_x,last_y);
+				//colisão horizontal com parede 
+				//if(lista_paredes.get(lista_paredes.indexOf(parede)).getCurrentTileIndex() == 1){ //tratamento de colisão horizontal
+					
+				physicsHandler.setVelocityX(-physicsHandler.getVelocityX());
+					/*player.getBody().applyLinearImpulse(-physicsHandler.getVelocityX()*player.getBody().getMass()
+														, physicsHandler.getVelocityY()*player.getBody().getMass(), 
+															player.getBody().getWorldCenter().x,
+															player.getBody().getWorldCenter().y);*/
+				//}
+				//colisão vertical com parede
+				/*else if(physicsHandler.getAccelerationY() != 0){
+					player.getBody().applyLinearImpulse(physicsHandler.getVelocityX()*player.getBody().getMass()
+														, -physicsHandler.getVelocityY()*player.getBody().getMass(), 
+															player.getBody().getPosition().x, player.getBody().getPosition().y);
+				}*/
+				//if //aplicar forća == massa * acc
+				//condićão para acc X != 0
+				//if
+				//last_x = -physicsHandler.getVelocityX()*0.75f;
+				//last_y = -(physicsHandler.getVelocityY())*0.75f;
+				//physicsHandler.setVelocity(last_x,last_y);
 				//ResourceManager.getInstance().soundComer.play();
 				//ResourceManager.getInstance().soundGameover.play();
 				return false;
 			}
 		};
 		
-		CollisionHandler myCollisionHandler = new CollisionHandler(myCollisionCallback, player, lista_paredes);
+		CollisionHandler myCollisionHandler = new CollisionHandler(myCollisionCallback, player, lista_paredes_h);
 		registerUpdateHandler(myCollisionHandler);
+		
+		//COLLISION HANDLER DE PAREDE vertical
+		ICollisionCallback myCollisionCallbackV = new ICollisionCallback() {		
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandler.setVelocityY(-physicsHandler.getVelocityY());
+				return false;
+			}
+		};
+		
+		CollisionHandler myCollisionHandlerV = new CollisionHandler(myCollisionCallbackV, player, lista_paredes_v);
+		registerUpdateHandler(myCollisionHandlerV);
+		
+		//COLLISION HANDLER DE PAREDE quina
+		ICollisionCallback myCollisionCallbackQ = new ICollisionCallback() {		
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandler.setVelocityY(-physicsHandler.getVelocityY());
+				physicsHandler.setVelocityX(-physicsHandler.getVelocityX());
+				return false;
+			}
+		};
+		
+		CollisionHandler myCollisionHandlerQ = new CollisionHandler(myCollisionCallbackQ, player, lista_paredes_q);
+		registerUpdateHandler(myCollisionHandlerQ);
 		
 		
 		//COLLISION HANDLER DE COMIDA
@@ -235,7 +282,7 @@ public class Fase_01Scene extends AbstractScene {
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(1);
 						parede.setScale((float) 0.7);
-						lista_paredes.add(parede);
+						lista_paredes_h.add(parede);
 						attachChild(parede);
 		   	    		
 						break;
@@ -244,7 +291,7 @@ public class Fase_01Scene extends AbstractScene {
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(2);
 						parede.setScale((float) 0.7);
-						lista_paredes.add(parede);
+						lista_paredes_v.add(parede);
 						attachChild(parede);
 		   	    	
 						break;
@@ -253,7 +300,7 @@ public class Fase_01Scene extends AbstractScene {
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(3);
 						parede.setScale((float) 0.7);
-						lista_paredes.add(parede);
+						lista_paredes_q.add(parede);
 						attachChild(parede);
 		   	    	
 						break;
@@ -262,7 +309,7 @@ public class Fase_01Scene extends AbstractScene {
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(4);
 						parede.setScale((float) 0.7);
-						lista_paredes.add(parede);
+						lista_paredes_v.add(parede);
 						attachChild(parede);
 		   	    	
 						break;
@@ -271,7 +318,7 @@ public class Fase_01Scene extends AbstractScene {
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(5);
 						parede.setScale((float) 0.7);
-						lista_paredes.add(parede);
+						lista_paredes_v.add(parede);
 						attachChild(parede);
 		   	    	
 						break;
@@ -280,7 +327,7 @@ public class Fase_01Scene extends AbstractScene {
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(6);
 						parede.setScale((float) 0.7);
-						lista_paredes.add(parede);
+						lista_paredes_v.add(parede);
 						attachChild(parede);
 		   	    	
 						break;
