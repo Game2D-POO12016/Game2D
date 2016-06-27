@@ -35,6 +35,7 @@ public class Fase_01Scene extends AbstractScene {
 	private Text inicioText;
 	private Text saidaText;
 	private Player player;
+	private Player player2;
 	private PhysicsWorld physicsWorld = new PhysicsWorld(new Vector2(0, -SensorManager.GRAVITY_MOON), true);
 	final ArrayList<Parede> lista_paredes_v = new ArrayList<Parede>();
 	final ArrayList<Parede> lista_paredes_h = new ArrayList<Parede>();
@@ -43,6 +44,7 @@ public class Fase_01Scene extends AbstractScene {
 	private float last_x = 0, last_y = 0;
 	private float cresce1 = (float)0.45;
 	private int index_comida;
+	private float p1pos[];
 	
 	/* matriz que representa a fase 1, ela pode ser editada, copiada e colada(para criacao de novas fases) , etc
 	*cada numero representa um elemento na fase:
@@ -129,7 +131,11 @@ public class Fase_01Scene extends AbstractScene {
 			public void onControlClick(final AnalogOnScreenControl pAnalogOnScreenControl) {
 				//essa funcao pode ser usada para clicks no joystick
 				
-				player.die();
+				if (player2 == null){
+				createPlayer2();
+				}
+				
+				/*player.die();
 				if(player.isDead())
 				{
 					if(GameManager.getInstance().getCurrentScore() > activity.getHiScore())
@@ -138,7 +144,7 @@ public class Fase_01Scene extends AbstractScene {
 					}
 					SceneManager.getInstance().showGameOverScene();
 					camera.setHUD(null);
-				}
+				}*/
 			}
 		});
 		
@@ -372,6 +378,13 @@ public class Fase_01Scene extends AbstractScene {
 		player = PlayerFactory.getInstance().createPlayer(100, 3200);
 		player.setScale((float) 0.2);
 		attachChild(player);
+	}
+	
+	private void createPlayer2() {
+		p1pos=player.getSceneCenterCoordinates();
+		player2 = PlayerFactory.getInstance().createPlayer(p1pos[0],p1pos[1]);
+		player2.setScale((float) 0.2);
+		attachChild(player2);
 	}
 	
 	private void createHUD() {
