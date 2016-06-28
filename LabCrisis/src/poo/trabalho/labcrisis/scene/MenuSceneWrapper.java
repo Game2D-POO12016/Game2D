@@ -27,9 +27,7 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	 */
 	
 	private IMenuItem playMenuItem;
-	private IMenuItem loadMenuItem;
 	private MyTextMenuItemDecorator soundMenuItem;
-	private IMenuItem endMenuItem;
 	private IMenuItem howtoplayMenuItem;
 	
 	private Text gamenameText;
@@ -48,7 +46,6 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, res.font, "PLAY", vbom), Color.CYAN, Color.WHITE);	
 		howtoplayMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1, res.font, "HOW TO PLAY", vbom), Color.CYAN, Color.WHITE);
 		soundMenuItem = new MyTextMenuItemDecorator(new TextMenuItem(2, res.font, getSoundLabel(), vbom), Color.CYAN, Color.WHITE);
-		endMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3,res.font, "END SCENE", vbom), Color.CYAN, Color.WHITE);
 		Sprite player = new Sprite(150, 350, res.globuloTextureRegion,vbom);
 		gamenameText = new Text(500, 350, res.font, "LAB\nCRISIS", new TextOptions(HorizontalAlign.CENTER), vbom);
 		gamenameText.setScale(2.0f);
@@ -58,13 +55,11 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 		menuScene.addMenuItem(playMenuItem);
 		menuScene.addMenuItem(howtoplayMenuItem);
 		menuScene.addMenuItem(soundMenuItem);
-		menuScene.addMenuItem(endMenuItem);
 		
 		menuScene.buildAnimations();
 		playMenuItem.setPosition(200, 150);
 		howtoplayMenuItem.setPosition(200, 50);
 		soundMenuItem.setPosition(650, 150);
-		endMenuItem.setPosition(650, 50);
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
@@ -121,14 +116,6 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 				soundState = !soundState;
 				activity.setSound(soundState);
 				soundMenuItem.setText(getSoundLabel());
-				return true;
-			/**
-			 * Vai para a cena de fim de jogo.
-			 * TODO Retirar essa opcao do MenuScene e ativa-la quando
-			 * o personagem morre. Esta aqui apenas para testes.
-			 */
-			case 3 :
-				SceneManager.getInstance().showEndScene();
 				return true;
 				
 			default :

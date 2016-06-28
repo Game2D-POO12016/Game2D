@@ -447,11 +447,21 @@ public class Fase_01Scene extends AbstractScene {
 		MusicPlayer.getInstance().play();
 	}
 	
-	/*@Override
+	@Override
 	protected void onManagedUpdate(float pSecondsElapsed)
 	{
 		super.onManagedUpdate(pSecondsElapsed);
 		
-	}*/
+		/**
+		 * Caso o globulo consiga sair do labirito
+		 * TODO So serve para a primeira celula, tem que implementar para outras caso haja divisao.
+		 */
+		if((player.getX() > 2600)&&(player.getY() < 300))
+		{
+			SceneManager.getInstance().showEndScene();
+			camera.setHUD(null);
+		}
+		
+	}
 	
 }
