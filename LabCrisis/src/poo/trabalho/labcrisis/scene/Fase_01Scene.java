@@ -12,7 +12,9 @@ import org.andengine.engine.handler.collision.ICollisionCallback;
 import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.background.EntityBackground;
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.shape.IShape;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.entity.text.*;
@@ -403,6 +405,8 @@ public class Fase_01Scene extends AbstractScene {
 	private void createBackground() {
 		Entity background = new Entity();
 		setBackground(new EntityBackground(0.82f, 0.96f, 0.97f, background));
+		//pSprite = new Sprite(pX, pY, pTextureRegion, pVertexBufferObject)
+		//setBackground(new SpriteBackground(originalScale, originalScale, originalScale, pSprite))
 	}
 	
 	private void createPlayer() {

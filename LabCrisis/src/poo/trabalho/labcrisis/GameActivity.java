@@ -70,6 +70,7 @@ public class GameActivity extends BaseGameActivity {
 			ResourceManager.getInstance().loadGameAudio();
 			ResourceManager.getInstance().loadGameGraphics();
 			ResourceManager.getInstance().loadSplashGraphics();
+			ResourceManager.getInstance().loadMenuGraphics();
 			pOnCreateResourcesCallback.onCreateResourcesFinished();
 		}
 	

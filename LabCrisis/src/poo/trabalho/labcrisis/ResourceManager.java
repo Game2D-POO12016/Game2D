@@ -28,15 +28,28 @@ public class ResourceManager {
 	public Engine engine;
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
-	public ITextureRegion splashTextureRegion;
-	private BitmapTextureAtlas splashTextureAtlas;
+	public ITextureRegion splashTextureRegion, menuTextureRegion;
+	private BitmapTextureAtlas splashTextureAtlas, menuTextureAtlas;
 
+	public void loadMenuGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		menuTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480,
+				BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		menuTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas,
+				activity.getAssets(), "tela_menu.png", 0, 0);
+		menuTextureAtlas.load();
+	}
+	
+	public void unloadMenuGraphics() {
+		menuTextureAtlas.unload();
+	}
+	
 	public void loadSplashGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480,
 				BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas,
-				activity.getAssets(), "badge.png", 0, 0);
+				activity.getAssets(), "tela_abertura.png", 0, 0);
 		splashTextureAtlas.load();
 	}
 
@@ -85,10 +98,10 @@ public class ResourceManager {
 				activity.getAssets(), "comida.png", 1, 1);
 
 		mOnScreenControlBaseTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas,
-				activity.getAssets(), "onscreen_control_base.png");
+				activity.getAssets(), "joystick_base.png");
 
 		mOnScreenControlKnobTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas,
-				activity.getAssets(), "onscreen_control_knob.png");
+				activity.getAssets(), "joystick_botao.png");
 
 		try {
 			gameTextureAtlas

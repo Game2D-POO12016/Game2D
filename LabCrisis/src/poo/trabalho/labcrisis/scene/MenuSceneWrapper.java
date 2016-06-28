@@ -1,9 +1,11 @@
 package poo.trabalho.labcrisis.scene;
 
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.decorator.*;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
@@ -11,6 +13,7 @@ import org.andengine.entity.text.TextOptions;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 
+import poo.trabalho.labcrisis.GameActivity;
 import poo.trabalho.labcrisis.GameManager;
 import poo.trabalho.labcrisis.MusicPlayer;
 
@@ -43,28 +46,33 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	@Override
 	public void populate() {
 		MenuScene menuScene = new MenuScene(camera);
-		menuScene.getBackground().setColor(0.82f, 0.96f, 0.97f);
+		//menuScene.getBackground().setColor(0.82f, 0.96f, 0.97f);
 		
-		playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, res.font, "PLAY", vbom), Color.CYAN, Color.WHITE);	
+		Sprite menuSprite = new Sprite(GameActivity.CAMERA_WIDTH /2, GameActivity.CAMERA_HEIGHT / 2, res.menuTextureRegion,vbom);
+		
+		menuScene.setBackground(new SpriteBackground(menuSprite));
+		playMenuItem = new ColorMenuItemDecorator(new SpriteMenuItem(0, null, vbom), Color.CYAN, Color.WHITE);
+		//playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, res.font, "PLAY", vbom), Color.CYAN, Color.WHITE);	
 		howtoplayMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1, res.font, "HOW TO PLAY", vbom), Color.CYAN, Color.WHITE);
 		soundMenuItem = new MyTextMenuItemDecorator(new TextMenuItem(2, res.font, getSoundLabel(), vbom), Color.CYAN, Color.WHITE);
-		endMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3,res.font, "END SCENE", vbom), Color.CYAN, Color.WHITE);
-		Sprite player = new Sprite(150, 350, res.globuloTextureRegion,vbom);
-		gamenameText = new Text(500, 350, res.font, "LAB\nCRISIS", new TextOptions(HorizontalAlign.CENTER), vbom);
-		gamenameText.setScale(2.0f);
+		//endMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3,res.font, "END SCENE", vbom), Color.CYAN, Color.WHITE);
+		//Sprite player = new Sprite(150, 350, res.globuloTextureRegion,vbom);
+		//gamenameText = new Text(500, 350, res.font, "LAB\nCRISIS", new TextOptions(HorizontalAlign.CENTER), vbom);
+		//gamenameText.setScale(2.0f);
 		
-		menuScene.attachChild(player);
-		menuScene.attachChild(gamenameText);
+		//menuScene.attachChild(menuSprite);
+		//menuScene.attachChild(player);
+		//menuScene.attachChild(gamenameText);
 		menuScene.addMenuItem(playMenuItem);
 		menuScene.addMenuItem(howtoplayMenuItem);
 		menuScene.addMenuItem(soundMenuItem);
-		menuScene.addMenuItem(endMenuItem);
+		//menuScene.addMenuItem(endMenuItem);
 		
 		menuScene.buildAnimations();
 		playMenuItem.setPosition(200, 150);
 		howtoplayMenuItem.setPosition(200, 50);
 		soundMenuItem.setPosition(650, 150);
-		endMenuItem.setPosition(650, 50);
+		//endMenuItem.setPosition(650, 50);
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
@@ -120,15 +128,13 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 				boolean soundState = activity.isSound();
 				soundState = !soundState;
 				activity.setSound(soundState);
+				if(soundState == true) {
+					MusicPlayer.getInstance().playMenu();
+				}
+				else {
+					MusicPlayer.getInstance().stopMenu();
+				}
 				soundMenuItem.setText(getSoundLabel());
-				return true;
-			/**
-			 * Vai para a cena de fim de jogo.
-			 * TODO Retirar essa opcao do MenuScene e ativa-la quando
-			 * o personagem morre. Esta aqui apenas para testes.
-			 */
-			case 3 :
-				SceneManager.getInstance().showEndScene();
 				return true;
 				
 			default :
@@ -144,5 +150,5 @@ public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickL
 	public void onBackKeyPressed() {
 		activity.finish();
 	}
-	
+
 }
