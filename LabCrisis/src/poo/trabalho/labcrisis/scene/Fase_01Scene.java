@@ -18,9 +18,14 @@ import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.entity.text.*;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.joints.LineJointDef;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+
 import android.hardware.SensorManager;
 import poo.trabalho.labcrisis.GameManager;
 import poo.trabalho.labcrisis.MusicPlayer;
+import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Comida;
 import poo.trabalho.labcrisis.entity.Parede;
 import poo.trabalho.labcrisis.entity.Player;
@@ -41,10 +46,10 @@ public class Fase_01Scene extends AbstractScene {
 	final ArrayList<Parede> lista_paredes_h = new ArrayList<Parede>();
 	final ArrayList<Parede> lista_paredes_q = new ArrayList<Parede>();
 	ArrayList<Comida> lista_comidas = new ArrayList<Comida>();
-	private float last_x = 0, last_y = 0;
-	private float cresce1 = (float)0.45;
+	private float cresce1 = (float)0.60;
 	private int index_comida;
 	private float p1pos[];
+	private float originalScale = ResourceManager.getInstance().globuloTextureRegion.getScale()*((float)0.2);
 	
 	/* matriz que representa a fase 1, ela pode ser editada, copiada e colada(para criacao de novas fases) , etc
 	*cada numero representa um elemento na fase:
@@ -123,16 +128,42 @@ public class Fase_01Scene extends AbstractScene {
 			@Override
 			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {		
 				//physicsHandler.setVelocity(pValueX * 300, pValueY * 300);
-				physicsHandler.setAccelerationX(pValueX*200);
-				physicsHandler.setAccelerationY(pValueY*200);
+				if(physicsHandler.getVelocityX() >= 900 && physicsHandler.getVelocityY() >= 900){
+					physicsHandler.setAccelerationX(0);
+					physicsHandler.setAccelerationY(0);
+				}
+				else if(physicsHandler.getVelocityY() >= 900){
+					physicsHandler.setAccelerationX(pValueX*300);
+					physicsHandler.setAccelerationY(0);
+				}
+				else if(physicsHandler.getVelocityX() >= 900){
+					physicsHandler.setAccelerationX(0);
+					physicsHandler.setAccelerationY(pValueY*300);
+				}
+				else{
+					physicsHandler.setAccelerationX(pValueX*300);
+					physicsHandler.setAccelerationY(pValueY*300);
+				}
 			}
 
 			@Override
 			public void onControlClick(final AnalogOnScreenControl pAnalogOnScreenControl) {
 				//essa funcao pode ser usada para clicks no joystick
 				
-				if (player2 == null){
-				createPlayer2();
+				if (player2 == null && player.getSize() > 1){
+					player.setSize(player.getSize()-1);
+					player.setScale(originalScale);
+					createPlayer2();
+						
+					LineJointDef linejointdef = new LineJointDef();
+					//PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
+					linejointdef.bodyA = player.getBody();
+					linejointdef.bodyB = player2.getBody();
+					linejointdef.localAnchorA.set(new Vector2(0, 0));
+					linejointdef.localAnchorB.set(new Vector2(0, 0));
+					linejointdef.collideConnected = false;
+
+					physicsWorld.createJoint(linejointdef);
 				}
 				
 				/*player.die();
@@ -224,7 +255,7 @@ public class Fase_01Scene extends AbstractScene {
 				public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
 					//ArrayList<Comida> lista_temp = new ArrayList<Comida>();
 					//lista_temp = lista_comidas;
-										
+					player.setSize(player.getSize()+1);					
 					player.setScale(player.getScaleCenterX()*cresce1);
 					index_comida = lista_comidas.indexOf(comida);
 					detachChild(lista_comidas.get(index_comida));
@@ -382,9 +413,19 @@ public class Fase_01Scene extends AbstractScene {
 	
 	private void createPlayer2() {
 		p1pos=player.getSceneCenterCoordinates();
-		player2 = PlayerFactory.getInstance().createPlayer(p1pos[0],p1pos[1]);
+		player2 = PlayerFactory.getInstance().createPlayer(p1pos[0],p1pos[1] + 1f);
 		player2.setScale((float) 0.2);
 		attachChild(player2);
+		
+		/*LineJointDef linejointdef = new LineJointDef();
+		//PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
+		linejointdef.bodyA = player.getBody();
+		linejointdef.bodyB = player2.getBody();
+		linejointdef.localAnchorA.set(new Vector2(0, 0));
+		linejointdef.localAnchorB.set(new Vector2(0, 0));
+		linejointdef.collideConnected = false;
+
+		physicsWorld.createJoint(linejointdef);*/
 	}
 	
 	private void createHUD() {
