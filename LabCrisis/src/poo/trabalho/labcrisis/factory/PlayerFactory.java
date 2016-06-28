@@ -33,6 +33,7 @@ public class PlayerFactory {
 	public Player createPlayer(float x, float y) {
 		Player player = new Player(x, y, ResourceManager.getInstance().globuloTextureRegion, vbom);
 		player.setZIndex(2);
+		player.setSize(1);
 		Body playerBody = PhysicsFactory.createCircleBody(physicsWorld, player, BodyType.DynamicBody, PLAYER_FIXTURE);
 		playerBody.setLinearDamping(1f);
 		playerBody.setFixedRotation(true);
