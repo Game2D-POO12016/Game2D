@@ -8,9 +8,16 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class Player extends TiledSprite implements CollidableEntity{
 	boolean dead = false;
+	private int size = 1;
 	private Body body;
 	public static final String TYPE = "Player";
 	
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
+	}
 	@Override
 	public void setBody(Body body) {
 		this.body = body;
