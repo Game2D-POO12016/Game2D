@@ -419,11 +419,7 @@ public class Fase_01Scene extends AbstractScene {
 		RepeatingSpriteBackground bkgd = new RepeatingSpriteBackground(GameActivity.CAMERA_WIDTH,
 				GameActivity.CAMERA_HEIGHT, res.gameBkgdTextureRegion, vbom);
 
-		// Entity background = new Entity();
 		setBackground(bkgd);
-		// pSprite = new Sprite(pX, pY, pTextureRegion, pVertexBufferObject)
-		// setBackground(new SpriteBackground(originalScale, originalScale,
-		// originalScale, pSprite))
 	}
 
 	private void createPlayer() {
@@ -471,20 +467,18 @@ public class Fase_01Scene extends AbstractScene {
 	}
 
 	@Override
-	protected void onManagedUpdate(float pSecondsElapsed)
-	{
+	protected void onManagedUpdate(float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-		
+
 		/**
-		 * Caso o globulo consiga sair do labirito
-		 * TODO So serve para a primeira celula, tem que implementar para outras caso haja divisao.
+		 * Caso o globulo consiga sair do labirito TODO So serve para a primeira
+		 * celula, tem que implementar para outras caso haja divisao.
 		 */
-		if((player.getX() > 2600)&&(player.getY() < 300))
-		{
+		if ((player.getX() > 2600) && (player.getY() < 300)) {
 			SceneManager.getInstance().showEndScene();
 			camera.setHUD(null);
 		}
-		
+
 	}
 
 }
