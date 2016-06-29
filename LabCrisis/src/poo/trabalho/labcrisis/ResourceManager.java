@@ -65,6 +65,7 @@ public class ResourceManager {
 	public ITiledTextureRegion paredeTextureRegion;
 	public ITiledTextureRegion comidaTextureRegion;
 	public ITiledTextureRegion globuloTextureRegion;
+	public ITiledTextureRegion inimigoTextureRegion;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
 	// recursos para o joystick
 	public TextureRegion mOnScreenControlBaseTextureRegion;
@@ -83,6 +84,9 @@ public class ResourceManager {
 
 		comidaTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas,
 				activity.getAssets(), "comida.png", 1, 1);
+				
+		inimigoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, 
+				activity.getAssets(), "virus1.png", 1, 1);
 
 		mOnScreenControlBaseTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas,
 				activity.getAssets(), "onscreen_control_base.png");
