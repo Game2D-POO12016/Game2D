@@ -43,6 +43,7 @@ public class ComidaFactory {
 		comida.setUserData(comida);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(comida, comidaBody));
 		comida.setBody(comidaBody);
+		comida.setexistence(true);
 		return comida;
 	}
 }
