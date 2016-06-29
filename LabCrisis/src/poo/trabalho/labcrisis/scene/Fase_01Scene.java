@@ -495,7 +495,7 @@ public class Fase_01Scene extends AbstractScene {
 				case 3:
 					parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 					parede.setCurrentTileIndex(3);
-					parede.setScale((float) 0.73);
+					parede.setScale((float) 0.7);
 					lista_paredes_q.add(parede);
 					attachChild(parede);
 
