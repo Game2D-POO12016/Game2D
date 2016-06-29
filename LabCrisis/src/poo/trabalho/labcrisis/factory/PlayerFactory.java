@@ -16,7 +16,7 @@ public class PlayerFactory {
 	private static PlayerFactory INSTANCE = new PlayerFactory();
 	private VertexBufferObjectManager vbom;
 	private PhysicsWorld physicsWorld;
-	public static final FixtureDef PLAYER_FIXTURE = PhysicsFactory.createFixtureDef(1f, 0f, 1f, false);
+	public static final FixtureDef PLAYER_FIXTURE = PhysicsFactory.createFixtureDef(1f, 0.1f, 1f, false);
 
 	private PlayerFactory() {
 	}	

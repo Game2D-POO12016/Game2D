@@ -17,6 +17,7 @@ public class SceneManager {
 	private ResourceManager res = ResourceManager.getInstance();
 	private AbstractScene currentScene;
 	private LoadingScene loadingScene = null;
+	private IntroScene introScene = null;
 	
 	/**
 	 * Construtor vazio
@@ -107,7 +108,11 @@ public class SceneManager {
 		/**
 		 * Seta a cena atual.
 		 */
-		setCurrentScene(loadingScene);
+		if (introScene == null) {
+			introScene = new IntroScene();
+		}
+		setCurrentScene(introScene);
+		introScene.populate();
 		/**
 		 * Tarefa de migracao de uma cena para outra.
 		 * Caso retorne null, a migracao foi bem-sucedida.
@@ -120,7 +125,7 @@ public class SceneManager {
 				 * Caso for interrompida nesse tempo, eh tratada a excecao de interrupcao.
 				 */
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					Debug.e("Interrupted", e);
 				}

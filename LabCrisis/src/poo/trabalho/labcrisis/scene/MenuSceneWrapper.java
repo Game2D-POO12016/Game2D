@@ -16,136 +16,126 @@ import org.andengine.util.adt.color.Color;
 import poo.trabalho.labcrisis.GameActivity;
 import poo.trabalho.labcrisis.GameManager;
 import poo.trabalho.labcrisis.MusicPlayer;
+import poo.trabalho.labcrisis.ResourceManager;
 
 /**
  * Classe que organiza a cena de menu do jogo.
+ * 
  * @author ALEXANDRE CORREIA
  *
  */
 
 public class MenuSceneWrapper extends AbstractScene implements IOnMenuItemClickListener {
-	
+
 	/**
 	 * Opcoes de escolha no MenuScene.
 	 */
-	
+
 	private IMenuItem playMenuItem;
-	private IMenuItem loadMenuItem;
-	private MyTextMenuItemDecorator soundMenuItem;
-	private IMenuItem endMenuItem;
+	private IMenuItem soundMenuItem;
 	private IMenuItem howtoplayMenuItem;
-	
-	private Text gamenameText;
-	
-	
-	
+
 	/**
 	 * Construtor do MenuScene.
 	 */
-	
+
 	@Override
 	public void populate() {
+		MusicPlayer.getInstance().playMenu();
+		
 		MenuScene menuScene = new MenuScene(camera);
-		//menuScene.getBackground().setColor(0.82f, 0.96f, 0.97f);
-		
-		Sprite menuSprite = new Sprite(GameActivity.CAMERA_WIDTH /2, GameActivity.CAMERA_HEIGHT / 2, res.menuTextureRegion,vbom);
-		
+
+		Sprite menuSprite = new Sprite(GameActivity.CAMERA_WIDTH / 2, GameActivity.CAMERA_HEIGHT / 2,
+				res.menuTextureRegion, vbom);
+
 		menuScene.setBackground(new SpriteBackground(menuSprite));
-		playMenuItem = new ColorMenuItemDecorator(new SpriteMenuItem(0, null, vbom), Color.CYAN, Color.WHITE);
-		//playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, res.font, "PLAY", vbom), Color.CYAN, Color.WHITE);	
-		howtoplayMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1, res.font, "HOW TO PLAY", vbom), Color.CYAN, Color.WHITE);
-		soundMenuItem = new MyTextMenuItemDecorator(new TextMenuItem(2, res.font, getSoundLabel(), vbom), Color.CYAN, Color.WHITE);
-		//endMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3,res.font, "END SCENE", vbom), Color.CYAN, Color.WHITE);
-		//Sprite player = new Sprite(150, 350, res.globuloTextureRegion,vbom);
-		//gamenameText = new Text(500, 350, res.font, "LAB\nCRISIS", new TextOptions(HorizontalAlign.CENTER), vbom);
-		//gamenameText.setScale(2.0f);
-		
-		//menuScene.attachChild(menuSprite);
-		//menuScene.attachChild(player);
-		//menuScene.attachChild(gamenameText);
+		playMenuItem = new ColorMenuItemDecorator(new SpriteMenuItem(0, res.playButtonRegion, vbom), Color.CYAN,
+				Color.WHITE);
+		howtoplayMenuItem = new ColorMenuItemDecorator(new SpriteMenuItem(1, res.howToPlayButtonRegion, vbom),
+				Color.CYAN, Color.WHITE);
+		soundMenuItem = new ColorMenuItemDecorator(new SpriteMenuItem(2, res.soundButtonRegion, vbom), Color.CYAN,
+				Color.WHITE);
+
 		menuScene.addMenuItem(playMenuItem);
 		menuScene.addMenuItem(howtoplayMenuItem);
 		menuScene.addMenuItem(soundMenuItem);
-		//menuScene.addMenuItem(endMenuItem);
-		
-		menuScene.buildAnimations();
-		playMenuItem.setPosition(200, 150);
-		howtoplayMenuItem.setPosition(200, 50);
-		soundMenuItem.setPosition(650, 150);
-		//endMenuItem.setPosition(650, 50);
+
+		//menuScene.buildAnimations();
+
+		playMenuItem.setPosition(270, 130);
+		playMenuItem.setScale(1.3f);
+
+		howtoplayMenuItem.setPosition(530, 130);
+		howtoplayMenuItem.setScale(1.3f);
+
+		soundMenuItem.setPosition(730, 430);
+		soundMenuItem.setScale(0.5f);
+
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
+
 		setChildScene(menuScene);
-		MusicPlayer.getInstance().playMenu();
+
+		
 		GameManager.getInstance().reset();
 	}
-	
+
 	@Override
 	public void onPause() {
 		MusicPlayer.getInstance().pauseMenu();
 	}
+
 	@Override
 	public void onResume() {
 		MusicPlayer.getInstance().playMenu();
 	}
-	
+
 	/**
-	 * Verifica se o som do jogo deve ser ativado ou nao.
-	 * @return SOUND ON / SOUND OFF
+	 * Metodo que reage quando ha um clique na opcao. Cada opcao eh identificada
+	 * pelo ID, numero inteiro definido no metodo populate(). Com isso,
+	 * realiza-se uma atitude de acordo com a opcao selecionada.
 	 */
-	
-	private CharSequence getSoundLabel()
-	{
-		return activity.isSound() ? "SOUND ON" : "SOUND OFF";
-	}
-	
-	/**
-	 * Metodo que reage quando ha um clique na opcao.
-	 * Cada opcao eh identificada pelo ID, numero inteiro definido no metodo populate().
-	 * Com isso, realiza-se uma atitude de acordo com a opcao selecionada.
-	 */
-	
+
 	@Override
-	public boolean onMenuItemClicked (MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
+	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX,
+			float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
-			/**
-			 * Vai para a fase do jogo.
-			 */
-			case 0 :
+		/**
+		 * Vai para a fase do jogo.
+		 */
+		case 0:
+			MusicPlayer.getInstance().stopMenu();
+			SceneManager.getInstance().showGameScene();
+			return true;
+		/**
+		 * Vai para a cena de tutorial do jogo.
+		 */
+		case 1:
+			SceneManager.getInstance().showHowToPlayScene();
+			return true;
+		/**
+		 * Ativa ou desativa o som do jogo.
+		 */
+		case 2:
+			boolean soundState = activity.isSound();
+			soundState = !soundState;
+			activity.setSound(soundState);
+			if (soundState == true) {
+				MusicPlayer.getInstance().playMenu();
+			} else {
 				MusicPlayer.getInstance().stopMenu();
-				SceneManager.getInstance().showGameScene();
-				return true;	
-			/**
-			 * Vai para a cena de tutorial do jogo.
-			 */
-			case 1 :
-				SceneManager.getInstance().showHowToPlayScene();
-				return true;
-			/**
-			 * Ativa ou desativa o som do jogo.
-			 */
-			case 2 :
-				boolean soundState = activity.isSound();
-				soundState = !soundState;
-				activity.setSound(soundState);
-				if(soundState == true) {
-					MusicPlayer.getInstance().playMenu();
-				}
-				else {
-					MusicPlayer.getInstance().stopMenu();
-				}
-				soundMenuItem.setText(getSoundLabel());
-				return true;
-				
-			default :
-				return false;
+			}
+			return true;
+
+		default:
+			return false;
 		}
 	}
-	
+
 	/**
 	 * Sai do jogo caso o botao de voltar do Android for pressionado.
 	 */
-	
+
 	@Override
 	public void onBackKeyPressed() {
 		activity.finish();
