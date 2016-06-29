@@ -11,6 +11,7 @@ package poo.trabalho.labcrisis;
 			res = ResourceManager.getInstance();
 			res.music.setLooping(true);
 			res.menuMusic.setLooping(true);
+			res.introMusic.setLooping(false);
 		}
 		
 		public static MusicPlayer getInstance() {
@@ -27,6 +28,13 @@ package poo.trabalho.labcrisis;
 			if (res.activity.isSound() && !res.menuMusic.isPlaying()) {
 				res.menuMusic.play();
 				res.menuMusic.setVolume(0.5f, 0.5f);
+			}
+		}
+		
+		public void playIntro() {
+			if (res.activity.isSound() && !res.introMusic.isPlaying()) {
+				res.introMusic.play();
+				res.introMusic.setVolume(0.5f, 0.5f);
 			}
 		}
 		

@@ -28,15 +28,54 @@ public class ResourceManager {
 	public Engine engine;
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
-	public ITextureRegion splashTextureRegion;
-	private BitmapTextureAtlas splashTextureAtlas;
+	public ITextureRegion splashTextureRegion, menuTextureRegion, gameBkgdTextureRegion, introFase1TextureRegion;
+	private BitmapTextureAtlas splashTextureAtlas, menuTextureAtlas, gameBkgdTextureAtlas, introFase1TextureAtlas;
+
+	public void loadIntroFase1Graphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		introFase1TextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480,
+				BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		introFase1TextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(introFase1TextureAtlas,
+				activity.getAssets(), "tela_fase1_titulo.png", 0, 0);
+		introFase1TextureAtlas.load();
+	}
+	
+	public void unloadIntroFase1Graphics() {
+		introFase1TextureAtlas.unload();
+	}
+	
+	public void loadGameBkgdGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		gameBkgdTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480,
+				BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		gameBkgdTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameBkgdTextureAtlas,
+				activity.getAssets(), "background_labirinto.png", 0, 0);
+		gameBkgdTextureAtlas.load();
+	}
+
+	public void unloadGameBkgdGraphics() {
+		gameBkgdTextureAtlas.unload();
+	}
+
+	public void loadMenuGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		menuTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480, BitmapTextureFormat.RGBA_8888,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		menuTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas,
+				activity.getAssets(), "tela_menu.png", 0, 0);
+		menuTextureAtlas.load();
+	}
+
+	public void unloadMenuGraphics() {
+		menuTextureAtlas.unload();
+	}
 
 	public void loadSplashGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480,
 				BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas,
-				activity.getAssets(), "badge.png", 0, 0);
+				activity.getAssets(), "tela_abertura.png", 0, 0);
 		splashTextureAtlas.load();
 	}
 
@@ -70,6 +109,8 @@ public class ResourceManager {
 	// recursos para o joystick
 	public TextureRegion mOnScreenControlBaseTextureRegion;
 	public TextureRegion mOnScreenControlKnobTextureRegion;
+	public TextureRegion howToPlayButtonRegion, playButtonRegion, soundButtonRegion;
+	public TextureRegion fase1Intro;
 
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -80,7 +121,7 @@ public class ResourceManager {
 				activity.getAssets(), "Parede.png", 6, 1);
 
 		globuloTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas,
-				activity.getAssets(), "gosminho_azul.png", 1, 1);
+				activity.getAssets(), "gosminho_branco.png", 1, 1);
 
 		comidaTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas,
 				activity.getAssets(), "comida.png", 1, 1);
@@ -89,10 +130,19 @@ public class ResourceManager {
 				activity.getAssets(), "virus1.png", 1, 1);
 
 		mOnScreenControlBaseTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas,
-				activity.getAssets(), "onscreen_control_base.png");
+				activity.getAssets(), "joystick_base.png");
 
 		mOnScreenControlKnobTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas,
-				activity.getAssets(), "onscreen_control_knob.png");
+				activity.getAssets(), "joystick_botao.png");
+
+		howToPlayButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas,
+				activity.getAssets(), "botao_howto.png");
+
+		playButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas,
+				activity.getAssets(), "botao_play.png");
+
+		soundButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas,
+				activity.getAssets(), "botao_sound_onoff.png");
 
 		try {
 			gameTextureAtlas
@@ -111,6 +161,7 @@ public class ResourceManager {
 	// music
 	public Music music;
 	public Music menuMusic;
+	public Music introMusic;
 
 	public void loadGameAudio() {
 		try {
@@ -122,6 +173,7 @@ public class ResourceManager {
 					"345838__shadydave__abstract-ambient-loop.mp3");
 			menuMusic = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity,
 					"324252__rhodesmas__rings-of-saturn-music-loop.wav");
+			introMusic = MusicFactory.createMusicFromAsset(activity.getMusicManager(), activity, "176005__quartzgate__qvarz-5.wav");
 		} catch (Exception e) {
 			throw new RuntimeException("Error while loading audio", e);
 		}
@@ -132,7 +184,7 @@ public class ResourceManager {
 
 	public void loadFont() {
 		font = FontFactory.createStroke(activity.getFontManager(), activity.getTextureManager(), 256, 256,
-				Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 50, true, Color.WHITE_ABGR_PACKED_INT, 2,
+				Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 50, true, Color.WHITE_ARGB_PACKED_INT, 2f,
 				Color.BLACK_ABGR_PACKED_INT);
 		font.prepareLetters("01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?".toCharArray());
 		font.load();

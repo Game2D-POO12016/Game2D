@@ -67,9 +67,13 @@ public class GameActivity extends BaseGameActivity {
 			throws IOException {
 			ResourceManager.getInstance().create(this, getEngine(), getEngine().getCamera(), getVertexBufferObjectManager());
 			ResourceManager.getInstance().loadFont();
+			setSound(true);
 			ResourceManager.getInstance().loadGameAudio();
 			ResourceManager.getInstance().loadGameGraphics();
 			ResourceManager.getInstance().loadSplashGraphics();
+			ResourceManager.getInstance().loadMenuGraphics();
+			ResourceManager.getInstance().loadGameBkgdGraphics();
+			ResourceManager.getInstance().loadIntroFase1Graphics();
 			pOnCreateResourcesCallback.onCreateResourcesFinished();
 		}
 	
