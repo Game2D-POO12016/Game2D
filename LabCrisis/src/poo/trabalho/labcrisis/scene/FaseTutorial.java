@@ -222,7 +222,9 @@ public class FaseTutorial extends AbstractScene {
 					player.setScale(player.getScaleCenterX()*cresce1);
 					lista_comidas.get(0).setexistence(false);
 					//incrementa score
-					GameManager.getInstance().incrementScore(100);	
+					GameManager.getInstance().incrementScore(100);
+					//scoreText.setText("SCORE " + GameManager.getInstance().getCurrentScore());
+					createHUD();
 					if(GameManager.getInstance().getCurrentScore() > activity.getHiScore())
 					{
 						activity.setHiScore(GameManager.getInstance().getCurrentScore());

@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class Comida extends TiledSprite implements CollidableEntity{
 	private Body body;
 	public boolean existence;
-	public static final String TYPE = "Platform";
+	public static final String TYPE = "Comida";
 	public Comida(float pX, float pY,ITiledTextureRegion pTiledTextureRegion,VertexBufferObjectManager pVertexBufferObjectManager) {
 		super(pX, pY, pTiledTextureRegion,pVertexBufferObjectManager);
 	}
@@ -29,16 +29,17 @@ public class Comida extends TiledSprite implements CollidableEntity{
 		return body;
 	}
 	
-	@Override
-	public String getType() {
-		return TYPE;
-	}
-
 	public void setexistence(boolean b) {
 		this.existence = b;
 	}
 	
 	public boolean getexistece() {
 		return existence;
+	}
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

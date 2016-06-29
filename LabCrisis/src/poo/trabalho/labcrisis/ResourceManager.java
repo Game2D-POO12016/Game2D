@@ -133,7 +133,7 @@ public class ResourceManager {
 				activity.getAssets(), "gosminho_branco.png", 1, 1);
 
 		comidaTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas,
-				activity.getAssets(), "comida.png", 1, 1);
+				activity.getAssets(), "bacteria_comida.png", 1, 1);
 				
 		inimigoTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, 
 				activity.getAssets(), "virus1.png", 1, 1);

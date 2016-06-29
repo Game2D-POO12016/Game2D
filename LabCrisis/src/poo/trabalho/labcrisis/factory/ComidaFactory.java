@@ -39,7 +39,7 @@ public class ComidaFactory {
 		final float[] sceneCenterCoordinates =	comida.getSceneCenterCoordinates();
 		final float centerX =sceneCenterCoordinates[Constants.VERTEX_INDEX_X];
 		final float centerY =sceneCenterCoordinates[Constants.VERTEX_INDEX_Y];
-		Body comidaBody = PhysicsFactory.createBoxBody(physicsWorld,centerX, centerY,comida.getWidth(), comida.getHeight(),BodyType.KinematicBody, COMIDA_FIXTURE);
+		Body comidaBody = PhysicsFactory.createBoxBody(physicsWorld,centerX, centerY,comida.getWidth(), comida.getHeight(),BodyType.StaticBody, COMIDA_FIXTURE);
 		comida.setUserData(comida);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(comida, comidaBody));
 		comida.setBody(comidaBody);

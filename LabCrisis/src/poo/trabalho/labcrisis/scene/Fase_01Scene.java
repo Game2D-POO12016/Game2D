@@ -250,6 +250,9 @@ public class Fase_01Scene extends AbstractScene {
 				player.setScale(player.getScaleCenterX() * cresce1);
 				index_comida = lista_comidas.indexOf(comida);
 				detachChild(lista_comidas.get(index_comida));
+
+				GameManager.getInstance().incrementScore(100);
+				//scoreText.setText("SCORE " + GameManager.getInstance().getCurrentScore());
 				// lista_temp.remove(index_comida);
 				// lista_comidas.removeAll(lista_comidas);
 				// lista_comidas.addAll(lista_temp);
@@ -259,7 +262,7 @@ public class Fase_01Scene extends AbstractScene {
 				return false;
 			}
 		};
-		GameManager.getInstance().incrementScore(1);
+		
 		CollisionHandler myCollisionHandler2 = new CollisionHandler(myCollisionCallback2, player, lista_comidas);
 		registerUpdateHandler(myCollisionHandler2);
 

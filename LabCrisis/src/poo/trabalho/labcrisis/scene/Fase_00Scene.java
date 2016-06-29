@@ -223,6 +223,8 @@ public class Fase_00Scene extends AbstractScene {
 				detachChild(lista_comidas.get(index_comida));
 				// incrementa score
 				GameManager.getInstance().incrementScore(100);
+				//scoreText.setText("SCORE " + GameManager.getInstance().getCurrentScore());
+				createHUD();
 				return false;
 			}
 		};
