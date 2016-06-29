@@ -28,9 +28,11 @@ import poo.trabalho.labcrisis.GameManager;
 import poo.trabalho.labcrisis.MusicPlayer;
 import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Comida;
+import poo.trabalho.labcrisis.entity.Enemy;
 import poo.trabalho.labcrisis.entity.Parede;
 import poo.trabalho.labcrisis.entity.Player;
 import poo.trabalho.labcrisis.factory.ComidaFactory;
+import poo.trabalho.labcrisis.factory.EnemyFactory;
 import poo.trabalho.labcrisis.factory.ParedeFactory;
 import poo.trabalho.labcrisis.factory.PlayerFactory;
 
@@ -44,11 +46,13 @@ public class Fase_00Scene extends AbstractScene {
 	final ArrayList<Parede> lista_paredes_v = new ArrayList<Parede>();
 	final ArrayList<Parede> lista_paredes_h = new ArrayList<Parede>();
 	final ArrayList<Parede> lista_paredes_q = new ArrayList<Parede>();
+	final ArrayList<Parede> lista_paredes_f = new ArrayList<Parede>();
 	ArrayList<Comida> lista_comidas = new ArrayList<Comida>();
 	private float cresce1 = (float)0.60;
 	private int index_comida;
 	private float p1pos[];
 	private float originalScale = ResourceManager.getInstance().globuloTextureRegion.getScale()*((float)0.2);
+	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	
 	/* matriz que representa a fase 1, ela pode ser editada, copiada e colada(para criacao de novas fases) , etc
 	*cada numero representa um elemento na fase:
@@ -72,29 +76,29 @@ public class Fase_00Scene extends AbstractScene {
 	* importante : !!!!! ainda nao temos todos os sprites implementados (bacterias e virus)
 	**/
 	int[][] Fase00 = {
-			{1, 2, 2, 2, 2, 2, 2, 2, 2, 1},
+			{1, 1, 2, 2, 2, 2, 2, 2, 2, 1},
 			{1, 0, 0, 0, 1, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 1, 10, 0, 0, 0, 1},
+			{1, 0, 10, 0, 1, 0, 0, 1, 0, 1},
 			{1, 0, 0, 0, 1, 0, 0, 1, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 1, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 1, 0, 1},
-			{1, 0, 0, 0, 1, 0, 0, 1, 0, 1},
+			{1, 0, 10, 0, 1, 0, 10, 1, 0, 1},
 			{1, 0, 0, 0, 0, 0, 0, 1, 0, 1},
 			{1, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-			{1, 2, 2, 2, 2, 2, 2, 2, 2, 1},
+			{1, 2, 2, 2, 2, 2, 2, 2, 4, 1},
 	};
 	
 	public Fase_00Scene() {
 		ParedeFactory.getInstance().create(physicsWorld, vbom);
 		ComidaFactory.getInstance().create(physicsWorld, vbom);
 		PlayerFactory.getInstance().create(physicsWorld, vbom);
+		EnemyFactory.getInstance().create(physicsWorld, vbom);
 	}
 
 	@Override
 	public void populate() {
 		createBackground();
 		createMAPA(Fase00);
-		
 		createPlayer();
 		createHUD();
 
@@ -161,8 +165,8 @@ public class Fase_00Scene extends AbstractScene {
 		//customizacao da sprite do joystick
 		analogOnScreenControl.getControlBase().setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		analogOnScreenControl.getControlBase().setAlpha(0.5f);
-		analogOnScreenControl.getControlBase().setScale(1.25f);
-		analogOnScreenControl.getControlKnob().setScale(1.25f);
+		analogOnScreenControl.getControlBase().setScale(1.5f);
+		analogOnScreenControl.getControlKnob().setScale(1.5f);
 		analogOnScreenControl.refreshControlKnobPosition();
 		
 		//mostra o joystick na tela
@@ -205,6 +209,18 @@ public class Fase_00Scene extends AbstractScene {
 		CollisionHandler myCollisionHandlerQ = new CollisionHandler(myCollisionCallbackQ, player, lista_paredes_q);
 		registerUpdateHandler(myCollisionHandlerQ);
 		
+		//COLLISION HANDLER DE PAREDE FINAL
+		ICollisionCallback myCollisionCallbackF = new ICollisionCallback() {		
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				SceneManager.getInstance().showGameScene01();
+				return false;
+			}
+		};
+		
+		CollisionHandler myCollisionHandlerF = new CollisionHandler(myCollisionCallbackF, player, lista_paredes_f);
+		registerUpdateHandler(myCollisionHandlerF);
+		
 		
 		//COLLISION HANDLER DE COMIDA
 			ICollisionCallback myCollisionCallback2 = new ICollisionCallback() {		
@@ -214,12 +230,102 @@ public class Fase_00Scene extends AbstractScene {
 					player.setScale(player.getScaleCenterX()*cresce1);
 					index_comida = lista_comidas.indexOf(comida);
 					detachChild(lista_comidas.get(index_comida));
+					//incrementa score
+					GameManager.getInstance().incrementScore(100);	
 					return false;
 				}	
 			};
-			GameManager.getInstance().incrementScore(1);	
+			
 			CollisionHandler myCollisionHandler2 = new CollisionHandler(myCollisionCallback2, player, lista_comidas);
 			registerUpdateHandler(myCollisionHandler2);
+			
+   	 		//fisica para o inimigo 0
+   	 		final PhysicsHandler physicsHandlerI = new PhysicsHandler(enemies.get(0));
+   	 		enemies.get(0).registerUpdateHandler(physicsHandlerI);
+   	 		physicsHandlerI.setVelocityY(100);
+   	 		
+			//COLLISION HANDLER DE Vírus com jogador
+			ICollisionCallback myCollisionCallback3 = new ICollisionCallback() {		
+				@Override
+				public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+					player.die();
+					return false;
+				}	
+			};
+			
+			CollisionHandler myCollisionHandler3 = new CollisionHandler(myCollisionCallback3, player, enemies);
+			registerUpdateHandler(myCollisionHandler3);
+			
+			//COLLISION HANDLER DE VÍRUS 0 COM PAREDE vertical
+			ICollisionCallback myCollisionCallback4 = new ICollisionCallback() {		
+				@Override
+				public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {		
+					physicsHandlerI.setVelocityY(-physicsHandlerI.getVelocityY());
+					return false;
+				}
+			};
+			
+			CollisionHandler myCollisionHandler4 = new CollisionHandler(myCollisionCallback4, enemies.get(0), lista_paredes_v);
+			registerUpdateHandler(myCollisionHandler4);
+			
+  	 		//fisica para o inimigo 1 
+   	 		final PhysicsHandler physicsHandlerI1 = new PhysicsHandler(enemies.get(1));
+   	 		enemies.get(1).registerUpdateHandler(physicsHandlerI1);
+   	 		physicsHandlerI1.setVelocityX(100);
+   	 		
+			//COLLISION HANDLER DE VÍRUS 1 COM PAREDE horizontal
+			ICollisionCallback myCollisionCallbackI5 = new ICollisionCallback() {		
+				@Override
+				public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {		
+					physicsHandlerI1.setVelocityX(-physicsHandlerI1.getVelocityX());
+					return false;
+				}
+			};
+			CollisionHandler myCollisionHandlerI5 = new CollisionHandler(myCollisionCallbackI5, enemies.get(1), lista_paredes_h);
+			registerUpdateHandler(myCollisionHandlerI5);
+			
+  	 		//fisica para o inimigo 2
+   	 		final PhysicsHandler physicsHandlerI2 = new PhysicsHandler(enemies.get(2));
+   	 		enemies.get(2).registerUpdateHandler(physicsHandlerI2);
+   	 		physicsHandlerI2.setVelocityX(-100);
+   	 		
+			//COLLISION HANDLER DE VÍRUS 2 COM PAREDE horizontal
+			ICollisionCallback myCollisionCallbackI6 = new ICollisionCallback() {		
+				@Override
+				public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {		
+					physicsHandlerI2.setVelocityX(-physicsHandlerI2.getVelocityX());
+					return false;
+				}
+			};
+			CollisionHandler myCollisionHandlerI6 = new CollisionHandler(myCollisionCallbackI6, enemies.get(2), lista_paredes_h);
+			registerUpdateHandler(myCollisionHandlerI6);
+			
+  	 		//fisica para o inimigo 3
+   	 		final PhysicsHandler physicsHandlerI3 = new PhysicsHandler(enemies.get(3));
+   	 		enemies.get(3).registerUpdateHandler(physicsHandlerI3);
+   	 		physicsHandlerI3.setVelocityY(-100);
+   	 		
+			//COLLISION HANDLER DE VÍRUS 3 COM PAREDE vertical
+			ICollisionCallback myCollisionCallbackI7 = new ICollisionCallback() {		
+				@Override
+				public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {		
+					physicsHandlerI3.setVelocityY(-physicsHandlerI3.getVelocityY());
+					return false;
+				}
+			};
+			CollisionHandler myCollisionHandlerI7 = new CollisionHandler(myCollisionCallbackI7, enemies.get(3), lista_paredes_v);
+			registerUpdateHandler(myCollisionHandlerI7);
+			
+			//Check Player Status
+			if(player.isDead())
+			{
+				if(GameManager.getInstance().getCurrentScore() > activity.getHiScore())
+				{
+					activity.setHiScore(GameManager.getInstance().getCurrentScore());
+				}
+				SceneManager.getInstance().showGameOverScene();
+				camera.setHUD(null);
+			}
 			
 			//toca música no background da fase
 			MusicPlayer.getInstance().play();
@@ -242,7 +348,7 @@ public class Fase_00Scene extends AbstractScene {
 	
 	
 	private void createMAPA(int[][] Mapa){
-		int pos_x,pos_y;
+		int pos_x,pos_y,i = 0;
 		
 			for(int x_matriz = 0; x_matriz < 10 ; x_matriz++){       //linha da matriz
 		   	    for(int y_matriz = 0; y_matriz < 10; y_matriz++){    // coluna da matriz			 	
@@ -283,7 +389,7 @@ public class Fase_00Scene extends AbstractScene {
 						parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 						parede.setCurrentTileIndex(4);
 						parede.setScale((float) 0.7);
-						lista_paredes_v.add(parede);
+						lista_paredes_f.add(parede);
 						attachChild(parede);
 		   	    	
 						break;
@@ -324,7 +430,12 @@ public class Fase_00Scene extends AbstractScene {
 		   	    		break;
 		   	    	//cases de 10 a 11 irao processar a posicao onde os virus sao criados no mapa
 		   	    	case 10:
-		   	    		
+		   	    		Enemy enemy = EnemyFactory.getInstance().createEnemy(pos_x, pos_y);
+		   	    		enemy.setScale((float)0.2);
+		   	    		enemy.getBody().setLinearVelocity(100,0);
+	   	    			enemies.add(i, enemy);
+	   	    			attachChild(enemy);
+	   	    			i++;
 		   	    		break;
 		   	    		
 		   	    	case 11:
