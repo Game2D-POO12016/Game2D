@@ -133,6 +133,50 @@ public class SceneManager {
 				 * Depois, a cena anterior eh destruida e a atual eh setada
 				 * como CurrentScene.
 				 */
+				FaseTutorial gameScene = new FaseTutorial();
+				gameScene.populate();
+				setCurrentScene(gameScene);
+				previousScene.destroy();
+				return null;
+			}
+		}.execute();
+	}
+	
+	/**
+	 * Migra para a cena da fase 00 do jogo.
+	 * Ha a presenca da loadingScene.
+	 */
+	
+	public void showGameScene00() {
+		/**
+		 * Seta a ultima cena.
+		 */
+		final AbstractScene previousScene = getCurrentScene();
+		/**
+		 * Seta a cena atual.
+		 */
+		setCurrentScene(loadingScene);
+		/**
+		 * Tarefa de migracao de uma cena para outra.
+		 * Caso retorne null, a migracao foi bem-sucedida.
+		 */
+		new AsyncTask<Void, Void, Void>() {
+			@Override
+			protected Void doInBackground(Void... params) {
+				/**
+				 * A cena de loading fica ativa por um tempo antes de migrar para a fase.
+				 * Caso for interrompida nesse tempo, eh tratada a excecao de interrupcao.
+				 */
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					Debug.e("Interrupted", e);
+				}
+				/**
+				 * Instancia a cena da fase e a popula na camera do Android.
+				 * Depois, a cena anterior eh destruida e a atual eh setada
+				 * como CurrentScene.
+				 */
 				Fase_00Scene gameScene = new Fase_00Scene();
 				gameScene.populate();
 				setCurrentScene(gameScene);
