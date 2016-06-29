@@ -31,7 +31,7 @@ public class EnemyFactory {
 	
 	public Enemy createEnemy(float x, float y) {
 		Enemy enemy = new Enemy(x, y, ResourceManager.getInstance().inimigoTextureRegion, vbom);
-		Body enemyBody = PhysicsFactory.createBoxBody(physicsWorld, enemy,BodyType.KinematicBody, ENEMY_FIXTURE);
+		Body enemyBody = PhysicsFactory.createCircleBody(physicsWorld, enemy,BodyType.KinematicBody, ENEMY_FIXTURE);
 		enemyBody.setUserData(enemy);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(enemy,enemyBody));
 		enemy.setBody(enemyBody);
