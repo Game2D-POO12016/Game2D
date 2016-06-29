@@ -249,8 +249,19 @@ public class Fase_00Scene extends AbstractScene {
 				@Override
 				public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
 					player.die();
+								
+					//Check Player Status
+					if(player.isDead())
+					{
+						if(GameManager.getInstance().getCurrentScore() > activity.getHiScore())
+						{
+							activity.setHiScore(GameManager.getInstance().getCurrentScore());
+						}
+						SceneManager.getInstance().showGameOverScene();
+						camera.setHUD(null);
+					}
 					return false;
-				}	
+				}
 			};
 			
 			CollisionHandler myCollisionHandler3 = new CollisionHandler(myCollisionCallback3, player, enemies);
@@ -315,17 +326,6 @@ public class Fase_00Scene extends AbstractScene {
 			};
 			CollisionHandler myCollisionHandlerI7 = new CollisionHandler(myCollisionCallbackI7, enemies.get(3), lista_paredes_v);
 			registerUpdateHandler(myCollisionHandlerI7);
-			
-			//Check Player Status
-			if(player.isDead())
-			{
-				if(GameManager.getInstance().getCurrentScore() > activity.getHiScore())
-				{
-					activity.setHiScore(GameManager.getInstance().getCurrentScore());
-				}
-				SceneManager.getInstance().showGameOverScene();
-				camera.setHUD(null);
-			}
 			
 			//toca música no background da fase
 			MusicPlayer.getInstance().play();
