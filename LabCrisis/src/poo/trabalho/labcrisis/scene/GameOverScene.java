@@ -1,14 +1,19 @@
 package poo.trabalho.labcrisis.scene;
 
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ColorMenuItemDecorator;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
+
+import poo.trabalho.labcrisis.GameActivity;
+import poo.trabalho.labcrisis.MusicPlayer;
 
 /**
  * Classe identica a MenuSceneWrapper. Organiza a cena de game over.
@@ -21,29 +26,25 @@ import org.andengine.util.adt.color.Color;
 
 public class GameOverScene extends AbstractScene implements IOnMenuItemClickListener{
 	
-	private Text gameoverText;
 	private IMenuItem continueMenuItem;
-	private IMenuItem menuMenuItem;
 
 	@Override
 	public void populate() {
+		res.soundGameover.play();
 		MenuScene menuScene = new MenuScene(camera);
-		menuScene.getBackground().setColor(0.82f, 0.96f, 0.97f);
 		
-		gameoverText = new Text(150, 350, res.font, "GAME OVER", new TextOptions(HorizontalAlign.CENTER), vbom);
-		gameoverText.setAnchorCenter(0, 1);
-		gameoverText.setScale(2.0f);
-		continueMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0,res.font, "CONTINUE", vbom), Color.CYAN, Color.WHITE);
-		menuMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1,res.font, "MENU", vbom), Color.CYAN, Color.WHITE);
-		
-		menuScene.attachChild(gameoverText);
+		/*Background contido na sprite.*/
+		Sprite bkgd = new Sprite(GameActivity.CAMERA_WIDTH / 2, GameActivity.CAMERA_HEIGHT / 2, res.gameOverTextureRegion, vbom);
+		menuScene.setBackground(new SpriteBackground(bkgd));
+	
+		/*"Botão" de continue*/
+		continueMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, res.font, "CONTINUE", vbom), Color.WHITE, Color.WHITE);
+
+		/*Adiciona à cena.*/
 		menuScene.addMenuItem(continueMenuItem);
-		menuScene.addMenuItem(menuMenuItem);
 		
-		menuScene.buildAnimations();
-		continueMenuItem.setPosition(150, 100);
-		menuMenuItem.setPosition(650, 100);
-		menuScene.setBackgroundEnabled(true);
+		/*Seta a posição, adiciona o Listener e coloca a cena na tela.*/
+		continueMenuItem.setPosition(520, 80);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
 	}
@@ -67,21 +68,19 @@ public class GameOverScene extends AbstractScene implements IOnMenuItemClickList
 			case 0 :
 				SceneManager.getInstance().showGameScene();
 				return true;
-			/**
-			 * Retorna ao menu do jogo.
-			 */
-			case 1 :
-				SceneManager.getInstance().showMenuScene();
-				return true;
 				
 			default :
 				return false;
 		}
 	}
 	
+	/**
+	 * Retorna ao menu do jogo.
+	 */
+	
 	@Override
 	public void onBackKeyPressed() {
-		activity.finish();
+		SceneManager.getInstance().showMenuScene();
 	}
 
 }

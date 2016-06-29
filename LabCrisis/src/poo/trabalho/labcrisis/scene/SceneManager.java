@@ -3,10 +3,10 @@ package poo.trabalho.labcrisis.scene;
 import org.andengine.util.debug.Debug;
 import android.os.AsyncTask;
 import poo.trabalho.labcrisis.ResourceManager;
+import poo.trabalho.labcrisis.GameManager;
 
 /**
  * Classe que gerencia as cenas do jogo bem como as migracoes de uma cena para outra.
- * @author ALEXANDRE CORREIA
  *
  */
 
@@ -16,6 +16,7 @@ public class SceneManager {
 	private ResourceManager res = ResourceManager.getInstance();
 	private AbstractScene currentScene;
 	private LoadingScene loadingScene = null;
+	private IntroScene introScene = null;
 	
 	/**
 	 * Construtor vazio
@@ -94,11 +95,103 @@ public class SceneManager {
 	}
 	
 	/**
-	 * Migra para a cena da fase do jogo.
+	 * Migra para a cena da fase 00 do jogo.
 	 * Ha a presenca da loadingScene.
 	 */
 	
 	public void showGameScene() {
+		/**
+		 * Seta a ultima cena.
+		 */
+		final AbstractScene previousScene = getCurrentScene();
+		/**
+		 * Seta a cena atual.
+		 */
+		if (introScene == null) {
+			introScene = new IntroScene();
+		}
+		setCurrentScene(introScene);
+		introScene.populate();
+		/**
+		 * Tarefa de migracao de uma cena para outra.
+		 * Caso retorne null, a migracao foi bem-sucedida.
+		 */
+		new AsyncTask<Void, Void, Void>() {
+			@Override
+			protected Void doInBackground(Void... params) {
+				/**
+				 * A cena de loading fica ativa por um tempo antes de migrar para a fase.
+				 * Caso for interrompida nesse tempo, eh tratada a excecao de interrupcao.
+				 */
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					Debug.e("Interrupted", e);
+				}
+				/**
+				 * Instancia a cena da fase e a popula na camera do Android.
+				 * Depois, a cena anterior eh destruida e a atual eh setada
+				 * como CurrentScene.
+				 */
+				FaseTutorial gameScene = new FaseTutorial();
+				gameScene.populate();
+				setCurrentScene(gameScene);
+				previousScene.destroy();
+				return null;
+			}
+		}.execute();
+	}
+	
+	/**
+	 * Migra para a cena da fase 00 do jogo.
+	 * Ha a presenca da loadingScene.
+	 */
+	
+	public void showGameScene00() {
+		/**
+		 * Seta a ultima cena.
+		 */
+		final AbstractScene previousScene = getCurrentScene();
+		/**
+		 * Seta a cena atual.
+		 */
+		setCurrentScene(loadingScene);
+		/**
+		 * Tarefa de migracao de uma cena para outra.
+		 * Caso retorne null, a migracao foi bem-sucedida.
+		 */
+		new AsyncTask<Void, Void, Void>() {
+			@Override
+			protected Void doInBackground(Void... params) {
+				/**
+				 * A cena de loading fica ativa por um tempo antes de migrar para a fase.
+				 * Caso for interrompida nesse tempo, eh tratada a excecao de interrupcao.
+				 */
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					Debug.e("Interrupted", e);
+				}
+				/**
+				 * Instancia a cena da fase e a popula na camera do Android.
+				 * Depois, a cena anterior eh destruida e a atual eh setada
+				 * como CurrentScene.
+				 */
+				Fase_00Scene gameScene = new Fase_00Scene();
+				gameScene.populate();
+				setCurrentScene(gameScene);
+				previousScene.destroy();
+				return null;
+			}
+		}.execute();
+	}
+	
+	/**
+	 * Migra para a cena da fase 01 do jogo.
+	 * Ha a presenca da loadingScene.
+	 */
+	
+	public void showGameScene01() {
 		/**
 		 * Seta a ultima cena.
 		 */
@@ -130,8 +223,8 @@ public class SceneManager {
 				 */
 				Fase_01Scene gameScene = new Fase_01Scene();
 				gameScene.populate();
-				previousScene.destroy();
 				setCurrentScene(gameScene);
+				previousScene.destroy();
 				return null;
 			}
 		}.execute();
@@ -185,6 +278,15 @@ public class SceneManager {
 	 */
 	
 	public void showGameOverScene() {
+		GameManager.getInstance().reset();
+		final AbstractScene previousScene = getCurrentScene();
+		GameOverScene gameoverScene = new GameOverScene();
+		gameoverScene.populate();
+		previousScene.destroy();
+		setCurrentScene(gameoverScene);
+	}
+	
+	public void showEndScene() {
 		final AbstractScene previousScene = getCurrentScene();
 		setCurrentScene(loadingScene);
 			new AsyncTask<Void, Void, Void>() {
@@ -195,10 +297,10 @@ public class SceneManager {
 					} catch (InterruptedException e) {
 						Debug.e("Interrupted", e);
 					}
-					GameOverScene gameoverScene = new GameOverScene();
-					gameoverScene.populate();
+					EndScene endScene = new EndScene();
+					endScene.populate();
 					previousScene.destroy();
-					setCurrentScene(gameoverScene);
+					setCurrentScene(endScene);
 					return null;
 				}
 			}.execute();

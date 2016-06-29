@@ -22,7 +22,6 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 	private Text rulesText;
 	private IMenuItem nextMenuItem;
 	private IMenuItem backMenuItem;
-	private IMenuItem menuMenuItem;
 	
 	private CharSequence text = "ENREDO DO JOGO\n"
 								+ "\nO CORPO DO FULANO FOI ATACADO POR INVASORES.\n"
@@ -30,16 +29,16 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 								+ "SISTEMA SANGUINEO PARA COMBATER CONTRA ESSES\n"
 								+ "TERRIVEIS INVASORES. POREM, O CAMINHO ESTA\n"
 								+ "DIFICIL E PERIGOSO.\n"
-								+ "\nBOB, TOME CUIDADO E O FULANO PRECISA DE VOCE!";
+								+ "\nBOB! O FULANO PRECISA DE VOCE!";
 	
 	private CharSequence rules = "REGRAS DO JOGO\n"
 								+ "\nUSE O BOTAO DIRECIONAL PARA MOVIMENTAR O BOB\n"
 								+ "E PARA FAGOCITAR OS INVASORES. QUANDO BOB\n"
-								+ "DEVORA OS INVASORES, ELE FICA CADA VEZ MAIOR \n"
+								+ "DEVORA AS BACTÉRIAS ELE FICA CADA VEZ MAIOR \n"
 								+ "E GANHA PONTOS. POREM, HA PASSAGENS QUE SAO\n"
 								+ "MUITO PEQUENAS PARA O BOB PASSAR E, POR ISSO,\n"
-								+ "ELE PRECISA SE DIVIDIR. BOB MORRE QUANDO FICAR\n"
-								+ "MAIOR QUE A ESPESSURA DA PAREDE SANGUINEA.";
+								+ "ELE PRECISA SE DIVIDIR. BOB MORRE QUANDO SE\n"
+								+ "CHOCAR COM UM VÍRUS!";
 	
 	/**
 	 * Construtor do tutorial. 
@@ -58,16 +57,13 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 		rulesText.setScale(0.6f);
 		nextMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0,res.font, "NEXT", vbom), Color.CYAN, Color.WHITE);
 		backMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1,res.font, "BACK", vbom), Color.CYAN, Color.WHITE);
-		menuMenuItem = new ColorMenuItemDecorator(new TextMenuItem(2,res.font, "MENU", vbom), Color.CYAN, Color.WHITE);
 		
 		menuScene.attachChild(textText);
 		menuScene.addMenuItem(nextMenuItem);
-		menuScene.addMenuItem(menuMenuItem);
 		
 		menuScene.buildAnimations();
-		nextMenuItem.setPosition(650, 100);
-		backMenuItem.setPosition(150, 100);
-		menuMenuItem.setPosition(150, 100);
+		nextMenuItem.setPosition(400, 100);
+		backMenuItem.setPosition(400, 100);
 		menuScene.setBackgroundEnabled(true);
 		menuScene.setOnMenuItemClickListener(this);
 		setChildScene(menuScene);
@@ -83,7 +79,7 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 	
 	@Override
 	public void onBackKeyPressed() {
-		activity.finish();
+		SceneManager.getInstance().showMenuScene();
 	}
 
 	@Override
@@ -104,11 +100,6 @@ public class HowToPlayScene extends AbstractScene implements IOnMenuItemClickLis
 				pMenuScene.attachChild(textText);
 				pMenuScene.clearMenuItems();
 				pMenuScene.addMenuItem(nextMenuItem);
-				pMenuScene.addMenuItem(menuMenuItem);
-				return true;
-				
-			case 2 :
-				SceneManager.getInstance().showMenuScene();
 				return true;
 			
 			default :
