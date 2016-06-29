@@ -10,20 +10,14 @@ import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.handler.collision.CollisionHandler;
 import org.andengine.engine.handler.collision.ICollisionCallback;
 import org.andengine.engine.handler.physics.PhysicsHandler;
-import org.andengine.entity.Entity;
-import org.andengine.entity.scene.background.EntityBackground;
 import org.andengine.entity.scene.background.RepeatingSpriteBackground;
-import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.shape.IShape;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.entity.text.*;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.LineJointDef;
-import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
 import android.hardware.SensorManager;
 import poo.trabalho.labcrisis.GameActivity;
@@ -31,9 +25,11 @@ import poo.trabalho.labcrisis.GameManager;
 import poo.trabalho.labcrisis.MusicPlayer;
 import poo.trabalho.labcrisis.ResourceManager;
 import poo.trabalho.labcrisis.entity.Comida;
+import poo.trabalho.labcrisis.entity.Enemy;
 import poo.trabalho.labcrisis.entity.Parede;
 import poo.trabalho.labcrisis.entity.Player;
 import poo.trabalho.labcrisis.factory.ComidaFactory;
+import poo.trabalho.labcrisis.factory.EnemyFactory;
 import poo.trabalho.labcrisis.factory.ParedeFactory;
 import poo.trabalho.labcrisis.factory.PlayerFactory;
 
@@ -49,12 +45,13 @@ public class Fase_01Scene extends AbstractScene {
 	final ArrayList<Parede> lista_paredes_v = new ArrayList<Parede>();
 	final ArrayList<Parede> lista_paredes_h = new ArrayList<Parede>();
 	final ArrayList<Parede> lista_paredes_q = new ArrayList<Parede>();
+	final ArrayList<Parede> lista_paredes_f = new ArrayList<Parede>();
 	ArrayList<Comida> lista_comidas = new ArrayList<Comida>();
 	private float cresce1 = (float) 0.60;
 	private int index_comida;
 	private float p1pos[];
 	private float originalScale = ResourceManager.getInstance().globuloTextureRegion.getScale() * ((float) 0.2);
-
+	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	/*
 	 * matriz que representa a fase 1, ela pode ser editada, copiada e
 	 * colada(para criacao de novas fases) , etc cada numero representa um
@@ -72,23 +69,23 @@ public class Fase_01Scene extends AbstractScene {
 	 * importante : !!!!! ainda nao temos todos os sprites implementados
 	 * (bacterias e virus)
 	 **/
-	int[][] Fase01 = { { 1, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
+	int[][] Fase01 = { { 1, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
 			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 7, 0, 0, 1, 0, 0, 0, 3, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 1, 0, 0, 0, 3, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 1 },
+			{ 1, 7, 10, 0, 1, 0, 0, 0, 3, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, //inimigo 0 horizontal
+			{ 1, 0, 0, 0, 1, 0, 0, 0, 3, 3, 10, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 1 }, //inimigo 1 horizontal
 			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 3, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3, 2, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 3, 0, 0, 0, 10, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, //inimigo 2 vertical
 			{ 1, 0, 0, 0, 3, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 3, 2, 2, 3, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
-			{ 1, 0, 0, 0, 3, 2, 2, 2, 2, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 }, //inimigo 3 horizontal
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 10, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 1 }, //inimigo 4 vertical
+			{ 1, 0, 0, 0, 3, 2, 2, 2, 2, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, //inimigo 5 vertical
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
@@ -97,9 +94,9 @@ public class Fase_01Scene extends AbstractScene {
 			{ 1, 0, 0, 0, 1, 0, 0, 3, 0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
 			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
 			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 3, 0, 0, 1 },
-			{ 1, 0, 0, 0, 3, 2, 2, 2, 2, 2, 3, 0, 0, 0, 1, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 0, 0, 3, 2, 2, 2, 2, 2, 3, 0, 0, 0, 1, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 10, 1 }, //inimigo 6 horizontal
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, //inimigo 7 horizontal
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 1 } };
 
@@ -132,18 +129,21 @@ public class Fase_01Scene extends AbstractScene {
 							final float pValueY) {
 						// physicsHandler.setVelocity(pValueX * 300, pValueY *
 						// 300);
-						if (physicsHandler.getVelocityX() >= 900 && physicsHandler.getVelocityY() >= 900) {
+						if(physicsHandler.getVelocityX() >= 500 && physicsHandler.getVelocityY() >= 500){
 							physicsHandler.setAccelerationX(0);
 							physicsHandler.setAccelerationY(0);
-						} else if (physicsHandler.getVelocityY() >= 900) {
-							physicsHandler.setAccelerationX(pValueX * 300);
+						}
+						else if(physicsHandler.getVelocityY() >= 500){
+							physicsHandler.setAccelerationX(pValueX*250);
 							physicsHandler.setAccelerationY(0);
-						} else if (physicsHandler.getVelocityX() >= 900) {
+						}
+						else if(physicsHandler.getVelocityX() >= 500){
 							physicsHandler.setAccelerationX(0);
-							physicsHandler.setAccelerationY(pValueY * 300);
-						} else {
-							physicsHandler.setAccelerationX(pValueX * 300);
-							physicsHandler.setAccelerationY(pValueY * 300);
+							physicsHandler.setAccelerationY(pValueY*250);
+						}
+						else{
+							physicsHandler.setAccelerationX(pValueX*250);
+							physicsHandler.setAccelerationY(pValueY*250);
 						}
 					}
 
@@ -194,36 +194,7 @@ public class Fase_01Scene extends AbstractScene {
 		ICollisionCallback myCollisionCallback = new ICollisionCallback() {
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				// colisão horizontal com parede
-				// if(lista_paredes.get(lista_paredes.indexOf(parede)).getCurrentTileIndex()
-				// == 1){ //tratamento de colisão horizontal
-
-				physicsHandler.setVelocityX(-physicsHandler.getVelocityX());
-				/*
-				 * player.getBody().applyLinearImpulse(-physicsHandler.
-				 * getVelocityX()*player.getBody().getMass() ,
-				 * physicsHandler.getVelocityY()*player.getBody().getMass(),
-				 * player.getBody().getWorldCenter().x,
-				 * player.getBody().getWorldCenter().y);
-				 */
-				// }
-				// colisão vertical com parede
-				/*
-				 * else if(physicsHandler.getAccelerationY() != 0){
-				 * player.getBody().applyLinearImpulse(physicsHandler.
-				 * getVelocityX()*player.getBody().getMass() ,
-				 * -physicsHandler.getVelocityY()*player.getBody().getMass(),
-				 * player.getBody().getPosition().x,
-				 * player.getBody().getPosition().y); }
-				 */
-				// if //aplicar forća == massa * acc
-				// condićão para acc X != 0
-				// if
-				// last_x = -physicsHandler.getVelocityX()*0.75f;
-				// last_y = -(physicsHandler.getVelocityY())*0.75f;
-				// physicsHandler.setVelocity(last_x,last_y);
-				// ResourceManager.getInstance().soundComer.play();
-				// ResourceManager.getInstance().soundGameover.play();
+				physicsHandler.setVelocityX(-physicsHandler.getVelocityX()*((float)0.7));
 				return false;
 			}
 		};
@@ -235,7 +206,7 @@ public class Fase_01Scene extends AbstractScene {
 		ICollisionCallback myCollisionCallbackV = new ICollisionCallback() {
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				physicsHandler.setVelocityY(-physicsHandler.getVelocityY());
+				physicsHandler.setVelocityY(-physicsHandler.getVelocityY()*((float)0.7));
 				return false;
 			}
 		};
@@ -247,14 +218,27 @@ public class Fase_01Scene extends AbstractScene {
 		ICollisionCallback myCollisionCallbackQ = new ICollisionCallback() {
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				physicsHandler.setVelocityY(-physicsHandler.getVelocityY());
-				physicsHandler.setVelocityX(-physicsHandler.getVelocityX());
+				physicsHandler.setVelocityY(-physicsHandler.getVelocityY()*((float)0.7));
+				physicsHandler.setVelocityX(-physicsHandler.getVelocityX()*((float)0.7));
 				return false;
 			}
 		};
 
 		CollisionHandler myCollisionHandlerQ = new CollisionHandler(myCollisionCallbackQ, player, lista_paredes_q);
 		registerUpdateHandler(myCollisionHandlerQ);
+		
+		// COLLISION HANDLER DE PAREDE FINAL
+		ICollisionCallback myCollisionCallbackF = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				SceneManager.getInstance().showGameScene01();
+				return false;
+			}
+		};
+
+		CollisionHandler myCollisionHandlerF = new CollisionHandler(myCollisionCallbackF, player, lista_paredes_f);
+		registerUpdateHandler(myCollisionHandlerF);
+
 
 		// COLLISION HANDLER DE COMIDA
 		ICollisionCallback myCollisionCallback2 = new ICollisionCallback() {
@@ -279,6 +263,164 @@ public class Fase_01Scene extends AbstractScene {
 		CollisionHandler myCollisionHandler2 = new CollisionHandler(myCollisionCallback2, player, lista_comidas);
 		registerUpdateHandler(myCollisionHandler2);
 
+		// COLLISION HANDLER DE VÃ­rus com jogador
+		ICollisionCallback myCollisionCallback3 = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				player.die();
+
+				// Check Player Status
+				if (player.isDead()) {
+					if (GameManager.getInstance().getCurrentScore() > activity.getHiScore()) {
+						activity.setHiScore(GameManager.getInstance().getCurrentScore());
+					}
+					MusicPlayer.getInstance().stop();
+					SceneManager.getInstance().showGameOverScene();
+					camera.setHUD(null);
+				}
+				return false;
+			}
+		};
+
+		CollisionHandler myCollisionHandler3 = new CollisionHandler(myCollisionCallback3, player, enemies);
+		registerUpdateHandler(myCollisionHandler3);
+		
+		// fisica para o inimigo 0
+		final PhysicsHandler physicsHandlerI = new PhysicsHandler(enemies.get(0));
+		enemies.get(0).registerUpdateHandler(physicsHandlerI);
+		physicsHandlerI.setVelocityX(100);
+		
+		// COLLISION HANDLER DE VÃ�RUS 0 COM PAREDE horizontal
+		ICollisionCallback myCollisionCallback4 = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandlerI.setVelocityX(-physicsHandlerI.getVelocityX());
+				return false;
+			}
+		};
+
+		CollisionHandler myCollisionHandler4 = new CollisionHandler(myCollisionCallback4, enemies.get(0),lista_paredes_h);
+		registerUpdateHandler(myCollisionHandler4);
+		
+		// fisica para o inimigo 1
+		final PhysicsHandler physicsHandlerI1 = new PhysicsHandler(enemies.get(1));
+		enemies.get(1).registerUpdateHandler(physicsHandlerI1);
+		physicsHandlerI1.setVelocityX(100);
+		
+		// COLLISION HANDLER DE VÃ�RUS 1 COM PAREDE horizontal
+		ICollisionCallback myCollisionCallbackH1 = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandlerI1.setVelocityX(-physicsHandlerI1.getVelocityX());
+				return false;
+			}
+		};
+
+		CollisionHandler myCollisionHandlerH1 = new CollisionHandler(myCollisionCallbackH1, enemies.get(1),lista_paredes_h);
+		registerUpdateHandler(myCollisionHandlerH1);
+		
+		// fisica para o inimigo 3
+		final PhysicsHandler physicsHandlerI3 = new PhysicsHandler(enemies.get(3));
+		enemies.get(3).registerUpdateHandler(physicsHandlerI3);
+		physicsHandlerI3.setVelocityX(100);
+		
+		// COLLISION HANDLER DE VÃ�RUS 3 COM PAREDE horizontal
+		ICollisionCallback myCollisionCallbackH3 = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandlerI3.setVelocityX(-physicsHandlerI3.getVelocityX());
+				return false;
+			}
+		};
+
+		CollisionHandler myCollisionHandlerH3 = new CollisionHandler(myCollisionCallbackH3, enemies.get(3),lista_paredes_h);
+		registerUpdateHandler(myCollisionHandlerH3);
+		
+		// fisica para o inimigo 6
+		final PhysicsHandler physicsHandlerI6 = new PhysicsHandler(enemies.get(6));
+		enemies.get(6).registerUpdateHandler(physicsHandlerI6);
+		physicsHandlerI6.setVelocityX(100);
+		
+		// COLLISION HANDLER DE VÃ�RUS 3 COM PAREDE horizontal
+		ICollisionCallback myCollisionCallbackH6 = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandlerI6.setVelocityX(-physicsHandlerI6.getVelocityX());
+				return false;
+			}
+		};
+
+		CollisionHandler myCollisionHandlerH6 = new CollisionHandler(myCollisionCallbackH6, enemies.get(6),lista_paredes_h);
+		registerUpdateHandler(myCollisionHandlerH6);
+		
+		// fisica para o inimigo 7
+		final PhysicsHandler physicsHandlerI7 = new PhysicsHandler(enemies.get(7));
+		enemies.get(7).registerUpdateHandler(physicsHandlerI7);
+		physicsHandlerI7.setVelocityX(100);
+		
+		// COLLISION HANDLER DE VÃ�RUS 3 COM PAREDE horizontal
+		ICollisionCallback myCollisionCallbackH7 = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandlerI7.setVelocityX(-physicsHandlerI7.getVelocityX());
+				return false;
+			}
+		};
+
+		CollisionHandler myCollisionHandlerH7 = new CollisionHandler(myCollisionCallbackH7, enemies.get(7),lista_paredes_h);
+		registerUpdateHandler(myCollisionHandlerH7);
+		
+		// fisica para o inimigo 2
+		final PhysicsHandler physicsHandlerI2 = new PhysicsHandler(enemies.get(2));
+		enemies.get(2).registerUpdateHandler(physicsHandlerI2);
+		physicsHandlerI2.setVelocityY(-100);
+
+		// COLLISION HANDLER DE VÃ�RUS 3 COM PAREDE vertical
+		ICollisionCallback myCollisionCallbackI2 = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandlerI2.setVelocityY(-physicsHandlerI2.getVelocityY());
+				return false;
+			}
+		};
+		CollisionHandler myCollisionHandlerI2 = new CollisionHandler(myCollisionCallbackI2, enemies.get(2),
+				lista_paredes_v);
+		registerUpdateHandler(myCollisionHandlerI2);
+		
+		// fisica para o inimigo 4
+		final PhysicsHandler physicsHandlerI4 = new PhysicsHandler(enemies.get(4));
+		enemies.get(4).registerUpdateHandler(physicsHandlerI4);
+		physicsHandlerI4.setVelocityY(-100);
+
+		// COLLISION HANDLER DE VÃ�RUS 3 COM PAREDE vertical
+		ICollisionCallback myCollisionCallbackI4 = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandlerI4.setVelocityY(-physicsHandlerI4.getVelocityY());
+				return false;
+			}
+		};
+		CollisionHandler myCollisionHandlerI4 = new CollisionHandler(myCollisionCallbackI4, enemies.get(4),
+				lista_paredes_v);
+		registerUpdateHandler(myCollisionHandlerI4);
+		
+		// fisica para o inimigo 5
+		final PhysicsHandler physicsHandlerI5 = new PhysicsHandler(enemies.get(5));
+		enemies.get(5).registerUpdateHandler(physicsHandlerI5);
+		physicsHandlerI5.setVelocityY(-100);
+
+		// COLLISION HANDLER DE VÃ�RUS 3 COM PAREDE vertical
+		ICollisionCallback myCollisionCallbackI5 = new ICollisionCallback() {
+			@Override
+			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
+				physicsHandlerI5.setVelocityY(-physicsHandlerI5.getVelocityY());
+				return false;
+			}
+		};
+		CollisionHandler myCollisionHandlerI5 = new CollisionHandler(myCollisionCallbackI5, enemies.get(5),
+				lista_paredes_v);
+		registerUpdateHandler(myCollisionHandlerI5);
+		
 		// textos de guia de onde ficam entrada e saida do labirinto
 		inicioText = new Text(100, 3300, res.font, "INICIO", new TextOptions(HorizontalAlign.LEFT), vbom);
 		inicioText.setAnchorCenter(0, 1);
@@ -310,7 +452,7 @@ public class Fase_01Scene extends AbstractScene {
 	 */
 
 	private void createMAPA(int[][] Mapa) {
-		int pos_x, pos_y;
+		int pos_x, pos_y,i=0;
 
 		for (int x_matriz = 0; x_matriz < 30; x_matriz++) { // linha da matriz
 			for (int y_matriz = 0; y_matriz < 30; y_matriz++) { // coluna da
@@ -350,7 +492,7 @@ public class Fase_01Scene extends AbstractScene {
 				case 3:
 					parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 					parede.setCurrentTileIndex(3);
-					parede.setScale((float) 0.7);
+					parede.setScale((float) 0.73);
 					lista_paredes_q.add(parede);
 					attachChild(parede);
 
@@ -360,7 +502,7 @@ public class Fase_01Scene extends AbstractScene {
 					parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 					parede.setCurrentTileIndex(4);
 					parede.setScale((float) 0.7);
-					lista_paredes_v.add(parede);
+					lista_paredes_f.add(parede);
 					attachChild(parede);
 
 					break;
@@ -403,7 +545,12 @@ public class Fase_01Scene extends AbstractScene {
 				// cases de 10 a 11 irao processar a posicao onde os virus sao
 				// criados no mapa
 				case 10:
-
+					Enemy enemy = EnemyFactory.getInstance().createEnemy(pos_x, pos_y);
+					enemy.setScale((float) 0.2);
+					enemy.getBody().setLinearVelocity(100, 0);
+					enemies.add(i, enemy);
+					attachChild(enemy);
+					i++;					
 					break;
 
 				case 11:
@@ -423,14 +570,14 @@ public class Fase_01Scene extends AbstractScene {
 	}
 
 	private void createPlayer() {
-		player = PlayerFactory.getInstance().createPlayer(100, 3200);
+		player = PlayerFactory.getInstance().createPlayer(100, 3050);
 		player.setScale((float) 0.2);
 		attachChild(player);
 	}
 
 	private void createPlayer2() {
 		p1pos = player.getSceneCenterCoordinates();
-		player2 = PlayerFactory.getInstance().createPlayer(p1pos[0], p1pos[1] + 1f);
+		player2 = PlayerFactory.getInstance().createPlayer(p1pos[0], p1pos[1] + 50);
 		player2.setScale((float) 0.2);
 		attachChild(player2);
 
