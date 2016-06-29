@@ -204,7 +204,7 @@ public class FaseTutorial extends AbstractScene {
 		ICollisionCallback myCollisionCallbackF = new ICollisionCallback() {		
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				SceneManager.getInstance().showGameScene01();
+				SceneManager.getInstance().showGameScene00();
 				return false;
 			}
 		};
