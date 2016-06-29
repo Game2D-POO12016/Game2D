@@ -236,22 +236,10 @@ public class SceneManager {
 	public void showGameOverScene() {
 		GameManager.getInstance().reset();
 		final AbstractScene previousScene = getCurrentScene();
-		setCurrentScene(loadingScene);
-			new AsyncTask<Void, Void, Void>() {
-				@Override
-				protected Void doInBackground(Void... params) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						Debug.e("Interrupted", e);
-					}
-					GameOverScene gameoverScene = new GameOverScene();
-					gameoverScene.populate();
-					previousScene.destroy();
-					setCurrentScene(gameoverScene);
-					return null;
-				}
-			}.execute();
+		GameOverScene gameoverScene = new GameOverScene();
+		gameoverScene.populate();
+		previousScene.destroy();
+		setCurrentScene(gameoverScene);
 	}
 	
 	public void showEndScene() {

@@ -28,9 +28,18 @@ public class ResourceManager {
 	public Engine engine;
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
-	public ITextureRegion splashTextureRegion, menuTextureRegion, gameBkgdTextureRegion, introFase1TextureRegion;
-	private BitmapTextureAtlas splashTextureAtlas, menuTextureAtlas, gameBkgdTextureAtlas, introFase1TextureAtlas;
+	public ITextureRegion splashTextureRegion, menuTextureRegion, gameBkgdTextureRegion, introFase1TextureRegion, gameOverTextureRegion;
+	private BitmapTextureAtlas splashTextureAtlas, menuTextureAtlas, gameBkgdTextureAtlas, introFase1TextureAtlas, gameOverTextureAtlas;
 
+	public void loadGameOverGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		gameOverTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480,
+				BitmapTextureFormat.RGBA_8888, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		gameOverTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameOverTextureAtlas,
+				activity.getAssets(), "game_over.png", 0, 0);
+		gameOverTextureAtlas.load();
+	}
+	
 	public void loadIntroFase1Graphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		introFase1TextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480,
@@ -185,7 +194,7 @@ public class ResourceManager {
 	public void loadFont() {
 		font = FontFactory.createStroke(activity.getFontManager(), activity.getTextureManager(), 256, 256,
 				Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 50, true, Color.WHITE_ARGB_PACKED_INT, 2f,
-				Color.BLACK_ABGR_PACKED_INT);
+				Color.WHITE_ARGB_PACKED_INT);
 		font.prepareLetters("01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?".toCharArray());
 		font.load();
 	}

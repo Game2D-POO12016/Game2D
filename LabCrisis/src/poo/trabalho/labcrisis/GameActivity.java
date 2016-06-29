@@ -74,6 +74,7 @@ public class GameActivity extends BaseGameActivity {
 			ResourceManager.getInstance().loadMenuGraphics();
 			ResourceManager.getInstance().loadGameBkgdGraphics();
 			ResourceManager.getInstance().loadIntroFase1Graphics();
+			ResourceManager.getInstance().loadGameOverGraphics();
 			pOnCreateResourcesCallback.onCreateResourcesFinished();
 		}
 	

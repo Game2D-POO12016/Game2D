@@ -246,6 +246,7 @@ public class Fase_00Scene extends AbstractScene {
 					if (GameManager.getInstance().getCurrentScore() > activity.getHiScore()) {
 						activity.setHiScore(GameManager.getInstance().getCurrentScore());
 					}
+					MusicPlayer.getInstance().stop();
 					SceneManager.getInstance().showGameOverScene();
 					camera.setHUD(null);
 				}
