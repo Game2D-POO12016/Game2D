@@ -14,8 +14,7 @@ import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.handler.collision.CollisionHandler;
 import org.andengine.engine.handler.collision.ICollisionCallback;
 import org.andengine.engine.handler.physics.PhysicsHandler;
-import org.andengine.entity.Entity;
-import org.andengine.entity.scene.background.EntityBackground;
+import org.andengine.entity.scene.background.RepeatingSpriteBackground;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
@@ -26,6 +25,7 @@ import com.badlogic.gdx.physics.box2d.joints.LineJointDef;
 
 
 import android.hardware.SensorManager;
+import poo.trabalho.labcrisis.GameActivity;
 import poo.trabalho.labcrisis.GameManager;
 import poo.trabalho.labcrisis.MusicPlayer;
 import poo.trabalho.labcrisis.ResourceManager;
@@ -51,7 +51,7 @@ public class FaseTutorial extends AbstractScene {
 	final ArrayList<Parede> lista_paredes_q = new ArrayList<Parede>();
 	final ArrayList<Parede> lista_paredes_f = new ArrayList<Parede>();
 	ArrayList<Comida> lista_comidas = new ArrayList<Comida>();
-	private float cresce1 = (float)0.60;
+	private float cresce1 = (float)0.70;
 	private float p1pos[];
 	private float originalScale = ResourceManager.getInstance().globuloTextureRegion.getScale()*((float)0.2);
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
@@ -78,7 +78,7 @@ public class FaseTutorial extends AbstractScene {
 	* importante : !!!!! ainda nao temos todos os sprites implementados (bacterias e virus)
 	**/
 	int[][] Fase = {
-			{1, 2, 2, 2, 2, 2, 2, 2, 2, 1},
+			{1, 4, 2, 2, 2, 2, 2, 2, 2, 1},
 			{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 7, 0, 0, 0, 0, 1},
 			{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -153,11 +153,11 @@ public class FaseTutorial extends AbstractScene {
 			}
 		});
 		
-		//customizacao da sprite do joystick
+		// customizacao da sprite do joystick
 		analogOnScreenControl.getControlBase().setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		analogOnScreenControl.getControlBase().setAlpha(0.5f);
-		analogOnScreenControl.getControlBase().setScale(1.5f);
-		analogOnScreenControl.getControlKnob().setScale(1.5f);
+		analogOnScreenControl.getControlBase().setAlpha(0.9f);
+		//analogOnScreenControl.getControlBase().setScale(1.5f);
+		//analogOnScreenControl.getControlKnob().setScale(1.5f);
 		analogOnScreenControl.refreshControlKnobPosition();
 		
 		//mostra o joystick na tela
@@ -245,8 +245,9 @@ public class FaseTutorial extends AbstractScene {
 	}
 	
 	private void createBackground() {
-		Entity background = new Entity();
-		setBackground(new EntityBackground(0.82f, 0.96f, 0.97f, background));
+		RepeatingSpriteBackground bkgd = new RepeatingSpriteBackground(GameActivity.CAMERA_WIDTH,
+				GameActivity.CAMERA_HEIGHT, res.gameBkgdTextureRegion, vbom);
+		setBackground(bkgd);
 	}
 	
 	private void createPlayer() {
@@ -399,7 +400,7 @@ public class FaseTutorial extends AbstractScene {
 	
 	private void createPlayer2() {
 		p1pos=player.getSceneCenterCoordinates();
-		player2 = PlayerFactory.getInstance().createPlayer(p1pos[0],p1pos[1] + 100);
+		player2 = PlayerFactory.getInstance().createPlayer(p1pos[0],p1pos[1] + 50);
 		player2.setScale((float) 0.2);
 		attachChild(player2);
 	}
