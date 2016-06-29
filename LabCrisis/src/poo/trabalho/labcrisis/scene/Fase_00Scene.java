@@ -12,8 +12,6 @@ import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.handler.collision.CollisionHandler;
 import org.andengine.engine.handler.collision.ICollisionCallback;
 import org.andengine.engine.handler.physics.PhysicsHandler;
-import org.andengine.entity.Entity;
-import org.andengine.entity.scene.background.EntityBackground;
 import org.andengine.entity.scene.background.RepeatingSpriteBackground;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.text.Text;
@@ -72,7 +70,7 @@ public class Fase_00Scene extends AbstractScene {
 	 * importante : !!!!! ainda nao temos todos os sprites implementados
 	 * (bacterias e virus)
 	 **/
-	int[][] Fase00 = { { 1, 1, 2, 2, 2, 2, 2, 2, 2, 1 }, { 1, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
+	int[][] Fase00 = { { 1, 4, 2, 2, 2, 2, 2, 2, 2, 1 }, { 1, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 1 }, { 1, 0, 0, 0, 1, 10, 0, 0, 0, 1 }, { 1, 0, 10, 0, 1, 0, 0, 1, 0, 1 },
 			{ 1, 0, 0, 0, 1, 0, 0, 1, 0, 1 }, { 1, 0, 10, 0, 1, 0, 10, 1, 0, 1 }, { 1, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 1, 0, 1 }, { 1, 2, 2, 2, 2, 2, 2, 2, 4, 1 }, };
@@ -104,20 +102,22 @@ public class Fase_00Scene extends AbstractScene {
 					@Override
 					public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX,
 							final float pValueY) {
-						// physicsHandler.setVelocity(pValueX * 300, pValueY *
-						// 300);
-						if (physicsHandler.getVelocityX() >= 900 && physicsHandler.getVelocityY() >= 900) {
+						// physicsHandler.setVelocity(pValueX * 300, pValueY *300);
+						if(physicsHandler.getVelocityX() >= 500 && physicsHandler.getVelocityY() >= 500){
 							physicsHandler.setAccelerationX(0);
 							physicsHandler.setAccelerationY(0);
-						} else if (physicsHandler.getVelocityY() >= 900) {
-							physicsHandler.setAccelerationX(pValueX * 300);
+						}
+						else if(physicsHandler.getVelocityY() >= 500){
+							physicsHandler.setAccelerationX(pValueX*250);
 							physicsHandler.setAccelerationY(0);
-						} else if (physicsHandler.getVelocityX() >= 900) {
+						}
+						else if(physicsHandler.getVelocityX() >= 500){
 							physicsHandler.setAccelerationX(0);
-							physicsHandler.setAccelerationY(pValueY * 300);
-						} else {
-							physicsHandler.setAccelerationX(pValueX * 300);
-							physicsHandler.setAccelerationY(pValueY * 300);
+							physicsHandler.setAccelerationY(pValueY*250);
+						}
+						else{
+							physicsHandler.setAccelerationX(pValueX*250);
+							physicsHandler.setAccelerationY(pValueY*250);
 						}
 					}
 
@@ -156,7 +156,7 @@ public class Fase_00Scene extends AbstractScene {
 
 		// customizacao da sprite do joystick
 		analogOnScreenControl.getControlBase().setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		analogOnScreenControl.getControlBase().setAlpha(0.7f);
+		analogOnScreenControl.getControlBase().setAlpha(0.9f);
 		//analogOnScreenControl.getControlBase().setScale(1.5f);
 		//analogOnScreenControl.getControlKnob().setScale(1.5f);
 		analogOnScreenControl.refreshControlKnobPosition();
@@ -168,7 +168,7 @@ public class Fase_00Scene extends AbstractScene {
 		ICollisionCallback myCollisionCallback = new ICollisionCallback() {
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				physicsHandler.setVelocityX(-physicsHandler.getVelocityX());
+				physicsHandler.setVelocityX(-physicsHandler.getVelocityX()*((float)0.7));
 				return false;
 			}
 		};
@@ -180,7 +180,7 @@ public class Fase_00Scene extends AbstractScene {
 		ICollisionCallback myCollisionCallbackV = new ICollisionCallback() {
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				physicsHandler.setVelocityY(-physicsHandler.getVelocityY());
+				physicsHandler.setVelocityY(-physicsHandler.getVelocityY()*((float)0.7));
 				return false;
 			}
 		};
@@ -192,8 +192,8 @@ public class Fase_00Scene extends AbstractScene {
 		ICollisionCallback myCollisionCallbackQ = new ICollisionCallback() {
 			@Override
 			public boolean onCollision(IShape pCheckShape, IShape pTargetShape) {
-				physicsHandler.setVelocityY(-physicsHandler.getVelocityY());
-				physicsHandler.setVelocityX(-physicsHandler.getVelocityX());
+				physicsHandler.setVelocityY(-physicsHandler.getVelocityY()*((float)0.7));
+				physicsHandler.setVelocityX(-physicsHandler.getVelocityX()*((float)0.7));
 				return false;
 			}
 		};
@@ -381,7 +381,7 @@ public class Fase_00Scene extends AbstractScene {
 				case 3:
 					parede = ParedeFactory.getInstance().createParede(pos_x, pos_y);
 					parede.setCurrentTileIndex(3);
-					parede.setScale((float) 0.7);
+					parede.setScale((float) 0.72);
 					lista_paredes_q.add(parede);
 					attachChild(parede);
 
